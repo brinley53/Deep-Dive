@@ -12,6 +12,14 @@ public class BasicProceduralGeneration : MonoBehaviour
     public float platformMaxYDistance = 10f;
     public int maxNumberPlatforms = 50; // number of platforms to spawn 
 
+    // Array to store the spawned platforms
+    GameObject[] platformsArray;// = new GameObject[maxNumberPlatforms]; 
+    Vector3 lowestPlatformPos;
+    GameObject spawnedPlatformsContainer;
+    // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
+    GameObject instantiatedPlatform;
+
+
     Vector3 getNextPlatformPos(Vector3 prevPlatformPos) {
         // Set next x position to a random x position on the screen that does not overlap with the previous platform's x position
         int nextXPos;
@@ -24,35 +32,50 @@ public class BasicProceduralGeneration : MonoBehaviour
         return new Vector3(nextXPos,nextYPos);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-
-        // Create a new empty gmaeobject to hold the spawned platforms
-        GameObject spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
-        // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
-        GameObject instantiatedPlatform;
-
-        // Array to store the spawned platforms
-        // GameObject[] platformsArray; 
-
+    void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
         // Create a new vector 3d to hold location for platform locations
-        Vector3 spawnPos = new Vector3(0,0); 
+        Vector3 spawnPos = startingPos;//new Vector3(0,0); 
         // Create the specifed number of platforms
-        for (int i = 0; i < maxNumberPlatforms; i++) {
+        for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
 
             instantiatedPlatform = Instantiate(platformPrefab, spawnPos, Quaternion.identity); // create a new platform at the specified location
             instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
-            // platformsArray.Concat(instantiatedPlatform);
+            platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
         }
+        lowestPlatformPos = platformsArray[numberPlatformsPerGroup-1].transform.position;
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        // Get the player gameobject for its position
+        player = GameObject.FindGameObjectWithTag("Player");
+        // Create a new empty gmaeobject to hold the spawned platforms
+        spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
+        // Give the platform array a length
+        platformsArray = new GameObject[maxNumberPlatforms];
+        // Spawn a group of platforms
+        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,0));
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(player.transform.position.x);
-        Debug.Log(player.transform.position.y);
+        // Debug.Log(player.transform.position.x);
+        // Debug.Log(player.transform.position.y);
+        // Debug.Log(platformsArray[10]);
+
+        // If player is below the lowest platform spawned in the previous group
+        if (player.transform.position.y <= lowestPlatformPos.y) {
+            // Debug.Log("Destroying all platforms");
+            // Destroy platforms from prevoius group
+            for (int i = 0; i < maxNumberPlatforms; i++) {
+                Destroy(platformsArray[i]);
+            }
+            // Spawn a new group of platforms
+            spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,lowestPlatformPos.y));
+        }
     }
 }
