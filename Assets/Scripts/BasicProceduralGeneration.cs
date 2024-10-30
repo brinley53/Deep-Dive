@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class BasicProceduralGeneration : MonoBehaviour
 {
-    public GameObject platformPrefab; // from the "Assets/Prefabs" folder, drag the "Platform" prefab to the location for this in the inspector
+    GameObject platformPrefab; // from the "Assets/Prefabs" folder, drag the "Platform" prefab to the location for this in the inspector
+    GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
     GameObject player;
 
     public float platformMinYDistance = 1f;
@@ -51,12 +52,19 @@ public class BasicProceduralGeneration : MonoBehaviour
     {
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
+        // Get the platform prefab
+        platformPrefab = Resources.Load("prefabs/Platform") as GameObject;
+        // Get the checkpoint section prefab
+        checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
+        // Create a new checkpoiont section at the start
+        Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
+        
         // Create a new empty gmaeobject to hold the spawned platforms
         spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
         // Give the platform array a length
         platformsArray = new GameObject[maxNumberPlatforms];
         // Spawn a group of platforms
-        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,0));
+        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-5));
         
     }
 

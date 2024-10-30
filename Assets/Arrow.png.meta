@@ -1,34 +1,16 @@
 fileFormatVersion: 2
-guid: 92ed3238bc2581242992c39fbdab27e3
+guid: 2b99627e0c3dba44c88e04439ea3f973
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4775458300957770145
-    second: Diver All_0
+      213: -4346244404228752641
+    second: Arrow_0
   - first:
-      213: -4912457812435608316
-    second: Diver All_1
+      213: -6662812116773042688
+    second: Arrow_1
   - first:
-      213: 4216614760820117910
-    second: Diver All_2
-  - first:
-      213: -7969696585638564099
-    second: Diver All_3
-  - first:
-      213: -5142242001594634566
-    second: Diver All_4
-  - first:
-      213: 7159040893455706903
-    second: Diver All_5
-  - first:
-      213: -5142401155023813851
-    second: Diver All_6
-  - first:
-      213: 4666923378345373227
-    second: Diver All_7
-  - first:
-      213: -2098621560601483926
-    second: Diver All_8
+      213: -2292719611878453243
+    second: Arrow_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -70,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -163,13 +145,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Diver All_0
+      name: Arrow_0
       rect:
         serializedVersion: 2
-        x: 65
-        y: 765
-        width: 122
-        height: 166
+        x: 0
+        y: 0
+        width: 11
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,20 +160,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a14744f506d54240800000000000000
-      internalID: 4775458300957770145
+      spriteID: ffa7ae2edb90fa3c0800000000000000
+      internalID: -4346244404228752641
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_1
+      name: Arrow_1
       rect:
         serializedVersion: 2
-        x: 415
-        y: 765
-        width: 122
-        height: 155
+        x: 9
+        y: 0
+        width: 13
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,20 +182,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 40ddeab95a173dbb0800000000000000
-      internalID: -4912457812435608316
+      spriteID: 006039e4eafe883a0800000000000000
+      internalID: -6662812116773042688
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_2
+      name: Arrow_2
       rect:
         serializedVersion: 2
-        x: 765
-        y: 765
-        width: 122
-        height: 166
+        x: 20
+        y: 0
+        width: 12
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -222,140 +204,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6911a5dc8cc648a30800000000000000
-      internalID: 4216614760820117910
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_3
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 415
-        width: 122
-        height: 166
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dfeae5d3e23f56190800000000000000
-      internalID: -7969696585638564099
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_4
-      rect:
-        serializedVersion: 2
-        x: 415
-        y: 415
-        width: 122
-        height: 155
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: abeabd1f42613a8b0800000000000000
-      internalID: -5142242001594634566
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_5
-      rect:
-        serializedVersion: 2
-        x: 765
-        y: 415
-        width: 122
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 71b2cea23c50a5360800000000000000
-      internalID: 7159040893455706903
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_6
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 65
-        width: 122
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5234f36256582a8b0800000000000000
-      internalID: -5142401155023813851
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_7
-      rect:
-        serializedVersion: 2
-        x: 447
-        y: 65
-        width: 123
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b2eed30161e34c040800000000000000
-      internalID: 4666923378345373227
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Diver All_8
-      rect:
-        serializedVersion: 2
-        x: 797
-        y: 65
-        width: 123
-        height: 177
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a656f524fc230e2e0800000000000000
-      internalID: -2098621560601483926
+      spriteID: 500d96c09af9e20e0800000000000000
+      internalID: -2292719611878453243
       vertices: []
       indices: 
       edges: []
@@ -364,7 +214,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -374,15 +224,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Diver All_0: 4775458300957770145
-      Diver All_1: -4912457812435608316
-      Diver All_2: 4216614760820117910
-      Diver All_3: -7969696585638564099
-      Diver All_4: -5142242001594634566
-      Diver All_5: 7159040893455706903
-      Diver All_6: -5142401155023813851
-      Diver All_7: 4666923378345373227
-      Diver All_8: -2098621560601483926
+      Arrow_0: -4346244404228752641
+      Arrow_1: -6662812116773042688
+      Arrow_2: -2292719611878453243
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
