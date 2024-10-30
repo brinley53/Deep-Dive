@@ -5,21 +5,24 @@ using System.Collections.Generic;
 
 public class BasicProceduralGeneration : MonoBehaviour
 {
+    GameObject player; // the player object
     GameObject platformPrefab; // from the "Assets/Prefabs" folder, drag the "Platform" prefab to the location for this in the inspector
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
-    GameObject player;
 
     public float platformMinYDistance = 1f;
     public float platformMaxYDistance = 10f;
     public int maxNumberPlatforms = 50; // number of platforms to spawn 
 
     // Array to store the spawned platforms
-    GameObject[] platformsArray;// = new GameObject[maxNumberPlatforms]; 
+    GameObject[] platformsArray;
     Vector3 lowestPlatformPos;
+    Vector3 checkpointSectionSpawnLocation;
     GameObject spawnedPlatformsContainer;
     // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
     GameObject instantiatedPlatform;
 
+    private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
+    private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
 
     Vector3 getNextPlatformPos(Vector3 prevPlatformPos) {
         // Set next x position to a random x position on the screen that does not overlap with the previous platform's x position
@@ -45,6 +48,10 @@ public class BasicProceduralGeneration : MonoBehaviour
             platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
         }
         lowestPlatformPos = platformsArray[numberPlatformsPerGroup-1].transform.position;
+
+        checkpointSectionSpawnLocation = new Vector3(0, lowestPlatformPos.y-distanceBetweenFinalPlatformAndCheckpointSection);
+        // Instantiate a checkpoint section after the platform group
+        Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,13 +65,13 @@ public class BasicProceduralGeneration : MonoBehaviour
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
         // Create a new checkpoiont section at the start
         Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
-        
+
         // Create a new empty gmaeobject to hold the spawned platforms
         spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
         // Give the platform array a length
         platformsArray = new GameObject[maxNumberPlatforms];
         // Spawn a group of platforms
-        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-5));
+        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-distanceBetweenCheckpointSectionAndPlatformStart));
         
     }
 
@@ -76,14 +83,14 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Debug.Log(platformsArray[10]);
 
         // If player is below the lowest platform spawned in the previous group
-        if (player.transform.position.y <= lowestPlatformPos.y) {
+        if (player.transform.position.y <= checkpointSectionSpawnLocation.y) {
             // Debug.Log("Destroying all platforms");
             // Destroy platforms from prevoius group
             for (int i = 0; i < maxNumberPlatforms; i++) {
                 Destroy(platformsArray[i]);
             }
             // Spawn a new group of platforms
-            spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,lowestPlatformPos.y));
+            spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
         }
     }
 }

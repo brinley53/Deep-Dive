@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439c3c4ac8c031d4b902255c524d6f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 10
   jumpForce: 7
   groundCheck: {fileID: 1115360711}
   groundCheckRadius: 0.2
@@ -684,7 +684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea352016bde92046adb1f47bc0292b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformPrefab: {fileID: 7757429184276978202, guid: 4f9b90d23e17dc54ea500ededad5b325, type: 3}
   platformMinYDistance: 1
   platformMaxYDistance: 10
   maxNumberPlatforms: 25
