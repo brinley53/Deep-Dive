@@ -59,6 +59,13 @@ public class PlayerMovement : MonoBehaviour
     {
         // Move the player left and right
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y);
+
+        // Limit the fall speed
+        float maxFallSpeed = -10f; // Set your desired maximum fall speed
+        if (rb.linearVelocity.y < maxFallSpeed)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed);
+        }
     }
 
     void OnDrawGizmos()
