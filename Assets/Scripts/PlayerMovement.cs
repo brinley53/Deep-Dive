@@ -3,78 +3,82 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 4f; // Speed of the player
-    public float jumpForce = 7f; // Adjusted force for jumping
-    public Transform groundCheck; // Position to check if grounded
-    public float groundCheckRadius = 0.2f; // Radius of the ground check
-    public LayerMask groundLayer; // Layer of the ground hey
+    public float jumpForce = 7f; // Force applied when the player jumps
+    public Transform groundCheck; // Transform to check if the player is grounded
+    public float groundCheckRadius = 1f; // Radius of the ground check area
+    public LayerMask groundLayer; // Layer mask to identify what is considered ground
+    public float groundCheckWidth = 1f; // Width of the ground check box
+    public float groundCheckHeight = 0.2f; // Height of the ground check box
 
-    private Rigidbody2D rb;
-    private Vector2 movement;
-    private bool isGrounded;
+    private Rigidbody2D rb; // Reference to the Rigidbody2D component
+    private Vector2 movement; // Vector to store movement input
+    private bool isGrounded; // Boolean to check if the player is on the ground
 
-    void Start()
+    void Start() // Unity method called once when the script is enabled
     {
-        rb = GetComponent<Rigidbody2D>();
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        
-        // Add this debug line to check which layer we're looking for
+        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to the player
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the Rigidbody2D from rotating
+
+        // Log the ground layer mask value for debugging
         Debug.Log("Ground Layer Mask: " + groundLayer.value);
     }
 
-    void Update()
+    void Update() // Unity method called once per frame
     {
-        // Get input for horizontal movement
-        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal"); // Get horizontal input for movement
 
-        // Store the previous grounded state
-        bool wasGrounded = isGrounded;
-        
-        // Check if the player is grounded
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        bool wasGrounded = isGrounded; // Store the previous grounded state
 
-        // Debug information
-        // Debug.Log($"Ground Check Position: {groundCheck.position}, Radius: {groundCheckRadius}, Layer: {groundLayer.value}");
-        
+        // Check three points: center and both edges
+        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer) ||
+                     Physics2D.OverlapBox(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer) ||
+                     Physics2D.OverlapBox(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer);
+
+        // Log if the grounded state has changed
         if (isGrounded != wasGrounded)
         {
-            Debug.Log($"Grounded state changed to: {isGrounded}");
+            Debug.Log($"Grounded state changed to: {isGrounded}"); // Log the grounded state
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump")) // Check if the jump button is pressed
         {
-            Debug.Log("Jump button pressed");
-            if (isGrounded)
+            Debug.Log("Jump button pressed"); // Log jump button press
+            if (isGrounded) // Check if the player is grounded
             {
-                Debug.Log("Applying jump force");
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                Debug.Log("Applying jump force"); // Log jump force application
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply upward force to jump
             }
             else
             {
-                Debug.Log("Can't jump - not grounded");
+                Debug.Log("Can't jump - not grounded"); // Log if jump is not possible
             }
         }
     }
 
-    void FixedUpdate()
+    void FixedUpdate() // Unity method called at a fixed interval
     {
-        // Move the player left and right
+        // Set the player's horizontal velocity based on input and move speed
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y);
 
-        // Limit the fall speed
-        float maxFallSpeed = -10f; // Set your desired maximum fall speed
-        if (rb.linearVelocity.y < maxFallSpeed)
+        float maxFallSpeed = -20f; // Maximum speed the player can fall
+        if (rb.linearVelocity.y < maxFallSpeed) // Check if the player is falling too fast
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed); // Limit the fall speed
         }
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmos() // Unity method to draw gizmos in the editor
     {
-        // Add this to visualize the ground check radius in the Scene view
-        if (groundCheck != null)
+        if (groundCheck != null) // Check if groundCheck is assigned
         {
+            // Draw main ground check box
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
+            
+            // Draw edge check boxes
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));
+            Gizmos.DrawWireCube(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));
         }
     }
 }
