@@ -64,7 +64,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
         // Create a new checkpoiont section at the start
-        Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
+        //Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
 
         // Create a new empty gmaeobject to hold the spawned platforms
         spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
