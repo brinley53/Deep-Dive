@@ -590,7 +590,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.8018868, g: 0.45607346, b: 0.13995194, a: 1}
+  m_Color: {r: 0.33263788, g: 0.6413873, b: 0.98490566, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -944,7 +944,7 @@ GameObject:
   - component: {fileID: 1559515496}
   - component: {fileID: 1559515495}
   m_Layer: 6
-  m_Name: Square
+  m_Name: The Spawn Ship
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
