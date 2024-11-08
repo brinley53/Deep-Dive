@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9456f2c91cce7694c9040486f286c800
+guid: 3099ce07034f3d04faee0a280dff6dcf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4383970308229038343
-    second: harpoon_item_0
+      213: -2242978744580118938
+    second: ship_outline_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,30 +122,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: harpoon_item_0
+      name: ship_outline_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 26
-        width: 46
-        height: 45
+        x: 22
+        y: 2
+        width: 474
+        height: 245
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7010adf94cdf6dc30800000000000000
-      internalID: 4383970308229038343
+      spriteID: 666ec8237b65fd0e0800000000000000
+      internalID: -2242978744580118938
       vertices: []
       indices: 
       edges: []
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      harpoon_item_0: 4383970308229038343
+      ship_outline_0: -2242978744580118938
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
