@@ -49,7 +49,7 @@ public class BasicProceduralGeneration : MonoBehaviour
             spawnPos = getNextPlatformPos(spawnPos);
             platformTypeToInstantiate = getNextPlatformType(spawnPos);
 
-            instantiatedPlatform = Instantiate(getNextPlatformPos, spawnPos, Quaternion.identity); // create a new platform at the specified location
+            instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
             instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
             platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
         }
