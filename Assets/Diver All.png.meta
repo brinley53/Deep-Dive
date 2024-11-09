@@ -163,15 +163,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Diver All_0
+      name: Diver_Idle
       rect:
         serializedVersion: 2
-        x: 65
-        y: 765
-        width: 122
-        height: 166
+        x: 66
+        y: 766
+        width: 120
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -185,15 +185,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_1
+      name: Diver_Idle2
       rect:
         serializedVersion: 2
-        x: 415
-        y: 765
-        width: 122
-        height: 155
+        x: 416
+        y: 766
+        width: 120
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -207,15 +207,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_2
+      name: Dive_Walk1
       rect:
         serializedVersion: 2
-        x: 765
-        y: 765
-        width: 122
-        height: 166
+        x: 766
+        y: 766
+        width: 120
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -229,15 +229,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_3
+      name: Diver_Walk2
       rect:
         serializedVersion: 2
-        x: 65
-        y: 415
-        width: 122
-        height: 166
+        x: 66
+        y: 416
+        width: 120
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -251,15 +251,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_4
+      name: Diver_Jump1
       rect:
         serializedVersion: 2
-        x: 415
-        y: 415
-        width: 122
-        height: 155
+        x: 416
+        y: 416
+        width: 120
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -273,15 +273,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_5
+      name: Diver_Jump2
       rect:
         serializedVersion: 2
-        x: 765
-        y: 415
-        width: 122
-        height: 177
+        x: 766
+        y: 416
+        width: 120
+        height: 175
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -295,15 +295,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_6
+      name: Diver_Jump3
       rect:
         serializedVersion: 2
-        x: 65
-        y: 65
-        width: 122
-        height: 177
+        x: 66
+        y: 66
+        width: 120
+        height: 175
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -317,15 +317,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_7
+      name: Diver_Fall1
       rect:
         serializedVersion: 2
-        x: 447
-        y: 65
-        width: 123
-        height: 177
+        x: 448
+        y: 66
+        width: 121
+        height: 175
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -339,15 +339,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Diver All_8
+      name: Diver_Fall2
       rect:
         serializedVersion: 2
-        x: 797
-        y: 65
-        width: 123
-        height: 177
+        x: 798
+        y: 66
+        width: 121
+        height: 175
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -364,7 +364,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e6e02d2df1d3b8245b35e67fa47268fb
     internalID: 0
     vertices: []
     indices: 
@@ -374,15 +374,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Diver All_0: 4775458300957770145
-      Diver All_1: -4912457812435608316
-      Diver All_2: 4216614760820117910
-      Diver All_3: -7969696585638564099
-      Diver All_4: -5142242001594634566
-      Diver All_5: 7159040893455706903
-      Diver All_6: -5142401155023813851
-      Diver All_7: 4666923378345373227
-      Diver All_8: -2098621560601483926
+      Dive_Walk1: 4216614760820117910
+      Diver_Fall1: 4666923378345373227
+      Diver_Fall2: -2098621560601483926
+      Diver_Idle: 4775458300957770145
+      Diver_Idle2: -4912457812435608316
+      Diver_Jump1: -5142242001594634566
+      Diver_Jump2: 7159040893455706903
+      Diver_Jump3: -5142401155023813851
+      Diver_Walk2: -7969696585638564099
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

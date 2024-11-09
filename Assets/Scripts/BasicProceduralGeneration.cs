@@ -17,9 +17,9 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject[] platformsArray;
     Vector3 lowestPlatformPos;
     Vector3 checkpointSectionSpawnLocation;
-    GameObject spawnedPlatformsContainer;
-    // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
-    GameObject instantiatedPlatform;
+    GameObject spawnedPlatformsContainer; // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
+    GameObject instantiatedPlatform; 
+    GameObject platformTypeToInstantiate; // variable to hold the type of the next platofrm to spawn
 
     private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
     private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
@@ -36,14 +36,20 @@ public class BasicProceduralGeneration : MonoBehaviour
         return new Vector3(nextXPos,nextYPos);
     }
 
+    /// <summary> Function to get the type of the next platform (eg regular, spikes, etc) </summary>
+    GameObject getNextPlatformType(Vector3 platformPos) {
+        return platformPrefab;
+    }
+
     void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
         // Create a new vector 3d to hold location for platform locations
-        Vector3 spawnPos = startingPos;//new Vector3(0,0); 
+        Vector3 spawnPos = startingPos;
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
+            platformTypeToInstantiate = getNextPlatformType(spawnPos);
 
-            instantiatedPlatform = Instantiate(platformPrefab, spawnPos, Quaternion.identity); // create a new platform at the specified location
+            instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
             instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
             platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
         }
@@ -64,7 +70,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
         // Create a new checkpoiont section at the start
-        Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
+        //Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
 
         // Create a new empty gmaeobject to hold the spawned platforms
         spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
