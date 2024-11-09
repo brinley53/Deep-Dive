@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -14,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement; // Stores the current movement input (-1 to 1)
     private bool isGrounded; // Tracks whether the player is currently touching the ground
 
+    public Animator animator; // Add an animator for animating the player character
+
     void Start() // Called once when the script is first enabled
     {
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
@@ -24,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     void Update() // Called every frame
     {
         movement.x = Input.GetAxisRaw("Horizontal"); // Get horizontal input (-1 for left, 1 for right, 0 for no input)
+        
         bool wasGrounded = isGrounded; // Store the previous grounded state for comparison
         isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer) ||
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer) ||
@@ -45,6 +49,13 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Can't jump - not grounded"); // Log if jump attempt failed due to not being grounded
             }
         }
+
+        movement.y = rb.linearVelocity.y; // Get the movement speed in the vertical axis
+
+        animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
+        animator.SetFloat("Vertical", movement.y); // Set the animator's y to reference in animator
+        animator.SetFloat("Speed", movement.sqrMagnitude); // Set the animator's speed to reference in animator
+    
     }
 
     void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
