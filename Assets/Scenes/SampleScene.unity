@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 981345472}
   - component: {fileID: 981345473}
   - component: {fileID: 981345474}
+  - component: {fileID: 981345475}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -741,6 +742,7 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckWidth: 1
   groundCheckHeight: 0.2
+  animator: {fileID: 981345474}
 --- !u!61 &981345472
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -822,6 +824,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &981345475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981345467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ef4a94d1543b947ade63deb051fcfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horizontalInput: 0
+  facingRight: 1
 --- !u!1 &1115360710
 GameObject:
   m_ObjectHideFlags: 0

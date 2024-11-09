@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -36,7 +37,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log($"Grounded state changed to: {isGrounded}");
         }
-        if (Input.GetButtonDown("Jump")) // Check for jump input
+        if (Input.GetButtonDown("Jump") && isGrounded) // Check for jump being held down 
+        {
+            animator.SetBool("Jump", true); // Set the jump condition for the animator to true to set off the jump animation
+        }
+        else if (Input.GetButtonUp("Jump")) // Check for jump input
         {
             Debug.Log("Jump button pressed"); // Log that jump button was pressed
             if (isGrounded) // Only allow jumping if the player is grounded
@@ -48,13 +53,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("Can't jump - not grounded"); // Log if jump attempt failed due to not being grounded
             }
+        } else {
+            animator.SetBool("Jump", false); // Initialize the jump condition for the jump animation to false
         }
 
         movement.y = rb.linearVelocity.y; // Get the movement speed in the vertical axis
-
         animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
         animator.SetFloat("Vertical", movement.y); // Set the animator's y to reference in animator
-        animator.SetFloat("Speed", movement.sqrMagnitude); // Set the animator's speed to reference in animator
     
     }
 
