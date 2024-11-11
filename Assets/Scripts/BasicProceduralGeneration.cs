@@ -1,3 +1,12 @@
+
+/**
+BasicProceduralGeneration.cs
+Description: Script for procedurally generating the level layout
+Creation date: 11/10/2024
+Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
+Other sources of code: Unity Documentation
+**/
+
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -6,7 +15,7 @@ using System.Collections.Generic;
 public class BasicProceduralGeneration : MonoBehaviour
 {
     GameObject player; // the player object
-    GameObject platformPrefab; // from the "Assets/Prefabs" folder, drag the "Platform" prefab to the location for this in the inspector
+    GameObject platformPrefab; // the prefab object for a basic platform
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
 
     public float platformMinYDistance = 1f;
