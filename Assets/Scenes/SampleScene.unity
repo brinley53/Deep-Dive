@@ -407,7 +407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1050, y: 700}
+  m_AnchoredPosition: {x: 85, y: 138}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &700153563
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -457,8 +457,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -801,6 +801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0542f93d1ee8549bd597f461cf0d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceText: {fileID: 700153563}
 --- !u!95 &981345474
 Animator:
   serializedVersion: 7
@@ -835,6 +836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ef4a94d1543b947ade63deb051fcfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horizontalInput: 0
+  facingRight: 1
 --- !u!1 &1115360710
 GameObject:
   m_ObjectHideFlags: 0

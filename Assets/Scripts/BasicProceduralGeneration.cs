@@ -15,7 +15,13 @@ using System.Collections.Generic;
 public class BasicProceduralGeneration : MonoBehaviour
 {
     GameObject player; // the player object
+
+    /* Platforms */
     GameObject platformPrefab; // the prefab object for a basic platform
+    GameObject platformPrefab2;
+    GameObject[] basicPlatformsArray;
+
+
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
 
     public float platformMinYDistance = 1f;
@@ -47,7 +53,7 @@ public class BasicProceduralGeneration : MonoBehaviour
 
     /// <summary> Function to get the type of the next platform (eg regular, spikes, etc) </summary>
     GameObject getNextPlatformType(Vector3 platformPos) {
-        return platformPrefab;
+        return basicPlatformsArray[Random.Range(0, basicPlatformsArray.Length)];
     }
 
     void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
@@ -74,8 +80,15 @@ public class BasicProceduralGeneration : MonoBehaviour
     {
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
+
         // Get the platform prefab
         platformPrefab = Resources.Load("prefabs/Platform") as GameObject;
+        platformPrefab2 = Resources.Load("prefabs/Platform2") as GameObject;
+        basicPlatformsArray = new GameObject[] {
+            platformPrefab,
+            platformPrefab2
+        };
+
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
         // Create a new checkpoiont section at the start
