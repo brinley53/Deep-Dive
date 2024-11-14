@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the player from rotating
-        Debug.Log("Ground Layer Mask: " + groundLayer.value); // Output the ground layer mask value for debugging purposes
+        // Debug.Log("Ground Layer Mask: " + groundLayer.value); // Output the ground layer mask value for debugging purposes
     }
 
     void Update() // Called every frame
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer);
         if (isGrounded != wasGrounded) // Log when the grounded state changes
         {
-            Debug.Log($"Grounded state changed to: {isGrounded}");
+            // Debug.Log($"Grounded state changed to: {isGrounded}");
         }
         if (Input.GetButtonDown("Jump") && isGrounded) // Check for jump being held down 
         {
@@ -50,15 +50,15 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (Input.GetButtonUp("Jump")) // Check for jump input
         {
-            Debug.Log("Jump button pressed"); // Log that jump button was pressed
+            // Debug.Log("Jump button pressed"); // Log that jump button was pressed
             if (isGrounded) // Only allow jumping if the player is grounded
             {
-                Debug.Log("Applying jump force"); // Log that jump force is being applied
+                // Debug.Log("Applying jump force"); // Log that jump force is being applied
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply the upward force for jumping
             }
             else
             {
-                Debug.Log("Can't jump - not grounded"); // Log if jump attempt failed due to not being grounded
+                // Debug.Log("Can't jump - not grounded"); // Log if jump attempt failed due to not being grounded
             }
         } else {
             animator.SetBool("Jump", false); // Initialize the jump condition for the jump animation to false
