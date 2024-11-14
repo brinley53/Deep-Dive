@@ -1,3 +1,10 @@
+/**
+PlayerMovement.cs
+Description: File that works with the player's movement and jumping and player speed and jump force.
+Creation date: 11/6/2024
+Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
+Other sources of code: ChatGPT, Unity Documentation, Unity Forums
+**/
 using System;
 using System.Threading;
 using UnityEngine;
@@ -80,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.color = Color.red; // Draw the main ground check box in red
             Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
             Gizmos.color = Color.yellow; // Draw the right edge check box in yellow
-            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));
+            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));// Draw the left edge check box in yellow
             Gizmos.DrawWireCube(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f)); // Draw the left edge check box in yellow
         }
     }

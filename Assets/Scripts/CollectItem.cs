@@ -1,5 +1,13 @@
+/*
+    Script name: CollectItem
+    Description: Item dissapears when player touches it
+    Inputs: Object just needs collision detection and check event trigger box
+    Outputs:
+    Sources of code: None
+    Authors: Kyle Moore
+    Creation Date: 11/9/24
+*/
 using UnityEngine;
-
 public class DisappearOnTouch : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
