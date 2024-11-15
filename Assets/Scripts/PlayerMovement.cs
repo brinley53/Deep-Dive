@@ -25,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animator; // Add an animator for animating the player character
 
+    private bool isFallingThrough = false;
+    private float fallThroughDuration = 0.6f; // Duration to remain in NoCollision layer after releasing Ctrl
+    private float fallThroughTimer = 0f;
+
     void Start() // Called once when the script is first enabled
     {
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
@@ -68,6 +72,39 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
         animator.SetFloat("Vertical", movement.y); // Set the animator's y to reference in animator
     
+        // Check if the "Ctrl" key is pressed
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            int noCollisionLayer = LayerMask.NameToLayer("NoCollision");
+            if (noCollisionLayer != -1) // Ensure the layer exists
+            {
+                if (gameObject.layer != noCollisionLayer) // Only change if not already set
+                {
+                    gameObject.layer = noCollisionLayer; // Change to the "NoCollision" layer
+                    isFallingThrough = true;
+                    fallThroughTimer = fallThroughDuration; // Reset the timer
+                    Debug.Log("Player layer set to NoCollision");
+                }
+            }
+            else
+            {
+                Debug.LogError("NoCollision layer not found. Please ensure it is created in Unity.");
+            }
+        }
+        else if (isFallingThrough)
+        {
+            fallThroughTimer -= Time.deltaTime;
+            if (fallThroughTimer <= 0f)
+            {
+                int defaultLayer = LayerMask.NameToLayer("Default");
+                if (gameObject.layer != defaultLayer)
+                {
+                    gameObject.layer = defaultLayer;
+                    isFallingThrough = false;
+                    Debug.Log("Player layer set to Default");
+                }
+            }
+        }
     }
 
     void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
