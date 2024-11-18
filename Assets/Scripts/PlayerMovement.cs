@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         // Check if the "Ctrl" key is pressed
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+            animator.SetBool("Jump", true); // Set the jump condition for the animator to true to set off the crouch animation
             int noCollisionLayer = LayerMask.NameToLayer("NoCollision");
             if (noCollisionLayer != -1) // Ensure the layer exists
             {
