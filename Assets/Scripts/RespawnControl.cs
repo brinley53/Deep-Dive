@@ -29,11 +29,15 @@ public class RespawnControl : MonoBehaviour
             // If "R" is pressed 
             if (Input.GetKeyDown(KeyCode.R)) // DEBUGGING ONLY - will be replaced with on player death
             {
-                Debug.Log($"Respawn at  {respawnPlatformLocation}");
-
-                player.transform.position = respawnPlatformLocation;
+                if (player.GetComponent<PlayerMovement>().lives > 0) {
+                    player.GetComponent<PlayerMovement>().lives--;
+                    Debug.Log($"Respawn at {respawnPlatformLocation}. Lives remaining: {player.GetComponent<PlayerMovement>().lives}");
+                    player.transform.position = respawnPlatformLocation;
+                } else {
+                    Debug.Log("Game Over: No lives remaining.");
+                    // Implement game over logic here, e.g., stop the game or show a game over screen
+                }
             }
         }
-
     }
 }
