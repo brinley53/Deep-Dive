@@ -1,69 +1,56 @@
-/**
-BasicEnemyMovement.cs
-Description: File to control basic back and forth enemy movement
-Creation date: 11/17/2024
-Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
-Other sources of code: Blackthornprod (youtube)
-**/
-using System;
-using System.Threading;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float moveSpeed = 2f; // Movement speed of the player in units per second
-    public Transform groundCheck; // Reference to an empty GameObject that marks where to check for ground
-    public LayerMask groundLayer; // Layer mask to specify what layers should be considered as ground
-    public float groundCheckWidth = 1f; // Width of the main ground check box
-    public float groundCheckHeight = 0.2f; // Height of the ground check box
+    public float moveSpeed = 2f; // Movement speed of the enemy
+    public Transform groundCheck; // Reference to ground check
+    public LayerMask groundLayer; // Layers considered as ground
+    public float groundCheckWidth = 1f; // Ground check box width
+    public float groundCheckHeight = 0.2f; // Ground check box height
+    public int health = 100; // Enemy's health
+    public int damage = 20; // Damage the enemy can inflict
 
-    private Rigidbody2D rb; // Reference to the player's Rigidbody2D component
-    private Vector2 movement; // Stores the current movement input (-1 to 1)
-    private bool isGrounded; // Tracks whether the player is currently touching the ground
+    private Rigidbody2D rb; // Enemy's Rigidbody2D
+    private Vector2 movement; // Movement direction
+    private bool isGrounded; // Is the enemy on the ground
+    private bool facingRight = false; // Direction facing
+    private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
+    private Collider2D collider2D; // Reference to the enemy's collider
 
-    public Animator animator; // Add an animator for animating the player character
-
-    private bool facingRight = false;
-
-    private float oldX = 1f;
-
-    void Start() // Called once when the script is first enabled
+    void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the player from rotating
+        rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
+        collider2D = GetComponent<Collider2D>(); // Reference Collider2D
+
+        // Start the test coroutine to reduce health every 2 seconds
+        StartCoroutine(TestHealthReduction());
     }
 
-    void Update() // Called every frame
+    void Update()
     {
-        if (isGrounded == false) {
-            transform.Rotate(new UnityEngine.Vector3(0,180,0)); // Rotate the object 180 degrees
-            facingRight = !facingRight;
+        if (!isGrounded)
+        {
+            Flip();
         }
         movement.x = facingRight ? 1 : -1;
-        
-        bool wasGrounded = isGrounded; // Store the previous grounded state for comparison
-        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer) ||
-                     Physics2D.OverlapBox(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer) ||
-                     Physics2D.OverlapBox(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer);
-        
-        // animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
+
+        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer);
     }
 
-    void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
+    void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement
-        
+        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply movement
     }
 
-    void OnDrawGizmos() // Called in the editor to draw debug visuals
+    void OnDrawGizmos()
     {
-        if (groundCheck != null) // Only draw if we have a ground check point set
+        if (groundCheck != null)
         {
-            Gizmos.color = Color.red; // Draw the main ground check box in red
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
-            Gizmos.color = Color.yellow; // Draw the right edge check box in yellow
-            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));// Draw the left edge check box in yellow
-            Gizmos.DrawWireCube(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f)); // Draw the left edge check box in yellow
         }
     }
 
@@ -72,6 +59,66 @@ public class EnemyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(20);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            StartCoroutine(HandleDeath());
+        }
+        else
+        {
+            UpdateColorBasedOnHealth();
+        }
+    }
+
+    private void UpdateColorBasedOnHealth()
+    {
+        float redIntensity = 1f - (health / 100f); // Calculate red intensity
+        spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity); // Set color
+    }
+
+    private IEnumerator HandleDeath()
+    {
+        spriteRenderer.color = Color.red; // Turn red
+        float floatDuration = 2f; // Float for 2 seconds
+        float floatSpeed = 2f; // Speed of floating up
+
+        collider2D.enabled = false; // Disable the collider to prevent interactions
+        rb.linearVelocity = Vector2.zero; // Stop movement
+        rb.isKinematic = true; // Disable physics interactions
+
+        Vector2 originalPosition = transform.position;
+        float elapsedTime = 0f;
+
+        // Rotate and float upwards
+        transform.Rotate(0, 0, 90);
+        while (elapsedTime < floatDuration)
+        {
+            transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime));
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Destroy the enemy after floating
+        Destroy(gameObject);
+    }
+
+    private void Flip()
+    {
+        transform.Rotate(new Vector3(0, 180, 0)); // Flip 180 degrees
+        facingRight = !facingRight; // Toggle direction
+    }
+
+    private IEnumerator TestHealthReduction()
+    {
+        while (health > 0)
+        {
+            yield return new WaitForSeconds(2f); // Wait for 2 seconds
+            TakeDamage(damage); // Reduce health by 20
         }
     }
 }
