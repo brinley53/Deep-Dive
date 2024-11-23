@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     public float groundCheckWidth = 1f; // Width of the main ground check box
     public float groundCheckHeight = 0.2f; // Height of the ground check box
 
+    public float iFrameDuration = 2.0f; // The duration of the I-frames after the player gets hit
+    float timeOfLastHit = 0.0f;
+
     private Rigidbody2D rb; // Reference to the player's Rigidbody2D component
     private Vector2 movement; // Stores the current movement input (-1 to 1)
     private bool isGrounded; // Tracks whether the player is currently touching the ground
@@ -148,22 +151,31 @@ public class PlayerMovement : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        if (health <= 0)
-        {
-            lives--;
-            health = 100; // Reset health to full upon losing a life
-            if (lives > 0)
+        if ((timeOfLastHit + iFrameDuration) <= Time.fixedTime ){
+
+            timeOfLastHit = Time.fixedTime;
+            Debug.Log("Player hit");
+
+            health -= damage;
+            if (health <= 0)
             {
-                StartCoroutine(RespawnPlayer());
+                lives--;
+                health = 100; // Reset health to full upon losing a life
+                if (lives > 0)
+                {
+                    StartCoroutine(RespawnPlayer());
+                }
+                else
+                {
+                    Debug.Log("Game Over: No lives remaining.");
+                    // Implement game over logic here
+                }
             }
-            else
-            {
-                Debug.Log("Game Over: No lives remaining.");
-                // Implement game over logic here
-            }
+            UpdateUI();
         }
-        UpdateUI();
+        else {
+            Debug.Log("Player hit but is still invincible from I-frames");
+        }
     }
 
     private void UpdateColorBasedOnHealth()
