@@ -13,24 +13,27 @@ public class FallDistanceTracker : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI distanceText; // object for the displayed text
     private float startY; // starting location of the player
+    float currentHeight;
+    float currentFallDistance;
     
     [HideInInspector] public float maxFallDistance; // float to track the lowest the player has gone
     [HideInInspector] public Vector3 respawnLocation; // location to respawn player at
 
     public void SetRespawnLocation() {
-        respawnLocation = new Vector3(-5, -maxFallDistance); // set the respawn location to be the max fall distance
+        respawnLocation = new Vector3(-5, -currentFallDistance); // set the respawn location to be the max fall distance
     }
 
     void Start()
     {
         startY = transform.position.y; // get the starting location of the player
         maxFallDistance = 0f;
+        respawnLocation = new Vector3(0,0);
     }
 
     void Update()
     {
-        float currentHeight = transform.position.y; // set the current height to the location of the player on every frame
-        float currentFallDistance = startY - currentHeight; // get how far down the player currently is
+        currentHeight = transform.position.y; // set the current height to the location of the player on every frame
+        currentFallDistance = startY - currentHeight; // get how far down the player currently is
 
         // Only track distance when falling
         if (currentHeight < startY)
@@ -39,6 +42,7 @@ public class FallDistanceTracker : MonoBehaviour
         }
 
         // Update UI text
-        distanceText.text = $"Fall Distance: {maxFallDistance:F1}m";
+        // distanceText.text = $"Fall Distance: {maxFallDistance:F1}m";
+        distanceText.text = $"Fall Distance: {currentFallDistance:F1}m";
     }
 } 

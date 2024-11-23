@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
         collider2D = GetComponent<Collider2D>(); // Reference Collider2D
 
         // Start the test coroutine to reduce health every 2 seconds
-        StartCoroutine(TestHealthReduction());
+        // StartCoroutine(TestHealthReduction());
     }
 
     void Update()
