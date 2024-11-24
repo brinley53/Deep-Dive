@@ -92,7 +92,7 @@ void spawnItemOnPlatform(Vector3 platformPos) {
 
     if (spawnChance <= 0.5f) { // 10% chance to spawn a harpoon item
         itemToSpawn = harpoonItem;
-    } else if (spawnChance > 0.5f && spawnChance <= 0.2f) { // Additional 10% chance for a heart item
+    } else if (spawnChance > 0.5f) { // Additional 10% chance for a heart item
         itemToSpawn = heartItem;
         
     }
