@@ -81,27 +81,22 @@ public class BasicProceduralGeneration : MonoBehaviour
     Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
 }
 
-/// <summary>
-/// Spawns an item (heart or harpoon) on the given platform position with a chance.
-/// </summary>
-/// <param name="platformPos">Position of the platform</param>
 void spawnItemOnPlatform(Vector3 platformPos) {
     // Random chance for item generation (adjust probabilities as needed)
     float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
     GameObject itemToSpawn = null;
 
-    if (spawnChance <= 0.5f) { // 10% chance to spawn a harpoon item
+    if (spawnChance <= 0.5f) { //adjust chance for harpoon item to spwan
         itemToSpawn = harpoonItem;
-    } else if (spawnChance > 0.5f) { // Additional 10% chance for a heart item
+    } else if (spawnChance > 0.5f) { // adjust chance for heart item to spawn
         itemToSpawn = heartItem;
         
     }
-
     // If an item is chosen, spawn it slightly above the platform
     if (itemToSpawn != null) {
         Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
         Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
-        Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos);
+        Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos); //logs position of item spaw in case prefab is not loaded correctly
 }
 
 }
