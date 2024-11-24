@@ -1228,7 +1228,7 @@ MonoBehaviour:
   moveSpeed: 10
   jumpForce: 7
   strength: 10
-  health: 100
+  health: 2000
   lives: 3
   groundCheck: {fileID: 1115360711}
   groundCheckRadius: 1

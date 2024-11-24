@@ -50,12 +50,9 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject[] platformsArray;
     Vector3 lowestPlatformPos;
     Vector3 checkpointSectionSpawnLocation;
-    // GameObject spawnedPlatformsContainer; // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
-    GameObject instantiatedPlatform; 
     GameObject platformSection;
-    GameObject platformTypeToInstantiate; // variable to hold the type of the next platofrm to spawn
 
-    public int maxPlatformSize = 20;
+    public int maxPlatformSize = 20; // the maximum size of a platform
 
     private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
     private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
@@ -84,13 +81,18 @@ public class BasicProceduralGeneration : MonoBehaviour
 
         // Create container object for the individual platform
         GameObject platformContainer = new GameObject("platformContainer"); 
+        
+        // If spawning a single unit platform
         if (platformLengthToSpawn == 1) {
+            // Spawn a regular middle platform
             if (platformTypeToSpawn == "normal") {
                 platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
+            // Spawn a spike middle platform
             else if (platformTypeToSpawn == "spike") {
                 platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
+            // Spawn a magma middle platform
             else if (platformTypeToSpawn == "magma") {
                 platformSection = Instantiate(magmaPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
@@ -98,25 +100,29 @@ public class BasicProceduralGeneration : MonoBehaviour
                 Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
             }
 
-            platformSection.transform.parent = platformContainer.transform;
+            platformSection.transform.parent = platformContainer.transform; // add the platform to the container
         }
         else {
-            Vector3 nextPlatformSegmentLoc = platformSpawnPos;
+            Vector3 nextPlatformSegmentLoc = platformSpawnPos; // the location to spawn the next platform segment
+            // For each segment needed to make up the whole platform 
             for (int i=0; i < platformLengthToSpawn; i++) {
+                // Spawn a regular middle platform
                 if (platformTypeToSpawn == "normal") {
                     platformSection = Instantiate(normalPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
                 }
+                // Spawn a spike middle platform
                 else if (platformTypeToSpawn == "spike") {
                     platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
                 }
+                // Spawn a magma middle platform
                 else if (platformTypeToSpawn == "magma") {
                     platformSection = Instantiate(magmaPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
                 }
                 else {
                     Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
                 }
-                nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y);
-                platformSection.transform.parent = platformContainer.transform;
+                nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y); // set the next platform segment to be to the right of the previous one
+                platformSection.transform.parent = platformContainer.transform; // add the platform to the container
             }
         }
         return platformContainer;
@@ -130,8 +136,6 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
-            // platformTypeToInstantiate = getNextPlatformType(spawnPos);
-            // instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
             GameObject platformsContainer = createPlatform(spawnPos);
 
             platformsContainer.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
@@ -190,6 +194,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         magmaPlatformMiddlePrefab = Resources.Load("prefabs/magma_platform_prefab_mid") as GameObject;
         magmaPlatformRightPrefab = Resources.Load("prefabs/magma_platform_prefab_right") as GameObject;
 
+        // Load items
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         
@@ -200,8 +205,6 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
 
-        // Create a new empty gmaeobject to hold the spawned platforms
-        // spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
         // Give the platform array a length
         platformsArray = new GameObject[maxNumberPlatforms];
         // Spawn a group of platforms
@@ -212,18 +215,10 @@ public class BasicProceduralGeneration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log(player.transform.position.x);
-        // Debug.Log(player.transform.position.y);
-        // Debug.Log(platformsArray[10]);
 
         // If player is below the lowest platform spawned in the previous group
         if (player.transform.position.y <= checkpointSectionSpawnLocation.y) {
-            // Debug.Log("Destroying all platforms");
-            // Destroy platforms from prevoius group
-            // for (int i = 0; i < maxNumberPlatforms; i++) {
-            //     Destroy(platformsArray[i]);
-            // }
-            Destroy(spawnedPlatformGroupContainer);
+            Destroy(spawnedPlatformGroupContainer); // destory platforms to free memory for next platform group
             // Spawn a new group of platforms
            spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
         }
