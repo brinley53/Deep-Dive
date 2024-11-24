@@ -19,8 +19,8 @@ public class BasicProceduralGeneration : MonoBehaviour
     /* Platforms */
     GameObject platformPrefab; // the prefab object for a basic platform
     GameObject platformPrefab2;
-    GameObject harpoonItem
-    GameObject heartItem
+    GameObject harpoonItem;
+    GameObject heartItem;
     GameObject[] basicPlatformsArray;
 
 
@@ -58,25 +58,53 @@ public class BasicProceduralGeneration : MonoBehaviour
         return basicPlatformsArray[Random.Range(0, basicPlatformsArray.Length)];
     }
 
-    void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
-        // Create a new vector 3d to hold location for platform locations
-        Vector3 spawnPos = startingPos;
-        // Create the specifed number of platforms
-        for (int i = 0; i < numberPlatformsPerGroup; i++) {
-            spawnPos = getNextPlatformPos(spawnPos);
-            platformTypeToInstantiate = getNextPlatformType(spawnPos);
+  void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
+    // Create a new vector 3d to hold location for platform locations
+    Vector3 spawnPos = startingPos;
+    // Create the specified number of platforms
+    for (int i = 0; i < numberPlatformsPerGroup; i++) {
+        spawnPos = getNextPlatformPos(spawnPos);
+        platformTypeToInstantiate = getNextPlatformType(spawnPos);
 
-            instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
-            instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
-            platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
-        }
-        lowestPlatformPos = platformsArray[numberPlatformsPerGroup-1].transform.position;
+        // Create a new platform at the specified location
+        instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); 
+        instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // Assign parent for cleanliness
+        platformsArray[i] = instantiatedPlatform; // Add the platform to the array
 
-        checkpointSectionSpawnLocation = new Vector3(0, lowestPlatformPos.y-distanceBetweenFinalPlatformAndCheckpointSection);
-        // Instantiate a checkpoint section after the platform group
-        Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
+        // Chance-based item spawning
+        spawnItemOnPlatform(instantiatedPlatform.transform.position);
+    }
+    lowestPlatformPos = platformsArray[numberPlatformsPerGroup - 1].transform.position;
+
+    checkpointSectionSpawnLocation = new Vector3(0, lowestPlatformPos.y - distanceBetweenFinalPlatformAndCheckpointSection);
+    // Instantiate a checkpoint section after the platform group
+    Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
+}
+
+/// <summary>
+/// Spawns an item (heart or harpoon) on the given platform position with a chance.
+/// </summary>
+/// <param name="platformPos">Position of the platform</param>
+void spawnItemOnPlatform(Vector3 platformPos) {
+    // Random chance for item generation (adjust probabilities as needed)
+    float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
+    GameObject itemToSpawn = null;
+
+    if (spawnChance <= 0.5f) { // 10% chance to spawn a harpoon item
+        itemToSpawn = harpoonItem;
+    } else if (spawnChance > 0.5f && spawnChance <= 0.2f) { // Additional 10% chance for a heart item
+        itemToSpawn = heartItem;
+        
     }
 
+    // If an item is chosen, spawn it slightly above the platform
+    if (itemToSpawn != null) {
+        Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
+        Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
+        Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos);
+}
+
+}
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -86,12 +114,15 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the platform prefab and get each image for each item
         platformPrefab = Resources.Load("prefabs/Platform") as GameObject; 
         platformPrefab2 = Resources.Load("prefabs/Platform2") as GameObject;
-        harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;S
+        harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         basicPlatformsArray = new GameObject[] {
             platformPrefab,
             platformPrefab2
         };
+        Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
+        Debug.Log("Heart Item Loaded: " + (heartItem != null));
+
 
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
