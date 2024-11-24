@@ -3,7 +3,7 @@ PlayerMovement.cs
 Description: File that works with the player's movement and jumping and player speed and jump force.
 Creation date: 11/6/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
-Other sources of code: ChatGPT, Unity Documentation, Unity Forums
+Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Muddy Wolf (Youtube)
 **/
 using System;
 using System.Threading;
@@ -42,6 +42,13 @@ public class PlayerMovement : MonoBehaviour
     public Text attributeText; // Reference to the text displaying attributes
 
     private SpriteRenderer spriteRenderer; // Reference to the player's SpriteRenderer component
+
+    // Gun variables -- Muddy Wolf
+    [SerializeField] private GameObject bullet; // Harpoon objects
+    [SerializeField] private Transform firingPoint; //The point where the harpoon shoots from
+    private float fireRate = 0.4f; //Fire rate of harpoon gun (larger number is slower)
+
+    private float fireTimer; //Timer to make the gun wait before being able to shoot again
 
     void Start() // Called once when the script is first enabled
     {
@@ -125,6 +132,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         UpdateColorBasedOnHealth();
+
+        if (Input.GetKey(KeyCode.F) && fireTimer <= 0f) {
+            animator.SetBool("Shoot", true);
+            Shoot();
+            fireTimer = fireRate;
+        } else {
+            fireTimer -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyUp(KeyCode.F)) {
+            animator.SetBool("Shoot", false);
+        }
     }
 
     void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
@@ -135,6 +154,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed); // Clamp the fall speed to the maximum
         }
+    }
+
+    private void Shoot() {
+        Instantiate(bullet, firingPoint.position, firingPoint.rotation);
     }
 
     void OnDrawGizmos() // Called in the editor to draw debug visuals

@@ -8,6 +8,7 @@ TagManager:
   - GameManager
   - HeartItem
   - HarpoonItem
+  - Bullet
   layers:
   - Default
   - TransparentFX
