@@ -17,9 +17,17 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject player; // the player object
 
     /* Platforms */
-    GameObject platformPrefab; // the prefab object for a basic platform
-    GameObject platformPrefab2;
-    GameObject[] basicPlatformsArray;
+    // GameObject platformPrefab; // the prefab object for a basic platform
+    // GameObject platformPrefab2;
+    // GameObject[] basicPlatformsArray;
+    GameObject normalPlatformLeftPrefab;
+    GameObject normalPlatformMiddlePrefab;
+    GameObject normalPlatformRightPrefab;
+    string[] platformTypesArray = {
+        "normal",
+        "spike",
+        "magma"
+    };
 
 
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
@@ -32,9 +40,12 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject[] platformsArray;
     Vector3 lowestPlatformPos;
     Vector3 checkpointSectionSpawnLocation;
-    GameObject spawnedPlatformsContainer; // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
+    // GameObject spawnedPlatformsContainer; // Create an empty gameobject to store the instantiated platforms so they can be refereneced after creation
     GameObject instantiatedPlatform; 
+    GameObject platformSection;
     GameObject platformTypeToInstantiate; // variable to hold the type of the next platofrm to spawn
+
+    int maxPlatformSize = 10;
 
     private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
     private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
@@ -51,55 +62,102 @@ public class BasicProceduralGeneration : MonoBehaviour
         return new Vector3(nextXPos,nextYPos);
     }
 
-    /// <summary> Function to get the type of the next platform (eg regular, spikes, etc) </summary>
-    GameObject getNextPlatformType(Vector3 platformPos) {
-        return basicPlatformsArray[Random.Range(0, basicPlatformsArray.Length)];
+    // /// <summary> Function to get the type of the next platform (eg regular, spikes, etc) </summary>
+    // GameObject getNextPlatformType() {
+    //     string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
+    //     int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
+
+    //     return createPlatform(platformTypeToSpawn, platformLengthToSpawn);
+    // }
+
+    // Function to piece together the left/middle/right portions of a platform to form a whole
+    GameObject createPlatform(Vector3 platformSpawnPos) {
+
+
+        // Get the type of platform to spawn (normal, spike, magma)
+        string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
+        // Get the length of the platform
+        int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
+        // Create array to store the sections
+        GameObject[] platformSections;
+
+        // Create container object for the individual platform
+        GameObject platformContainer = new GameObject("platformContainer"); 
+        if (platformLengthToSpawn == 1) {
+            if (platformTypeToSpawn == "normal") {
+                platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+            }
+            else if (platformTypeToSpawn == "spike") {
+                platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+            }
+            else if (platformTypeToSpawn == "magma") {
+                platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+            }
+            else {
+                Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
+            }
+
+            platformSection.transform.parent = platformContainer.transform;
+        }
+        else {
+            Vector3 nextPlatformSegmentLoc = platformSpawnPos;
+            for (int i=0; i < platformLengthToSpawn; i++) {
+                platformSection = Instantiate(normalPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+                nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y);
+                platformSection.transform.parent = platformContainer.transform;
+            }
+        }
+        return platformContainer;
     }
 
-    void spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
+    GameObject spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
         // Create a new vector 3d to hold location for platform locations
         Vector3 spawnPos = startingPos;
+        // Create container for the platform group
+        GameObject spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
-            platformTypeToInstantiate = getNextPlatformType(spawnPos);
+            // platformTypeToInstantiate = getNextPlatformType(spawnPos);
+            // instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
+            GameObject platformsContainer = createPlatform(spawnPos);
 
-            instantiatedPlatform = Instantiate(platformTypeToInstantiate, spawnPos, Quaternion.identity); // create a new platform at the specified location
-            instantiatedPlatform.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
-            platformsArray[i] = instantiatedPlatform; // add the platform to the list keeping track of the platforms
+            platformsContainer.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
+            platformsArray[i] = platformsContainer; // add the platform to the list keeping track of the platforms
         }
-        lowestPlatformPos = platformsArray[numberPlatformsPerGroup-1].transform.position;
+        lowestPlatformPos = spawnPos;
+        
 
         checkpointSectionSpawnLocation = new Vector3(0, lowestPlatformPos.y-distanceBetweenFinalPlatformAndCheckpointSection);
         // Instantiate a checkpoint section after the platform group
         Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
+
+        return spawnedPlatformsContainer;
     }
 
+
+    GameObject spawnedPlatformGroupContainer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the platform prefab
-        platformPrefab = Resources.Load("prefabs/Platform") as GameObject;
-        platformPrefab2 = Resources.Load("prefabs/Platform2") as GameObject;
-        basicPlatformsArray = new GameObject[] {
-            platformPrefab,
-            platformPrefab2
-        };
+        // Get the platform prefabs
+        normalPlatformLeftPrefab = Resources.Load("prefabs/normal_platform_prefab_left") as GameObject;
+        normalPlatformMiddlePrefab = Resources.Load("prefabs/normal_platform_prefab_mid") as GameObject;
+        normalPlatformRightPrefab = Resources.Load("prefabs/normal_platform_prefab_right") as GameObject;
+        
 
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;
-        // Create a new checkpoiont section at the start
-        //Instantiate(checkpointSectionPrefab, new Vector3(0,0), Quaternion.identity);
 
         // Create a new empty gmaeobject to hold the spawned platforms
-        spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
+        // spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
         // Give the platform array a length
         platformsArray = new GameObject[maxNumberPlatforms];
         // Spawn a group of platforms
-        spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-distanceBetweenCheckpointSectionAndPlatformStart));
+        spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-distanceBetweenCheckpointSectionAndPlatformStart));
         
     }
 
@@ -114,11 +172,12 @@ public class BasicProceduralGeneration : MonoBehaviour
         if (player.transform.position.y <= checkpointSectionSpawnLocation.y) {
             // Debug.Log("Destroying all platforms");
             // Destroy platforms from prevoius group
-            for (int i = 0; i < maxNumberPlatforms; i++) {
-                Destroy(platformsArray[i]);
-            }
+            // for (int i = 0; i < maxNumberPlatforms; i++) {
+            //     Destroy(platformsArray[i]);
+            // }
+            Destroy(spawnedPlatformGroupContainer);
             // Spawn a new group of platforms
-            spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
+           spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
         }
     }
 }

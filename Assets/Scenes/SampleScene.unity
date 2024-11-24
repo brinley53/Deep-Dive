@@ -331,7 +331,8 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckWidth: 1
   groundCheckHeight: 0.2
-  animator: {fileID: 0}
+  health: 100
+  damage: 20
 --- !u!50 &371141549
 Rigidbody2D:
   serializedVersion: 5
@@ -919,6 +920,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpForce: 7
+  strength: 10
+  health: 100
+  lives: 3
   groundCheck: {fileID: 1115360711}
   groundCheckRadius: 1
   groundLayer:
@@ -926,7 +930,11 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckWidth: 1
   groundCheckHeight: 0.2
+  iFrameDuration: 2
   animator: {fileID: 981345474}
+  hearts: []
+  healthBar: {fileID: 0}
+  attributeText: {fileID: 0}
 --- !u!61 &981345472
 BoxCollider2D:
   m_ObjectHideFlags: 0
