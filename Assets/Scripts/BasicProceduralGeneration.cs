@@ -31,8 +31,10 @@ public class BasicProceduralGeneration : MonoBehaviour
         "magma"
     };
 
+    GameObject spawnedPlatformGroupContainer;
 
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
+
 
     public float platformMinYDistance = 1f;
     public float platformMaxYDistance = 10f;
@@ -47,7 +49,7 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject platformSection;
     GameObject platformTypeToInstantiate; // variable to hold the type of the next platofrm to spawn
 
-    int maxPlatformSize = 10;
+    public int maxPlatformSize = 20;
 
     private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
     private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
@@ -56,21 +58,13 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Set next x position to a random x position on the screen that does not overlap with the previous platform's x position
         int nextXPos;
         while (true) {
-            nextXPos = Random.Range(-10,10);
+            nextXPos = Random.Range(-20,20);
             if (nextXPos != prevPlatformPos.x) { break; }
         }
         // Ensure next platform spawns below the previous platform by a random distance in the given range
         int nextYPos = Random.Range((int)(prevPlatformPos.y-platformMinYDistance), (int)(prevPlatformPos.y-platformMaxYDistance));
         return new Vector3(nextXPos,nextYPos);
     }
-
-    // /// <summary> Function to get the type of the next platform (eg regular, spikes, etc) </summary>
-    // GameObject getNextPlatformType() {
-    //     string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
-    //     int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
-
-    //     return createPlatform(platformTypeToSpawn, platformLengthToSpawn);
-    // }
 
     // Function to piece together the left/middle/right portions of a platform to form a whole
     GameObject createPlatform(Vector3 platformSpawnPos) {
@@ -142,7 +136,6 @@ public class BasicProceduralGeneration : MonoBehaviour
     }
 
 
-    GameObject spawnedPlatformGroupContainer;
     void spawnItemOnPlatform(Vector3 platformPos) {
         // Random chance for item generation (adjust probabilities as needed)
         float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
@@ -158,7 +151,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         if (itemToSpawn != null) {
             Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
             Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
-            Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos); //logs position of item spaw in case prefab is not loaded correctly
+            // Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos); //logs position of item spaw in case prefab is not loaded correctly
     }
 
 }
@@ -187,7 +180,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Give the platform array a length
         platformsArray = new GameObject[maxNumberPlatforms];
         // Spawn a group of platforms
-        spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-distanceBetweenCheckpointSectionAndPlatformStart));
+        spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,-distanceBetweenCheckpointSectionAndPlatformStart-10));
         
     }
 

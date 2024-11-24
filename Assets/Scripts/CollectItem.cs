@@ -36,20 +36,20 @@ public class ItemCollector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collided with: " + other.gameObject.name);
+        // Debug.Log("Collided with: " + other.gameObject.name);
         //Check if the collided object is a harpoon item
         if (other.gameObject.CompareTag("HarpoonItem"))
         {
             playerInventory.AddItem("Harpoon"); //Calls the inventory Script to update the UI correctly
             Destroy(other.gameObject); //Destroy the collected item
-            Debug.Log("Harpoon collected!"); //for debuging purposes log
+            // Debug.Log("Harpoon collected!"); //for debuging purposes log
         }
         // heck if the collided object is a heart item
         else if (other.gameObject.CompareTag("HeartItem"))
         {
             playerInventory.AddItem("Heart"); //Calls the inventory Script to update the UI correctly
             Destroy(other.gameObject);  //Destroy the collected item
-            Debug.Log("Heart collected!"); //for debuging purposes log
+            // Debug.Log("Heart collected!"); //for debuging purposes log
         }
     }
 }
