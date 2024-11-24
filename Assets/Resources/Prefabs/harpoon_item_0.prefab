@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7129620311812697792}
   - component: {fileID: 798207807754255666}
-  - component: {fileID: -7137997326179112006}
   - component: {fileID: 6430133302468192279}
   m_Layer: 0
   m_Name: harpoon_item_0
-  m_TagString: Untagged
+  m_TagString: HarpoonItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,18 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7137997326179112006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1253664446832127352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ead45a19d662c944292c1774d7bf4d19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &6430133302468192279
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -136,4 +123,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.23
+  m_Radius: 0.5

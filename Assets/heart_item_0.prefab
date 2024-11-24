@@ -101,6 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead45a19d662c944292c1774d7bf4d19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  harpoonItem: {fileID: 0}
+  heartItem: {fileID: 0}
+  playerInventory: {fileID: 0}
 --- !u!58 &2791024935927691558
 CircleCollider2D:
   m_ObjectHideFlags: 0

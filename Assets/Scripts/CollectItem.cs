@@ -8,15 +8,45 @@
     Creation Date: 11/9/24
 */
 using UnityEngine;
-public class DisappearOnTouch : MonoBehaviour
+public class ItemCollector : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public GameObject harpoonItem;  // Declare harpoon item
+    public GameObject heartItem;    // Declare heart item
+    public PlayerInventory playerInventory;  // Reference to PlayerInventory
+
+    void Start()
     {
-        // Check if the object colliding is tagged as "Player"
-        if (collision.CompareTag("Player"))
+        // Load the prefabs from the Resources folder
+        harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
+        heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
+
+        // Check if they were loaded correctly
+        if (harpoonItem == null)
         {
-            gameObject.SetActive(false); // Set the game object to inactive, making it disappear
-            // Destroy(gameObject);
+            Debug.LogError("HarpoonItem prefab not found!");
+        }
+        if (heartItem == null)
+        {
+            Debug.LogError("HeartItem prefab not found!");
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Collided with: " + other.gameObject.name);
+        // Check if the collided object is a harpoon item
+        if (other.gameObject.CompareTag("HarpoonItem"))
+        {
+            //playerInventory.AddItem("Harpoon");
+            Destroy(other.gameObject);
+            Debug.Log("Harpoon collected!");
+        }
+        // Check if the collided object is a heart item
+        else if (other.gameObject.CompareTag("HeartItem"))
+        {
+            //playerInventory.AddItem("Heart");
+            Destroy(other.gameObject);  // Destroy the collected item
+            Debug.Log("Heart collected!");
         }
     }
 }
