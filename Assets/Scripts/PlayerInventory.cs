@@ -1,42 +1,57 @@
-using UnityEngine;
-using UnityEngine.UI;  // Don't forget to include this for Text
-using System.Collections.Generic;  // Required for Dictionary
+/*
+    Script name: PlayerInventory
+    Description: Updates Inventory UI with items the player has collected
+    Inputs: Whatever Items the Player colliedes with. This script needs a text element for each item there is.
+    Outputs: UI element that tracks items player has collected
+    Sources of code: ChatGPT
+    Authors: Kyle Moore
+    Creation Date: 11/24/24
+*/
 
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro; 
 
 public class PlayerInventory : MonoBehaviour
 {
-    public Text inventoryText; // Reference to the UI Text
-    private Dictionary<string, int> inventory = new Dictionary<string, int>();
+    public int harpoonCount = 0;    //Counter for harpoons
+    public int heartCount = 0;  //Counter for hearts
 
-    // Function to update the inventory UI
-    void UpdateInventoryUI()
+    //Reference to UI Text elements 
+     public TMP_Text harpoonCountText;  
+     public TMP_Text heartCountText;
+
+    void Start()
     {
-        string inventoryDisplay = "Inventory:\n";
-        foreach (var item in inventory)
-        {
-            inventoryDisplay += item.Key + ": " + item.Value + "\n";
-        }
-        inventoryText.text = inventoryDisplay;
+        //Initialize the UI with the current item counts
+        UpdateUI();
     }
 
-    // Function to add items to the inventory
-    public void AddItem(string itemName)
+    //Method to add items to the inventory
+    public void AddItem(string itemType)
     {
-        if (inventory.ContainsKey(itemName))
+        if (itemType == "Harpoon")
         {
-            inventory[itemName]++;
+            harpoonCount++;  //Increment the harpoon counter
+            Debug.Log("Harpoon count: " + harpoonCount);
         }
-        else
+        else if (itemType == "Heart")
         {
-            inventory[itemName] = 1;
+            heartCount++;  //Increment the heart counter
+            Debug.Log("Heart count: " + heartCount);
         }
-
-        UpdateInventoryUI();  // Update UI after adding an item
+        UpdateUI();  //Update the UI with new counts
     }
 
-    // Call this when an item is collected
-    void OnItemCollected(string itemName)
+    //Method to update the UI with the current counts
+    private void UpdateUI()
     {
-        AddItem(itemName);
+        //Update the UI elements with the current counts
+        if (harpoonCountText != null)
+            harpoonCountText.text = "Harpoons: " + harpoonCount;
+
+        if (heartCountText != null)
+            heartCountText.text = "Hearts: " + heartCount;
     }
 }
+

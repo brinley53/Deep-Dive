@@ -1,7 +1,8 @@
 /*
     Script name: CollectItem
     Description: Item dissapears when player touches it
-    Inputs: Object just needs collision detection and check event trigger box and each item needs this script attached
+    Inputs: Item Object just needs collision detection and check event trigger box and each item needs this script attached
+    Also each item prefab needs the correct tag for the player to recognize it
     Outputs:
     Sources of code: None
     Authors: Kyle Moore
@@ -10,17 +11,19 @@
 using UnityEngine;
 public class ItemCollector : MonoBehaviour
 {
-    public GameObject harpoonItem;  // Declare harpoon item
-    public GameObject heartItem;    // Declare heart item
-    public PlayerInventory playerInventory;  // Reference to PlayerInventory
+
+    public GameObject harpoonItem;  //Declare harpoon item
+    public GameObject heartItem;    //Declare heart item
+    public PlayerInventory playerInventory;  //Reference to PlayerInventory
 
     void Start()
     {
-        // Load the prefabs from the Resources folder
+        //Load the prefabs from the Resources folder
+        playerInventory = GetComponent<PlayerInventory>();
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
 
-        // Check if they were loaded correctly
+        //Check if they were loaded correctly
         if (harpoonItem == null)
         {
             Debug.LogError("HarpoonItem prefab not found!");
@@ -34,19 +37,19 @@ public class ItemCollector : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Collided with: " + other.gameObject.name);
-        // Check if the collided object is a harpoon item
+        //Check if the collided object is a harpoon item
         if (other.gameObject.CompareTag("HarpoonItem"))
         {
-            //playerInventory.AddItem("Harpoon");
-            Destroy(other.gameObject);
-            Debug.Log("Harpoon collected!");
+            playerInventory.AddItem("Harpoon"); //Calls the inventory Script to update the UI correctly
+            Destroy(other.gameObject); //Destroy the collected item
+            Debug.Log("Harpoon collected!"); //for debuging purposes log
         }
-        // Check if the collided object is a heart item
+        // heck if the collided object is a heart item
         else if (other.gameObject.CompareTag("HeartItem"))
         {
-            //playerInventory.AddItem("Heart");
-            Destroy(other.gameObject);  // Destroy the collected item
-            Debug.Log("Heart collected!");
+            playerInventory.AddItem("Heart"); //Calls the inventory Script to update the UI correctly
+            Destroy(other.gameObject);  //Destroy the collected item
+            Debug.Log("Heart collected!"); //for debuging purposes log
         }
     }
 }
