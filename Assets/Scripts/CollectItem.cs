@@ -1,7 +1,7 @@
 /*
     Script name: CollectItem
     Description: Item dissapears when player touches it
-    Inputs: Object just needs collision detection and check event trigger box
+    Inputs: Object just needs collision detection and check event trigger box and each item needs this script attached
     Outputs:
     Sources of code: None
     Authors: Kyle Moore

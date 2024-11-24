@@ -19,6 +19,8 @@ public class BasicProceduralGeneration : MonoBehaviour
     /* Platforms */
     GameObject platformPrefab; // the prefab object for a basic platform
     GameObject platformPrefab2;
+    GameObject harpoonItem
+    GameObject heartItem
     GameObject[] basicPlatformsArray;
 
 
@@ -81,9 +83,11 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the platform prefab
-        platformPrefab = Resources.Load("prefabs/Platform") as GameObject;
+        // Get the platform prefab and get each image for each item
+        platformPrefab = Resources.Load("prefabs/Platform") as GameObject; 
         platformPrefab2 = Resources.Load("prefabs/Platform2") as GameObject;
+        harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;S
+        heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         basicPlatformsArray = new GameObject[] {
             platformPrefab,
             platformPrefab2
