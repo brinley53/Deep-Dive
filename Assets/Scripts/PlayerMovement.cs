@@ -43,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
 
     private SpriteRenderer spriteRenderer; // Reference to the player's SpriteRenderer component
 
+    [HideInInspector] public Transform previousDamageSource;
+
     // Gun variables -- Muddy Wolf
     [SerializeField] private GameObject bullet; // Harpoon objects
     [SerializeField] private Transform firingPoint; //The point where the harpoon shoots from
@@ -68,6 +70,12 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer) ||
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer) ||
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer);
+
+        // If not grounded, set the previous damage source to null so that the player can be damaged by the same platform again (because each platform is actually made of smaller platform segments, each with their own collider logic)
+        if (!isGrounded) {
+            previousDamageSource = null;
+        }
+
         if (isGrounded != wasGrounded) // Log when the grounded state changes
         {
             // Debug.Log($"Grounded state changed to: {isGrounded}");
@@ -172,9 +180,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool ignoreIFrames=false)
     {
-        if ((timeOfLastHit + iFrameDuration) <= Time.fixedTime ){
+        if (((timeOfLastHit + iFrameDuration) <= Time.fixedTime) || (ignoreIFrames)){
 
             timeOfLastHit = Time.fixedTime;
             Debug.Log("Player hit");
@@ -183,7 +191,6 @@ public class PlayerMovement : MonoBehaviour
             if (health <= 0)
             {
                 lives--;
-                health = 100; // Reset health to full upon losing a life
                 if (lives > 0)
                 {
                     StartCoroutine(RespawnPlayer());
@@ -251,6 +258,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Reset rotation
         transform.Rotate(0, 0, -90);
+        health = 100; // Reset health to full upon losing a life
+
+
 
         spriteRenderer.color = Color.white;
         animator.enabled = true; // Re-enable animations

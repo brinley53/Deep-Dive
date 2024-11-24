@@ -16,15 +16,21 @@ public class BasicProceduralGeneration : MonoBehaviour
 {
     GameObject player; // the player object
 
-    /* Platforms */
-    // GameObject platformPrefab; // the prefab object for a basic platform
-    // GameObject platformPrefab2;
     GameObject harpoonItem;
     GameObject heartItem;
-    // GameObject[] basicPlatformsArray;
+    
+    // Regular platforms
     GameObject normalPlatformLeftPrefab;
     GameObject normalPlatformMiddlePrefab;
     GameObject normalPlatformRightPrefab;
+    // Spike
+    GameObject spikePlatformLeftPrefab;
+    GameObject spikePlatformMiddlePrefab;
+    GameObject spikePlatformRightPrefab;
+    // Magma 
+    GameObject magmaPlatformLeftPrefab;
+    GameObject magmaPlatformMiddlePrefab;
+    GameObject magmaPlatformRightPrefab;
     string[] platformTypesArray = {
         "normal",
         "spike",
@@ -69,7 +75,6 @@ public class BasicProceduralGeneration : MonoBehaviour
     // Function to piece together the left/middle/right portions of a platform to form a whole
     GameObject createPlatform(Vector3 platformSpawnPos) {
 
-
         // Get the type of platform to spawn (normal, spike, magma)
         string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
         // Get the length of the platform
@@ -84,10 +89,10 @@ public class BasicProceduralGeneration : MonoBehaviour
                 platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
             else if (platformTypeToSpawn == "spike") {
-                platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+                platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
             else if (platformTypeToSpawn == "magma") {
-                platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+                platformSection = Instantiate(magmaPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
             }
             else {
                 Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
@@ -98,7 +103,18 @@ public class BasicProceduralGeneration : MonoBehaviour
         else {
             Vector3 nextPlatformSegmentLoc = platformSpawnPos;
             for (int i=0; i < platformLengthToSpawn; i++) {
-                platformSection = Instantiate(normalPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+                if (platformTypeToSpawn == "normal") {
+                    platformSection = Instantiate(normalPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+                }
+                else if (platformTypeToSpawn == "spike") {
+                    platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+                }
+                else if (platformTypeToSpawn == "magma") {
+                    platformSection = Instantiate(magmaPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+                }
+                else {
+                    Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
+                }
                 nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y);
                 platformSection.transform.parent = platformContainer.transform;
             }
@@ -161,15 +177,24 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the platform prefabs and get each image for each item
+        // Get the platform prefabs
         normalPlatformLeftPrefab = Resources.Load("prefabs/normal_platform_prefab_left") as GameObject; 
         normalPlatformMiddlePrefab = Resources.Load("prefabs/normal_platform_prefab_mid") as GameObject;
         normalPlatformRightPrefab = Resources.Load("prefabs/normal_platform_prefab_right") as GameObject;
+        // Get the spike platform prefabs
+        spikePlatformLeftPrefab = Resources.Load("prefabs/spike_platform_prefab_left") as GameObject; 
+        spikePlatformMiddlePrefab = Resources.Load("prefabs/spike_platform_prefab_mid") as GameObject;
+        spikePlatformRightPrefab = Resources.Load("prefabs/spike_platform_prefab_right") as GameObject;
+        // Get the magma platform prefabs
+        magmaPlatformLeftPrefab = Resources.Load("prefabs/magma_platform_prefab_left") as GameObject; 
+        magmaPlatformMiddlePrefab = Resources.Load("prefabs/magma_platform_prefab_mid") as GameObject;
+        magmaPlatformRightPrefab = Resources.Load("prefabs/magma_platform_prefab_right") as GameObject;
+
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         
-        Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
-        Debug.Log("Heart Item Loaded: " + (heartItem != null));
+        // Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
+        // Debug.Log("Heart Item Loaded: " + (heartItem != null));
 
 
         // Get the checkpoint section prefab

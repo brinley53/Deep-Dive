@@ -376,7 +376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &371141546
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -467,8 +467,6 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckWidth: 1
   groundCheckHeight: 0.2
-  health: 100
-  damage: 20
   health: 100
   damage: 20
 --- !u!50 &371141549
@@ -1241,6 +1239,11 @@ MonoBehaviour:
   groundCheckHeight: 0.2
   iFrameDuration: 2
   animator: {fileID: 981345474}
+  hearts: []
+  healthBar: {fileID: 0}
+  attributeText: {fileID: 0}
+  bullet: {fileID: 0}
+  firingPoint: {fileID: 0}
 --- !u!61 &981345472
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1887,6 +1890,7 @@ MonoBehaviour:
   platformMinYDistance: 1
   platformMaxYDistance: 10
   maxNumberPlatforms: 15
+  maxPlatformSize: 20
 --- !u!4 &2031841510
 Transform:
   m_ObjectHideFlags: 0
