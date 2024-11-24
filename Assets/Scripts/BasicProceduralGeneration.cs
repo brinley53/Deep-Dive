@@ -19,6 +19,8 @@ public class BasicProceduralGeneration : MonoBehaviour
     /* Platforms */
     // GameObject platformPrefab; // the prefab object for a basic platform
     // GameObject platformPrefab2;
+    GameObject harpoonItem;
+    GameObject heartItem;
     // GameObject[] basicPlatformsArray;
     GameObject normalPlatformLeftPrefab;
     GameObject normalPlatformMiddlePrefab;
@@ -124,6 +126,10 @@ public class BasicProceduralGeneration : MonoBehaviour
 
             platformsContainer.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
             platformsArray[i] = platformsContainer; // add the platform to the list keeping track of the platforms
+
+
+            // Chance-based item spawning
+            spawnItemOnPlatform(spawnPos);
         }
         lowestPlatformPos = spawnPos;
         
@@ -137,17 +143,41 @@ public class BasicProceduralGeneration : MonoBehaviour
 
 
     GameObject spawnedPlatformGroupContainer;
+    void spawnItemOnPlatform(Vector3 platformPos) {
+        // Random chance for item generation (adjust probabilities as needed)
+        float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
+        GameObject itemToSpawn = null;
+
+        if (spawnChance <= 0.5f) { //adjust chance for harpoon item to spwan
+            itemToSpawn = harpoonItem;
+        } else if (spawnChance > 0.5f) { // adjust chance for heart item to spawn
+            itemToSpawn = heartItem;
+            
+        }
+        // If an item is chosen, spawn it slightly above the platform
+        if (itemToSpawn != null) {
+            Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
+            Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
+            Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos); //logs position of item spaw in case prefab is not loaded correctly
+    }
+
+}
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the platform prefabs
-        normalPlatformLeftPrefab = Resources.Load("prefabs/normal_platform_prefab_left") as GameObject;
+        // Get the platform prefabs and get each image for each item
+        normalPlatformLeftPrefab = Resources.Load("prefabs/normal_platform_prefab_left") as GameObject; 
         normalPlatformMiddlePrefab = Resources.Load("prefabs/normal_platform_prefab_mid") as GameObject;
         normalPlatformRightPrefab = Resources.Load("prefabs/normal_platform_prefab_right") as GameObject;
+        harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
+        heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         
+        Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
+        Debug.Log("Heart Item Loaded: " + (heartItem != null));
+
 
         // Get the checkpoint section prefab
         checkpointSectionPrefab = Resources.Load("prefabs/CheckpointSection") as GameObject;

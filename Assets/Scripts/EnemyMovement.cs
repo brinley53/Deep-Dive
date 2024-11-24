@@ -38,6 +38,7 @@ public class EnemyMovement : MonoBehaviour
         movement.x = facingRight ? 1 : -1;
 
         isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer);
+
     }
 
     void FixedUpdate()
@@ -59,6 +60,9 @@ public class EnemyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(20);
+        } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
+            TakeDamage(damage); //Make the enemy lose health
+            Destroy(collision.gameObject); // Destroy the bullet
         }
     }
 
@@ -113,12 +117,4 @@ public class EnemyMovement : MonoBehaviour
         facingRight = !facingRight; // Toggle direction
     }
 
-    private IEnumerator TestHealthReduction()
-    {
-        while (health > 0)
-        {
-            yield return new WaitForSeconds(2f); // Wait for 2 seconds
-            TakeDamage(damage); // Reduce health by 20
-        }
-    }
 }
