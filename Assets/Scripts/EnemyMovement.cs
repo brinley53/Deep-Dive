@@ -1,3 +1,11 @@
+/*
+EnemyMovement.cs
+Description: File that works with the basic enemy's movement
+Creation date: 11/17/2024
+Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
+Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
+*/
+
 using System.Collections;
 using UnityEngine;
 
@@ -24,20 +32,22 @@ public class EnemyMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
         spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
         collider2D = GetComponent<Collider2D>(); // Reference Collider2D
-
-        // Start the test coroutine to reduce health every 2 seconds
-        // StartCoroutine(TestHealthReduction());
     }
 
     void Update()
     {
-        if (!isGrounded)
+        if (!isGrounded && rb.linearVelocity.y == 0) // When the enemy reaches the edge of a platform (it senses there is no more ground in front of it)
         {
-            Flip();
+            Flip(); // It flips the sprite
         }
-        movement.x = facingRight ? 1 : -1;
 
-        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer);
+        if (rb.linearVelocity.y != 0) { // If the enemy is falling
+            movement.x = 0; // Make its left/right movement null to stop jitter
+        } else { // If the enemy is on solid ground
+            movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
+        }
+        
+        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer); // Determine if the object is grounded
 
     }
 
@@ -99,7 +109,7 @@ public class EnemyMovement : MonoBehaviour
         float elapsedTime = 0f;
 
         // Rotate and float upwards
-        transform.Rotate(0, 0, 90);
+        transform.Rotate(0, 0, 180);
         while (elapsedTime < floatDuration)
         {
             transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime));
@@ -111,7 +121,7 @@ public class EnemyMovement : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void Flip()
+    private void Flip() // Function to flip the enemy sprite
     {
         transform.Rotate(new Vector3(0, 180, 0)); // Flip 180 degrees
         facingRight = !facingRight; // Toggle direction
