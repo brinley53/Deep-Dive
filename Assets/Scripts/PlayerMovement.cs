@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
         animator.SetFloat("Vertical", movement.y); // Set the animator's y to reference in animator
     
-        // Check if the "Ctrl" key is pressed
+        // Check if the "down" key is pressed
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             animator.SetBool("Jump", true); // Set the jump condition for the animator to true to set off the crouch animation
@@ -141,16 +141,16 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateColorBasedOnHealth();
 
-        if (Input.GetKey(KeyCode.F) && fireTimer <= 0f) {
-            animator.SetBool("Shoot", true);
-            Shoot();
-            fireTimer = fireRate;
+        if (Input.GetKey(KeyCode.F) && fireTimer <= 0f) { // If the user is pressing the F key and the timer to prevent constant shooting is 0
+            animator.SetBool("Shoot", true); // Set the animator attribute "Shoot" to true to set off the specified animation
+            Shoot(); // Shoot the bullet
+            fireTimer = fireRate; // Reset the timer
         } else {
-            fireTimer -= Time.deltaTime;
+            fireTimer -= Time.deltaTime; // Otherwise decrease the timer
         }
 
-        if (Input.GetKeyUp(KeyCode.F)) {
-            animator.SetBool("Shoot", false);
+        if (Input.GetKeyUp(KeyCode.F)) { // If the F key is released
+            animator.SetBool("Shoot", false); // Set the animator attribute shoot to false to transition to the specified animation
         }
     }
 
@@ -164,8 +164,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Shoot() {
-        Instantiate(bullet, firingPoint.position, firingPoint.rotation);
+    private void Shoot() { // Function to shoot the bullet
+        Instantiate(bullet, firingPoint.position, firingPoint.rotation); // instantiates the harpoon projectile at the firepoint
     }
 
     void OnDrawGizmos() // Called in the editor to draw debug visuals
