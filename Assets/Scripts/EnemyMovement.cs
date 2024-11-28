@@ -24,14 +24,14 @@ public class EnemyMovement : MonoBehaviour
     private bool isGrounded; // Is the enemy on the ground
     private bool facingRight = false; // Direction facing
     private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
-    private Collider2D collider2D; // Reference to the enemy's collider
+    private Collider2D cllider; // Reference to the enemy's collider
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
         spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
-        collider2D = GetComponent<Collider2D>(); // Reference Collider2D
+        cllider = GetComponent<Collider2D>(); // Reference Collider2D
     }
 
     void Update()
@@ -101,7 +101,7 @@ public class EnemyMovement : MonoBehaviour
         float floatDuration = 2f; // Float for 2 seconds
         float floatSpeed = 2f; // Speed of floating up
 
-        collider2D.enabled = false; // Disable the collider to prevent interactions
+        cllider.enabled = false; // Disable the collider to prevent interactions
         rb.linearVelocity = Vector2.zero; // Stop movement
         rb.isKinematic = true; // Disable physics interactions
 
