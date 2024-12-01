@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class AdvancedEnemyMovement : MonoBehaviour
 {
-    public float moveSpeed = 2f; // Movement speed of the enemy
+    public float moveSpeed = 1f; // Movement speed of the enemy
     public Transform groundCheck; // Reference to ground check
     public LayerMask groundLayer; // Layers considered as ground
     public float groundCheckWidth = 1f; // Ground check box width
@@ -47,17 +47,27 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     void Update()
     {
-        if (rb.position.x > startX + 10 && facingRight || rb.position.x < startX - 10 && !facingRight) {
+        if (rb.position.x > startX + 10 && facingRight || rb.position.x < startX - 10 && !facingRight && !chasePlayer) {
             Flip();
         }
 
         if (chasePlayer) {
-            if (player.position.x > rb.position.x && !facingRight || player.position.x < rb.position.x && facingRight) {
+            if (player.position.x > rb.position.x + 2 && !facingRight || player.position.x < rb.position.x - 2 && facingRight) {
                 Flip();
             }
-            movement.y = player.position.y > rb.position.y ? 1 : -1;
-            moveSpeed = 2f;
-            if (Math.Abs(rb.position.x-player.position.x) < 3 && Math.Abs(rb.position.y-player.position.y) < 3) {
+            if (!isGrounded) {
+                if (player.position.y > rb.position.y + 1) {
+                    movement.y = 1;
+                } else if (player.position.y < rb.position.y - 1) {
+                    movement.y = -1;
+                } else {
+                    movement.y = 0;
+                }
+                moveSpeed = 3f;
+            } else {
+                moveSpeed = 2f;
+            }
+            if (Math.Abs(rb.position.x-player.position.x) < 4 && Math.Abs(rb.position.y-player.position.y) < 4) {
                 animator.SetBool("Attack", true);
             } else {
                 animator.SetBool("Attack", false);
@@ -69,6 +79,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
         movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
         
+        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer); // Determine if the object is grounded
     }
 
     void FixedUpdate()
@@ -106,7 +117,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
-        } else {
+        } else if (collision.gameObject.CompareTag("Platform")) {
             Flip();
         }
     }

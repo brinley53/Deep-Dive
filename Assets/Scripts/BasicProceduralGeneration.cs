@@ -21,7 +21,9 @@ public class BasicProceduralGeneration : MonoBehaviour
 
     GameObject lionfish; // the basic enemy object
 
-    private int numEnemies = 3; // integer to hold the number of enemies on screen at a time
+    GameObject shark; //the shark enemy object initialization
+
+    private int numEnemies = 5; // integer to hold the number of enemies in a group at a time
     
     // Regular platforms
     GameObject normalPlatformLeftPrefab;
@@ -137,7 +139,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         Vector3 spawnPos = startingPos;
         // Create container for the platform group
         GameObject spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
-        numEnemies = 3; // Reset the number of enemies needed in this group
+        numEnemies = 5; // Reset the number of enemies needed in this group
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
@@ -151,7 +153,7 @@ public class BasicProceduralGeneration : MonoBehaviour
             spawnItemOnPlatform(spawnPos);
 
             int enemySpawnChance = Random.Range(0, numberPlatformsPerGroup); // Randomize enemy spawning so that it doesn't spawn on just the first platforms
-            if (numEnemies > 0 && i > enemySpawnChance) { // If there are still needing to be enemies spawned
+            if (numEnemies > 0 && enemySpawnChance%3 == 0) { // If there are still needing to be enemies spawned
                 numEnemies--; // Decrease the amount of enemies needing to be spawning
                 spawnEnemy(spawnPos); // Spawn an enemy
             }
@@ -190,19 +192,17 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Random chance for enemy generation
         float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
         GameObject enemyToSpawn = null; // Initialize the type of enemy to be spawned variable
+        Vector3 enemySpawnPos = new Vector3(platformPos.x, platformPos.y + 2f, platformPos.z); // Create the position of the enemy . on platform
 
-        // if (spawnChance <= 0.5f) { //adjust chance for harpoon item to spwan
-        //     itemToSpawn = harpoonItem;
-        // } else if (spawnChance > 0.5f) { // adjust chance for heart item to spawn
-        //     itemToSpawn = heartItem;
-            
-        // }
-
-        enemyToSpawn = lionfish; // Set the enemy type to be spawned as a lionfish
+        if (spawnChance <= 0.75f) { //adjust chance for harpoon item to spwan
+            enemyToSpawn = lionfish; // Set the enemy type to be spawned as a lionfish
+        } else if (spawnChance > 0.75f) { // adjust chance for heart item to spawn
+            enemyToSpawn = shark; // Set the enemy type to be spawned as a lionfish
+            enemySpawnPos = new Vector3(Random.Range(-15, 15), platformPos.y + Random.Range(3, 8), platformPos.z); // Create the position of the enemy . random
+        }
 
         // Spawn the enemy slightly above the platform if the object is not null
         if (enemyToSpawn != null) {
-            Vector3 enemySpawnPos = new Vector3(platformPos.x, platformPos.y + 2f, platformPos.z); // Create the position of the enemy 
             Instantiate(enemyToSpawn, enemySpawnPos, Quaternion.identity); // Add the enemy to the game
         }
 
@@ -230,6 +230,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         lionfish = Resources.Load("prefabs/lionfish") as GameObject; // Load the basic enemy prefab
+        shark = Resources.Load("prefabs/Shark") as GameObject; // Load the shark enemy prefab
         
         // Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
         // Debug.Log("Heart Item Loaded: " + (heartItem != null));
