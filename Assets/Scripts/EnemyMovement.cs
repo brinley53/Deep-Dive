@@ -16,8 +16,8 @@ public class EnemyMovement : MonoBehaviour
     public LayerMask groundLayer; // Layers considered as ground
     public float groundCheckWidth = 1f; // Ground check box width
     public float groundCheckHeight = 0.2f; // Ground check box height
-    public int health = 100; // Enemy's health
-    public int damage = 20; // Damage the enemy can inflict
+    public int health = 50; // Enemy's health
+    public int damage = 50; // Damage the enemy can inflict
 
     private Rigidbody2D rb; // Enemy's Rigidbody2D
     private Vector2 movement; // Movement direction
