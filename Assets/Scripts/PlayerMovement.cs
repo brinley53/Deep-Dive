@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float fireTimer; //Timer to make the gun wait before being able to shoot again
 
+    private UIManager uiManager; // Reference to the UIManager
+
     void Start() // Called once when the script is first enabled
     {
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
@@ -60,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the player from rotating
         // Debug.Log("Ground Layer Mask: " + groundLayer.value); // Output the ground layer mask value for debugging purposes
         UpdateUI();
+        uiManager = FindObjectOfType<UIManager>(); // Find the UIManager in the scene
     }
 
     void Update() // Called every frame
@@ -198,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     Debug.Log("Game Over: No lives remaining.");
-                    // Implement game over logic here
+                    uiManager.ShowGameOverScreen(); // Show game over screen
                 }
             }
             UpdateUI();
