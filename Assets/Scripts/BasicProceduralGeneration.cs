@@ -23,6 +23,8 @@ public class BasicProceduralGeneration : MonoBehaviour
 
     GameObject shark; //the shark enemy object initialization
 
+    GameObject kraken; // the kraken enemy object initialization
+
     private int numEnemies = 5; // integer to hold the number of enemies in a group at a time
     
     // Regular platform prefab locations
@@ -191,11 +193,14 @@ public class BasicProceduralGeneration : MonoBehaviour
         GameObject enemyToSpawn = null; // Initialize the type of enemy to be spawned variable
         Vector3 enemySpawnPos = new Vector3(platformPos.x, platformPos.y + 2f, platformPos.z); // Create the position of the enemy . on platform
 
-        if (spawnChance <= 0.75f) { //adjust chance for harpoon item to spwan
+        if (spawnChance <= 0.65f) { //adjust chance for lionfish to spawn
             enemyToSpawn = lionfish; // Set the enemy type to be spawned as a lionfish
-        } else if (spawnChance > 0.75f) { // adjust chance for heart item to spawn
+        } else if (spawnChance > 0.65f && spawnChance <= 0.95f) { // adjust chance for shark to spawn
             enemyToSpawn = shark; // Set the enemy type to be spawned as a lionfish
-            enemySpawnPos = new Vector3(Random.Range(-15, 15), platformPos.y + Random.Range(3, 8), platformPos.z); // Create the position of the enemy . random
+            enemySpawnPos = new Vector3(Random.Range(-15, 15), platformPos.y + Random.Range(1, 8), platformPos.z); // Create the position of the enemy . random
+        } else { //spawn chance for kraken to spawn
+            enemyToSpawn = kraken; // Set the enemy type to be spawned as a lionfish
+            enemySpawnPos = new Vector3(Random.Range(-15, 15), platformPos.y + Random.Range(1, 8), platformPos.z); // Create the position of the enemy . random
         }
 
         // Spawn the enemy slightly above the platform if the object is not null
@@ -220,6 +225,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
         lionfish = Resources.Load("prefabs/lionfish") as GameObject; // Load the basic enemy prefab
         shark = Resources.Load("prefabs/Shark") as GameObject; // Load the shark enemy prefab
+        kraken = Resources.Load("prefabs/Kraken_0") as GameObject; // Load the kraken enemy prefab
         
         // Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
         // Debug.Log("Heart Item Loaded: " + (heartItem != null));
