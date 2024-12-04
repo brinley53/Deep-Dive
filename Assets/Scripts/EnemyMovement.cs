@@ -73,6 +73,8 @@ public class EnemyMovement : MonoBehaviour
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
+        } else {
+            Flip(); // Flip the enemy if he encounters something else
         }
     }
 

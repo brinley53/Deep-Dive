@@ -25,10 +25,21 @@ public class BasicProceduralGeneration : MonoBehaviour
 
     private int numEnemies = 5; // integer to hold the number of enemies in a group at a time
     
-    // Regular platforms
-    GameObject normalPlatformLeftPrefab;
-    GameObject normalPlatformMiddlePrefab;
-    GameObject normalPlatformRightPrefab;
+    // Regular platform prefab locations
+    string[] regularPlatformSizes = {
+        "prefabs/Regular XXXS",
+        "prefabs/Regular XXS",
+        "prefabs/Regular XS",
+        "prefabs/Regular S",
+        "prefabs/Regular M",
+        "prefabs/Regular L",
+        "prefabs/Regular XL",
+        "prefabs/Regular XXL",
+        "prefabs/Regular XXXL"
+    };
+
+    GameObject regularPlatform; // Regular platform object
+
     // Spike
     GameObject spikePlatformLeftPrefab;
     GameObject spikePlatformMiddlePrefab;
@@ -87,6 +98,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the type of platform to spawn (normal, spike, magma)
         string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
         magmaPlatform = Resources.Load(magmaPlatformSizes[Random.Range(0, magmaPlatformSizes.Length)]) as GameObject;
+        regularPlatform = Resources.Load(regularPlatformSizes[Random.Range(0, regularPlatformSizes.Length)]) as GameObject;
 
         // Get the length of the platform
         int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
@@ -97,37 +109,19 @@ public class BasicProceduralGeneration : MonoBehaviour
         // If spawning a single unit platform
         if (platformTypeToSpawn == "magma") {
             platformSection = Instantiate(magmaPlatform, platformSpawnPos, Quaternion.identity);
+        } else if (platformTypeToSpawn == "normal") {
+            platformSection = Instantiate(regularPlatform, platformSpawnPos, Quaternion.identity);
         } else {
             if (platformLengthToSpawn == 1) {
-                // Spawn a regular middle platform
-                if (platformTypeToSpawn == "normal") {
-                    platformSection = Instantiate(normalPlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
-                }
-                // Spawn a spike middle platform
-                else if (platformTypeToSpawn == "spike") {
-                    platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
-                }
-                else {
-                    Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
-                }
-
+                platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
                 platformSection.transform.parent = platformContainer.transform; // add the platform to the container
             }
             else {
                 Vector3 nextPlatformSegmentLoc = platformSpawnPos; // the location to spawn the next platform segment
                 // For each segment needed to make up the whole platform 
                 for (int i=0; i < platformLengthToSpawn; i++) {
-                    // Spawn a regular middle platform
-                    if (platformTypeToSpawn == "normal") {
-                        platformSection = Instantiate(normalPlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
-                    }
                     // Spawn a spike middle platform
-                    else if (platformTypeToSpawn == "spike") {
-                        platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
-                    }
-                    else {
-                        Debug.Log($"ERROR: invalid platform type: {platformTypeToSpawn}");
-                    }
+                    platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
                     nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y); // set the next platform segment to be to the right of the previous one
                     platformSection.transform.parent = platformContainer.transform; // add the platform to the container
                 }
@@ -216,10 +210,6 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the platform prefabs
-        normalPlatformLeftPrefab = Resources.Load("prefabs/normal_platform_prefab_left") as GameObject; 
-        normalPlatformMiddlePrefab = Resources.Load("prefabs/normal_platform_prefab_mid") as GameObject;
-        normalPlatformRightPrefab = Resources.Load("prefabs/normal_platform_prefab_right") as GameObject;
         // Get the spike platform prefabs
         spikePlatformLeftPrefab = Resources.Load("prefabs/spike_platform_prefab_left") as GameObject; 
         spikePlatformMiddlePrefab = Resources.Load("prefabs/spike_platform_prefab_mid") as GameObject;

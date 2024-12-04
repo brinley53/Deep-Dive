@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5803898551824177835}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: groundCheck (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7214049690348767935}
   - component: {fileID: 6759480724551312412}
   - component: {fileID: 6014010604969898667}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: lionfish
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4418590287017762068}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: groundcheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,9 +87,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5798578816455658848, guid: 9c604eea8e83955439d6a77eff409170, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5798578816455658848, guid: 9c604eea8e83955439d6a77eff409170, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1343767907
+      objectReference: {fileID: 0}
     - target: {fileID: 7990332079090362987, guid: 9c604eea8e83955439d6a77eff409170, type: 3}
       propertyPath: m_Name
-      value: Shark Variant
+      value: Shark
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990332079090362987, guid: 9c604eea8e83955439d6a77eff409170, type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8208517921016192943, guid: 9c604eea8e83955439d6a77eff409170, type: 3}
       propertyPath: m_EdgeRadius

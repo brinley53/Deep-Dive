@@ -97,7 +97,6 @@ public class AdvancedEnemyMovement : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             chasePlayer = false;
-            Debug.Log("chase enemy no");
         }
     }
 
@@ -118,8 +117,8 @@ public class AdvancedEnemyMovement : MonoBehaviour
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(50); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
-        } else if (collision.gameObject.CompareTag("Platform")) {
-            Flip();
+        } else {
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
     }
 
