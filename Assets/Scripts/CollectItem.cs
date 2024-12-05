@@ -1,11 +1,11 @@
 /*
     Script name: CollectItem
-    Description: Item dissapears when player touches it
+    Description: Item disappears when player touches it
     Inputs: Item Object just needs collision detection and check event trigger box and each item needs this script attached
     Also each item prefab needs the correct tag for the player to recognize it
     Outputs:
     Sources of code: None
-    Authors: Kyle Moore
+    Authors: Kyle Moore, Gianni Louisa, Ben Renner, Connor Bennudriti, Brinley Hull
     Creation Date: 11/9/24
 */
 using UnityEngine;
@@ -50,6 +50,10 @@ public class ItemCollector : MonoBehaviour
             playerInventory.AddItem("Heart"); //Calls the inventory Script to update the UI correctly
             Destroy(other.gameObject);  //Destroy the collected item
             // Debug.Log("Heart collected!"); //for debuging purposes log
+        } else if (other.gameObject.CompareTag("Bubble")) { // If the player collides with the bubbles
+            // Refill oxygen level
+            playerInventory.RefillOxygen();
+            Destroy(other.gameObject); // Destroy the collected item
         }
     }
 }

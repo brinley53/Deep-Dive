@@ -9,6 +9,7 @@ TagManager:
   - HeartItem
   - HarpoonItem
   - Bullet
+  - Bubble
   layers:
   - Default
   - TransparentFX

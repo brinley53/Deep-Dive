@@ -86,15 +86,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (Input.GetButtonUp("Jump")) // Check for jump input
         {
-            // Debug.Log("Jump button pressed"); // Log that jump button was pressed
             if (isGrounded) // Only allow jumping if the player is grounded
             {
-                // Debug.Log("Applying jump force"); // Log that jump force is being applied
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply the upward force for jumping
-            }
-            else
-            {
-                // Debug.Log("Can't jump - not grounded"); // Log if jump attempt failed due to not being grounded
             }
         } else {
             animator.SetBool("Jump", false); // Initialize the jump condition for the jump animation to false
@@ -180,6 +174,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Die() {
+        lives--;
+        if (lives > 0)
+        {
+            StartCoroutine(RespawnPlayer());
+        }
+        else
+        {
+            Debug.Log("Game Over: No lives remaining.");
+            // Implement game over logic here
+        }
+    }
+
     public void TakeDamage(int damage, bool ignoreIFrames=false)
     {
         if (((timeOfLastHit + iFrameDuration) <= Time.fixedTime) || (ignoreIFrames)){
@@ -189,18 +196,7 @@ public class PlayerMovement : MonoBehaviour
 
             health -= damage;
             if (health <= 0)
-            {
-                lives--;
-                if (lives > 0)
-                {
-                    StartCoroutine(RespawnPlayer());
-                }
-                else
-                {
-                    Debug.Log("Game Over: No lives remaining.");
-                    // Implement game over logic here
-                }
-            }
+                Die();
             UpdateUI();
         }
         else {
