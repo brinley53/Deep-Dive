@@ -2508,6 +2508,7 @@ MonoBehaviour:
   previousDamageSource: {fileID: 0}
   bullet: {fileID: 7385803441674162403, guid: 4f4cf7f8e6173b64cb2da8c1cb027a21, type: 3}
   firingPoint: {fileID: 729710733}
+  isAlive: 1
 --- !u!61 &981345472
 BoxCollider2D:
   m_ObjectHideFlags: 0

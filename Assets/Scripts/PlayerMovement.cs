@@ -54,6 +54,13 @@ public class PlayerMovement : MonoBehaviour
 
     private UIManager uiManager; // Reference to the UIManager
 
+    public bool isAlive = true; // Keep isAlive private
+
+    public bool IsAlive // Public property to access isAlive
+    {
+        get { return isAlive; }
+    }
+
     void Start() // Called once when the script is first enabled
     {
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
@@ -67,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update() // Called every frame
     {
+        if (!isAlive) return; // Skip movement processing if the player is dead
+
         movement.x = Input.GetAxisRaw("Horizontal"); // Get horizontal input (-1 for left, 1 for right, 0 for no input)
         
         bool wasGrounded = isGrounded; // Store the previous grounded state for comparison
@@ -159,6 +168,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
     {
+        if (!isAlive) return; // Skip movement processing if the player is dead
+
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement while preserving vertical velocity
         float maxFallSpeed = -20f; // Maximum speed the player can fall
         if (rb.linearVelocity.y < maxFallSpeed) // Check if player is falling faster than the maximum fall speed
@@ -200,6 +211,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
+                    isAlive = false; // Set isAlive to false when the player dies
                     Debug.Log("Game Over: No lives remaining.");
                     // uiManager.ShowGameOverScreen(); // Remove or comment out this line if not needed
                     uiManager.ToggleLoseMenu(); // Open the pause menu
@@ -246,9 +258,6 @@ public class PlayerMovement : MonoBehaviour
         float elapsedTime = 0f;
         Vector2 originalPosition = transform.position;
 
-        // Rotate the player 90 degrees counterclockwise
-        transform.Rotate(0, 0, 90);
-
         while (elapsedTime < floatDuration)
         {
             transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime));
@@ -260,11 +269,8 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 1f;
 
-        // Reset rotation
-        transform.Rotate(0, 0, -90);
         health = 100; // Reset health to full upon losing a life
-
-
+        isAlive = true; // Set isAlive to true when respawning
 
         spriteRenderer.color = Color.white;
         animator.enabled = true; // Re-enable animations
