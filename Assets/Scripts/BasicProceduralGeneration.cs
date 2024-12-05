@@ -18,6 +18,7 @@ public class BasicProceduralGeneration : MonoBehaviour
 
     GameObject harpoonItem;
     GameObject heartItem;
+    GameObject bubble;
 
     GameObject lionfish; // the basic enemy object
 
@@ -150,6 +151,7 @@ public class BasicProceduralGeneration : MonoBehaviour
 
             // Chance-based item spawning
             spawnItemOnPlatform(spawnPos);
+            spawnBubble(spawnPos);
 
             int enemySpawnChance = Random.Range(0, numberPlatformsPerGroup); // Randomize enemy spawning so that it doesn't spawn on just the first platforms
             if (numEnemies > 0 && enemySpawnChance%3 == 0) { // If there are still needing to be enemies spawned
@@ -167,18 +169,25 @@ public class BasicProceduralGeneration : MonoBehaviour
         return spawnedPlatformsContainer;
     }
 
+    void spawnBubble(Vector3 platformPos) {
+        float spawnChance = Random.value;
+
+        if (spawnChance > 0.8f) {
+            Vector3 pos = new Vector3(Random.Range(-15, 16), platformPos.y + Random.Range(0, 5), platformPos.z);
+            Instantiate(bubble, pos, Quaternion.identity);
+        }
+    }
 
     void spawnItemOnPlatform(Vector3 platformPos) {
         // Random chance for item generation (adjust probabilities as needed)
         float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
         GameObject itemToSpawn = null;
 
-        if (spawnChance <= 0.5f) { //adjust chance for harpoon item to spwan
+        if (spawnChance <= 0.15f) { //adjust chance for harpoon item to spwan
             itemToSpawn = harpoonItem;
-        } else if (spawnChance > 0.5f) { // adjust chance for heart item to spawn
+        } else if (spawnChance <= 0.2f) { // adjust chance for heart item to spawn
             itemToSpawn = heartItem;
-            
-        }
+        } 
         // If an item is chosen, spawn it slightly above the platform
         if (itemToSpawn != null) {
             Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
@@ -223,6 +232,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Load items
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
         heartItem = Resources.Load("prefabs/heart_item_0") as GameObject;
+        bubble = Resources.Load("prefabs/Bubble_0") as GameObject;
         lionfish = Resources.Load("prefabs/lionfish") as GameObject; // Load the basic enemy prefab
         shark = Resources.Load("prefabs/Shark") as GameObject; // Load the shark enemy prefab
         kraken = Resources.Load("prefabs/Kraken_0") as GameObject; // Load the kraken enemy prefab
