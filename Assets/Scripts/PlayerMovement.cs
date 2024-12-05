@@ -201,7 +201,8 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     Debug.Log("Game Over: No lives remaining.");
-                    uiManager.ShowGameOverScreen(); // Show game over screen
+                    // uiManager.ShowGameOverScreen(); // Remove or comment out this line if not needed
+                    uiManager.ToggleLoseMenu(); // Open the pause menu
                 }
             }
             UpdateUI();
@@ -274,15 +275,27 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateUI()
     {
         // Update hearts
-        for (int i = 0; i < hearts.Length; i++)
+        if (hearts != null)
         {
-            hearts[i].enabled = i < lives;
+            for (int i = 0; i < hearts.Length; i++)
+            {
+                if (hearts[i] != null)
+                {
+                    hearts[i].enabled = i < lives;
+                }
+            }
         }
 
         // Update health bar
-        healthBar.value = health / 100f;
+        if (healthBar != null)
+        {
+            healthBar.value = health / 100f;
+        }
 
         // Update attribute text
-        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        if (attributeText != null)
+        {
+            attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        }
     }
 }

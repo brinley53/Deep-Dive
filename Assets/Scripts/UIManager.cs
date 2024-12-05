@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject loseMenu;
     public GameObject gameOverScreen;
     private CanvasGroup canvasGroup;
     private bool isPaused = false;
+    private bool isLose = false;
 
     void Start()
     {
@@ -30,6 +33,12 @@ public class UIManager : MonoBehaviour
         pauseMenu.SetActive(isPaused);
         Time.timeScale = isPaused ? 0 : 1;
     }
+    public void ToggleLoseMenu()
+    {
+        isLose = !isLose;
+        loseMenu.SetActive(isLose);
+        Time.timeScale = 0;
+    }
 
     private IEnumerator FadeIn()
     {
@@ -48,15 +57,17 @@ public class UIManager : MonoBehaviour
         canvasGroup.alpha = targetAlpha;
     }
 
-    public void ShowGameOverScreen()
-    {
-        gameOverScreen.SetActive(true);
-        Time.timeScale = 0;
-    }
+
 
     public void QuitGame()
     {
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    public void RestartGame()
+    {
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
