@@ -98,7 +98,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6670805154210922984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9db95d83b62fd4541ad2190767baa9fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a5bbf08e66fe134caa76858244e7b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   magmaPlatform_TotalDamage: 20

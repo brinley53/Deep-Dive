@@ -16,7 +16,9 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 4f; // Movement speed of the player in units per second
     public float jumpForce = 7f; // Force applied upward when jumping
     public int strength = 10; // Player's strength attribute
-    public int health = 100; // Player's health attribute
+
+    public int maxHealth = 100; //Player's max health
+    public int health; // Player's health attribute
     public int lives = 3; // Player's lives (hearts) attribute
     public Transform groundCheck; // Reference to an empty GameObject that marks where to check for ground
     public float groundCheckRadius = 1f; // Radius used for the ground check circle (not currently used since we switched to box)
@@ -38,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private float fallThroughTimer = 0f;
 
     public Image[] hearts; // Array to hold heart images
-    public Slider healthBar; // Reference to the health bar slider
+    public UIBar healthBar; // Reference to the health bar slider
     public Text attributeText; // Reference to the text displaying attributes
 
     private SpriteRenderer spriteRenderer; // Reference to the player's SpriteRenderer component
@@ -54,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start() // Called once when the script is first enabled
     {
+        health = maxHealth;
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
         animator = GetComponent<Animator>(); // Get the Animator component
@@ -254,13 +257,14 @@ public class PlayerMovement : MonoBehaviour
 
         // Reset rotation
         transform.Rotate(0, 0, -90);
-        health = 100; // Reset health to full upon losing a life
+        health = maxHealth; // Reset health to full upon losing a life
 
 
 
         spriteRenderer.color = Color.white;
         animator.enabled = true; // Re-enable animations
         transform.position = GetComponent<FallDistanceTracker>().respawnLocation;
+        UpdateUI();
         Debug.Log($"Respawned. Lives remaining: {lives}");
     }
 
@@ -273,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Update health bar
-        healthBar.value = health / 100f;
+        healthBar.SetHealth(health);
 
         // Update attribute text
         attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";

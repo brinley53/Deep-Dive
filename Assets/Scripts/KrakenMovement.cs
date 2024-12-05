@@ -14,8 +14,8 @@ public class KrakenMovement : MonoBehaviour
 {
     public float moveSpeed = 1f; // Movement speed of the enemy
     public LayerMask groundLayer; // Layers considered as ground
-    public int health = 500; // Enemy's health
-    public int damage = 1000; // Damage the enemy can inflict
+    public int health; // Enemy's health
+    public int damage; // Damage the enemy can inflict
 
     private Rigidbody2D rb; // Enemy's Rigidbody2D
     private Vector2 movement; // Movement direction
@@ -40,6 +40,8 @@ public class KrakenMovement : MonoBehaviour
         cllider = GetComponent<Collider2D>(); // Reference Collider2D
         startY = rb.position.y;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        damage = 99;
+        health = 500;
     }
 
     void Update()

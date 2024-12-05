@@ -17,9 +17,13 @@ public class PlayerInventory : MonoBehaviour
     public int harpoonCount = 0;    //Counter for harpoons
     public int heartCount = 0;  //Counter for hearts
 
-    public int oxygen = 100; // Keep track of oxygen
+    public int oxygen; // Keep track of oxygen
+
+    public int maxOxygen = 30;
 
     private int nextUpdate = 1; // time tracker to deplete oxygen
+
+    public OxyBar oxygenBar;
 
     public PlayerMovement player; // Reference playermovement
 
@@ -27,11 +31,10 @@ public class PlayerInventory : MonoBehaviour
      public TMP_Text harpoonCountText;  
      public TMP_Text heartCountText;
 
-     public TMP_Text oxygenLevel;
-
     void Start()
     {
         //Initialize the UI with the current item counts
+        oxygen = maxOxygen;
         UpdateUI();
     }
 
@@ -60,7 +63,9 @@ public class PlayerInventory : MonoBehaviour
     		depleteOxygen(); // deplete the oxygen
             if (oxygen <= 0) {
                 player.Die();
+                RefillOxygen();
             }
+            UpdateUI();
     	}
     }
 
@@ -69,7 +74,8 @@ public class PlayerInventory : MonoBehaviour
     }
 
     public void RefillOxygen() { // Refill player's oxygen to full
-        oxygen = 100;
+        oxygen = maxOxygen;
+        UpdateUI();
     }
 
     //Method to update the UI with the current counts
@@ -82,8 +88,7 @@ public class PlayerInventory : MonoBehaviour
         if (heartCountText != null)
             heartCountText.text = "Hearts: " + heartCount;
 
-        if (oxygenLevel != null)
-            oxygenLevel.text = "Oxygen: " + oxygen;
+        oxygenBar.SetOxygen(oxygen);
     }
 }
 

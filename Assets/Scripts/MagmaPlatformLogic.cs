@@ -32,15 +32,9 @@ public class MagmaPlatformLogic : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player")) // if platform collided with the player
         {
-            // If the last thing that damaged the player was NOT the container for this platform segment 
-            if (this.transform.parent != collision.gameObject.GetComponent<PlayerMovement>().previousDamageSource) {
-                Debug.Log($"Player landed on magma platform will take {magmaPlatform_TotalDamage} over {magmaPlatform_NumberOfDamageBursts} bursts ({singleDamageBurstDamage} each)");
-                StartCoroutine(MagmaDamageBurst(collision)); // start damaging
-                collision.gameObject.GetComponent<PlayerMovement>().previousDamageSource = this.transform.parent; // set the previous damage source to this platform segmen's container
-            }
-            else {
-                Debug.Log("Already hit by this magma platform");
-            }
+            Debug.Log($"Player landed on magma platform will take {magmaPlatform_TotalDamage} over {magmaPlatform_NumberOfDamageBursts} bursts ({singleDamageBurstDamage} each)");
+            StartCoroutine(MagmaDamageBurst(collision)); // start damaging
+            collision.gameObject.GetComponent<PlayerMovement>().previousDamageSource = this.transform.parent; // set the previous damage source to this platform segmen's container
         }
     }
 

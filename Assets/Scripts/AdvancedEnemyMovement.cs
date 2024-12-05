@@ -17,8 +17,8 @@ public class AdvancedEnemyMovement : MonoBehaviour
     public LayerMask groundLayer; // Layers considered as ground
     public float groundCheckWidth = 5f; // Ground check box width
     public float groundCheckHeight = 0.2f; // Ground check box height
-    public int health = 200; // Enemy's health
-    public int damage = 100; // Damage the enemy can inflict
+    public int health; // Enemy's health
+    public int damage; // Damage the enemy can inflict
 
     private Rigidbody2D rb; // Enemy's Rigidbody2D
     private Vector2 movement; // Movement direction
@@ -43,6 +43,8 @@ public class AdvancedEnemyMovement : MonoBehaviour
         startX = rb.position.x;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>(); // Get the Animator component
+        damage = 25;
+        health = 200;
     }
 
     void Update()

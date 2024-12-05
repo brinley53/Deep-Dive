@@ -69,7 +69,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(20);
+            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(5);
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
