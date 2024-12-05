@@ -32,6 +32,9 @@ public class KrakenMovement : MonoBehaviour
     private bool chasePlayer = false;
     public Transform player;
 
+    private bool attacking;
+    private Collider2D playerc;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
@@ -42,11 +45,12 @@ public class KrakenMovement : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damage = 99;
         health = 500;
+        attacking = false;
     }
 
     void Update()
     {
-        if (rb.position.y > startY + 10 && !goingDown || rb.position.y < startY - 10 && goingDown && !chasePlayer) {
+        if ((rb.position.y > startY + 10 && !goingDown || rb.position.y < startY - 10 && goingDown) && !chasePlayer) {
             goingDown = !goingDown; // Toggle direction
         }
 
@@ -60,6 +64,10 @@ public class KrakenMovement : MonoBehaviour
             movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
         } else {
             movement.x = 0;
+        }
+
+        if (attacking) {
+            playerc.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
 
         movement.y = goingDown ? -1 : 1;
@@ -76,7 +84,8 @@ public class KrakenMovement : MonoBehaviour
             chasePlayer = true;
             playerTriggerCount += 1;
             if (playerTriggerCount == 2) {
-                collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
+                attacking = true;
+                playerc = collision;
             }
         } else if (collision.gameObject.CompareTag("Bullet")) {
             bulletTriggerCount += 1;

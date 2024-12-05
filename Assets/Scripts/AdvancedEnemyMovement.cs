@@ -34,6 +34,9 @@ public class AdvancedEnemyMovement : MonoBehaviour
 
     public Animator animator;
 
+    private bool attacking;
+    private Collision2D playerc;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
@@ -45,11 +48,12 @@ public class AdvancedEnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>(); // Get the Animator component
         damage = 25;
         health = 200;
+        attacking = false;
     }
 
     void Update()
     {
-        if (rb.position.x > startX + 10 && facingRight || rb.position.x < startX - 10 && !facingRight && !chasePlayer) {
+        if ((rb.position.x > startX + 10 && facingRight || rb.position.x < startX - 10 && !facingRight) && !chasePlayer) {
             Flip();
         }
 
@@ -78,6 +82,10 @@ public class AdvancedEnemyMovement : MonoBehaviour
         } else {
             moveSpeed = 1f;
             movement.y = 0;
+        }
+
+        if (attacking) {
+            playerc.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
 
         movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
@@ -115,12 +123,19 @@ public class AdvancedEnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
+            attacking = true;
+            playerc = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(50); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
         } else {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            attacking = false;
         }
     }
 

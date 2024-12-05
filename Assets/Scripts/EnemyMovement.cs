@@ -26,12 +26,16 @@ public class EnemyMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
     private Collider2D cllider; // Reference to the enemy's collider
 
+    private Collision2D player;
+    private bool attacking;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
         spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
         cllider = GetComponent<Collider2D>(); // Reference Collider2D
+        attacking = false;
     }
 
     void Update()
@@ -49,6 +53,9 @@ public class EnemyMovement : MonoBehaviour
         
         isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer); // Determine if the object is grounded
 
+        if (attacking) {
+            player.gameObject.GetComponent<PlayerMovement>().TakeDamage(5);
+        }
     }
 
     void FixedUpdate()
@@ -69,10 +76,17 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(5);
+            attacking = true;
+            player = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            attacking = false;
         }
     }
 
