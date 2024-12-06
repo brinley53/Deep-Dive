@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float fireTimer; //Timer to make the gun wait before being able to shoot again
 
+    public UIManager uim;
+
     void Start() // Called once when the script is first enabled
     {
         health = maxHealth;
@@ -179,6 +181,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die() {
         lives--;
+        Debug.Log($"Player died. Lives remaining: {lives}");
+        
         if (lives > 0)
         {
             StartCoroutine(RespawnPlayer());
@@ -186,7 +190,16 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.Log("Game Over: No lives remaining.");
-            // Implement game over logic here
+            Time.timeScale = 0f; // Pause the game
+            if (uim != null)
+            {
+                Debug.Log("Showing lose menu via UIManager...");
+                uim.ToggleLoseMenu();
+            }
+            else
+            {
+                Debug.LogError("UIManager reference not set in PlayerMovement! Please assign it in the Unity Inspector.");
+            }
         }
     }
 
@@ -198,8 +211,13 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Player hit");
 
             health -= damage;
+            Debug.Log($"Player health: {health}");
+
             if (health <= 0)
+            {
+                Debug.Log("Player health is zero or less. Calling Die().");
                 Die();
+            }
             UpdateUI();
         }
         else {
