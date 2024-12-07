@@ -2722,6 +2722,7 @@ MonoBehaviour:
   bullet: {fileID: 7385803441674162403, guid: 4f4cf7f8e6173b64cb2da8c1cb027a21, type: 3}
   firingPoint: {fileID: 729710733}
   uim: {fileID: 1011975466}
+  numCheckpointsHit: 0
 --- !u!61 &981345472
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2836,7 +2837,7 @@ MonoBehaviour:
   oxygen: 0
   maxOxygen: 30
   oxygenBar: {fileID: 0}
-  player: {fileID: 0}
+  player: {fileID: 981345471}
   harpoonCountText: {fileID: 314783907}
   heartCountText: {fileID: 683945021}
 --- !u!114 &981345477

@@ -44,9 +44,17 @@ public class BasicProceduralGeneration : MonoBehaviour
     GameObject regularPlatform; // Regular platform object
 
     // Spike
-    GameObject spikePlatformLeftPrefab;
-    GameObject spikePlatformMiddlePrefab;
-    GameObject spikePlatformRightPrefab;
+    // GameObject spikePlatformLeftPrefab;
+    // GameObject spikePlatformMiddlePrefab;
+    // GameObject spikePlatformRightPrefab;
+    //Magma Platform prefab locations
+    string[] spikePlatformSizes = {
+        "prefabs/Spike Platform XS",
+        "prefabs/Spike Platform S",
+        "prefabs/Spike Platform M",
+        "prefabs/Spike Platform L"
+    };
+    GameObject spikePlatform; // Magma Platform object
 
     //Magma Platform prefab locations
     string[] magmaPlatformSizes = {
@@ -62,6 +70,29 @@ public class BasicProceduralGeneration : MonoBehaviour
         "spike",
         "magma"
     };
+
+    // Array to store platform type probabilities
+    // Vector3[] platformTypeProbabilityScaling = {
+    //     new Vector3(1.0, 0.0, 0.0),
+    //     new Vector3(0.9, 0.1, 0.0),
+    //     new Vector3(0.8, 0.1, 0.1),
+    //     new Vector3(0.7, 0.2, 0.1),
+    //     new Vector3(0.55, 0.225, 0.225),
+    //     new Vector3(0.5, 0.25, 0.25),
+    //     new Vector3(0.4, 0.25, 0.35),
+    //     new Vector3(0.35, 0.30, 0.35),
+    // };
+    Vector3[] platformTypeProbabilityScaling = {
+        new Vector3(1.0f, 0.0f, 0.0f),
+        new Vector3(0.9f, 1.0f, 0.0f),
+        new Vector3(0.8f, 0.9f, 1.0f),
+        new Vector3(0.7f, 0.9f, 1.0f),
+        new Vector3(0.55f, 0.775f, 1.0f),
+        new Vector3(0.5f, 0.75f, 1.0f),
+        new Vector3(0.4f, 0.65f, 1.0f),
+        new Vector3(0.35f, 0.65f, 1.0f),
+    };
+    Vector3 curPlatformTypeProbabilities;
 
     GameObject spawnedPlatformGroupContainer;
 
@@ -83,6 +114,8 @@ public class BasicProceduralGeneration : MonoBehaviour
     private int distanceBetweenFinalPlatformAndCheckpointSection = 15;
     private int distanceBetweenCheckpointSectionAndPlatformStart = 5;
 
+    private int numCheckpointsHit;
+
     Vector3 getNextPlatformPos(Vector3 prevPlatformPos) {
         // Set next x position to a random x position on the screen that does not overlap with the previous platform's x position
         int nextXPos;
@@ -95,13 +128,23 @@ public class BasicProceduralGeneration : MonoBehaviour
         return new Vector3(nextXPos,nextYPos);
     }
 
+    // Function to get which platform type to spawn with damaging platform types frequency scaled by distance
+    string getPlatformTypeToSpawn() {
+        // Use number of checkpoints hit to calculate type of platform to spawn
+        float ran = (Random.Range(0.0f,1.0f));
+        if      ((ran>=0.0)                            && (ran<=curPlatformTypeProbabilities.x))     {return "normal";}
+        else if ((ran>curPlatformTypeProbabilities.x) && (ran<=curPlatformTypeProbabilities.y))      {return "spike";}
+        else if ((ran>curPlatformTypeProbabilities.y) && (ran<=curPlatformTypeProbabilities.z))      {return "magma";}
+        else {Debug.Log($"Issue with platform type scaling - random # {ran} not in range"); return "normal";}
+
+        // platformTypesArray[Random.Range(0, platformTypesArray.Length)];
+    }
+
     // Function to piece together the left/middle/right portions of a platform to form a whole
     GameObject createPlatform(Vector3 platformSpawnPos) {
 
         // Get the type of platform to spawn (normal, spike, magma)
-        string platformTypeToSpawn = platformTypesArray[Random.Range(0, platformTypesArray.Length)];
-        magmaPlatform = Resources.Load(magmaPlatformSizes[Random.Range(0, magmaPlatformSizes.Length)]) as GameObject;
-        regularPlatform = Resources.Load(regularPlatformSizes[Random.Range(0, regularPlatformSizes.Length)]) as GameObject;
+        string platformTypeToSpawn = getPlatformTypeToSpawn();
 
         // Get the length of the platform
         int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
@@ -110,25 +153,31 @@ public class BasicProceduralGeneration : MonoBehaviour
         GameObject platformContainer = new GameObject("platformContainer"); 
         
         // If spawning a single unit platform
-        if (platformTypeToSpawn == "magma") {
-            platformSection = Instantiate(magmaPlatform, platformSpawnPos, Quaternion.identity);
-        } else if (platformTypeToSpawn == "normal") {
+        if (platformTypeToSpawn == "normal") {
+            regularPlatform = Resources.Load(regularPlatformSizes[Random.Range(0, regularPlatformSizes.Length)]) as GameObject;
             platformSection = Instantiate(regularPlatform, platformSpawnPos, Quaternion.identity);
-        } else {
-            if (platformLengthToSpawn == 1) {
-                platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
-                platformSection.transform.parent = platformContainer.transform; // add the platform to the container
-            }
-            else {
-                Vector3 nextPlatformSegmentLoc = platformSpawnPos; // the location to spawn the next platform segment
-                // For each segment needed to make up the whole platform 
-                for (int i=0; i < platformLengthToSpawn; i++) {
-                    // Spawn a spike middle platform
-                    platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
-                    nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y); // set the next platform segment to be to the right of the previous one
-                    platformSection.transform.parent = platformContainer.transform; // add the platform to the container
-                }
-            }
+        } 
+        else if (platformTypeToSpawn == "magma") {
+            magmaPlatform = Resources.Load(magmaPlatformSizes[Random.Range(0, magmaPlatformSizes.Length)]) as GameObject;
+            platformSection = Instantiate(magmaPlatform, platformSpawnPos, Quaternion.identity);
+        } 
+        else {
+            spikePlatform = Resources.Load(spikePlatformSizes[Random.Range(0, spikePlatformSizes.Length)]) as GameObject;
+            platformSection = Instantiate(spikePlatform, platformSpawnPos, Quaternion.identity);
+            // if (platformLengthToSpawn == 1) {
+            //     platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
+            //     platformSection.transform.parent = platformContainer.transform; // add the platform to the container
+            // }
+            // else {
+            //     Vector3 nextPlatformSegmentLoc = platformSpawnPos; // the location to spawn the next platform segment
+            //     // For each segment needed to make up the whole platform 
+            //     for (int i=0; i < platformLengthToSpawn; i++) {
+            //         // Spawn a spike middle platform
+            //         platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
+            //         nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y); // set the next platform segment to be to the right of the previous one
+            //         platformSection.transform.parent = platformContainer.transform; // add the platform to the container
+            //     }
+            // }
         
         }
         return platformContainer;
@@ -224,10 +273,14 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the player gameobject for its position
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Get the spike platform prefabs
-        spikePlatformLeftPrefab = Resources.Load("prefabs/spike_platform_prefab_left") as GameObject; 
-        spikePlatformMiddlePrefab = Resources.Load("prefabs/spike_platform_prefab_mid") as GameObject;
-        spikePlatformRightPrefab = Resources.Load("prefabs/spike_platform_prefab_right") as GameObject;
+        // Get fall distance 
+        numCheckpointsHit = player.GetComponent<PlayerMovement>().numCheckpointsHit;
+        curPlatformTypeProbabilities = platformTypeProbabilityScaling[0];
+
+        // // Get the spike platform prefabs
+        // spikePlatformLeftPrefab = Resources.Load("prefabs/spike_platform_prefab_left") as GameObject; 
+        // spikePlatformMiddlePrefab = Resources.Load("prefabs/spike_platform_prefab_mid") as GameObject;
+        // spikePlatformRightPrefab = Resources.Load("prefabs/spike_platform_prefab_right") as GameObject;
 
         // Load items
         harpoonItem = Resources.Load("prefabs/harpoon_item_0") as GameObject;
@@ -239,6 +292,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         
         // Debug.Log("Harpoon Item Loaded: " + (harpoonItem != null));
         // Debug.Log("Heart Item Loaded: " + (heartItem != null));
+
 
 
         // Get the checkpoint section prefab
@@ -254,6 +308,11 @@ public class BasicProceduralGeneration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // Get current fall distance of player
+        numCheckpointsHit = player.GetComponent<PlayerMovement>().numCheckpointsHit;
+        curPlatformTypeProbabilities = platformTypeProbabilityScaling[Mathf.Min(numCheckpointsHit,platformTypeProbabilityScaling.Length -1)];
+        // Debug.Log(curPlatformTypeProbabilities);
 
         // If player is below the lowest platform spawned in the previous group
         if (player.transform.position.y <= checkpointSectionSpawnLocation.y) {

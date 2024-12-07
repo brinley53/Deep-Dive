@@ -28,6 +28,7 @@ public class FallDistanceTracker : MonoBehaviour
         startY = transform.position.y; // get the starting location of the player
         maxFallDistance = 0f;
         respawnLocation = new Vector3(0,0);
+        currentFallDistance = 0.0f;
     }
 
     void Update()

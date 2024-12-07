@@ -56,8 +56,11 @@ public class PlayerMovement : MonoBehaviour
 
     public UIManager uim;
 
+    [HideInInspector] public int numCheckpointsHit;
+
     void Start() // Called once when the script is first enabled
     {
+        numCheckpointsHit = 0;
         health = maxHealth;
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
@@ -295,9 +298,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Update health bar
-        // healthBar.SetHealth(health);
+        healthBar.SetHealth(health);
 
         // Update attribute text
-        // attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
     }
 }

@@ -12,14 +12,17 @@ public class CheckpointTrigger : MonoBehaviour
 {
 
     GameObject player;
+    [HideInInspector] public int numCheckpointsHit;
     
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); // get the player gameobject for its position
+        numCheckpointsHit = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         // Debug.Log("Landed on checkpoint:");
         player.GetComponent<FallDistanceTracker>().SetRespawnLocation();
+        player.GetComponent<PlayerMovement>().numCheckpointsHit++;
     }
 }
