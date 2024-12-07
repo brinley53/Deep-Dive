@@ -17,9 +17,10 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 0;
         pauseMenu.SetActive(false);
-        mainMenuUI.SetActive(false);
+        mainMenuUI.SetActive(true);
         canvasGroup = pauseMenu.GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
+        Debug.Log("Main menu should be active now.");
     }
 
     void Update()
