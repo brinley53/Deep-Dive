@@ -94,6 +94,20 @@ public class BasicProceduralGeneration : MonoBehaviour
     };
     Vector3 curPlatformTypeProbabilities;
 
+    float[] curEnemySpawnProbabilityScaling = {
+        0.3f,
+        0.35f,
+        0.4f,
+        0.45f,
+        0.5f,
+        0.55f,
+        0.6f,
+        0.65f,
+        0.7f,
+        0.75f,
+    };
+    float curEnemySpawnProbability;
+
     GameObject spawnedPlatformGroupContainer;
 
     GameObject checkpointSectionPrefab; // the prefab for a checkpoint section
@@ -174,7 +188,10 @@ public class BasicProceduralGeneration : MonoBehaviour
         Vector3 spawnPos = startingPos;
         // Create container for the platform group
         GameObject spawnedPlatformsContainer = new GameObject("spawnedPlatformsContainer");
-        numEnemies = 5; // Reset the number of enemies needed in this group
+
+        // numEnemies = numberPlatformsPerGroup/(platformTypeProbabilityScaling.Length-(Mathf.Min(numCheckpointsHit,platformTypeProbabilityScaling.Length-1))); // Reset the number of enemies needed in this group
+        // Debug.Log($"Spawning {numEnemies} enemies");
+
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
@@ -191,12 +208,18 @@ public class BasicProceduralGeneration : MonoBehaviour
             GameObject spawnedBubble = spawnBubble(spawnPos);
             spawnedBubble.transform.parent = spawnedPlatformsContainer.transform;
 
-            int enemySpawnChance = Random.Range(0, numberPlatformsPerGroup); // Randomize enemy spawning so that it doesn't spawn on just the first platforms
-            if (numEnemies > 0 && enemySpawnChance%3 == 0) { // If there are still needing to be enemies spawned
-                numEnemies--; // Decrease the amount of enemies needing to be spawning
+            // int enemySpawnChance = Random.Range(0, numberPlatformsPerGroup); // Randomize enemy spawning so that it doesn't spawn on just the first platforms
+            // if (numEnemies > 0 && enemySpawnChance%3 == 0) { // If there are still needing to be enemies spawned
+            //     numEnemies--; // Decrease the amount of enemies needing to be spawning
+            //     GameObject spawnedEnemy = spawnEnemy(spawnPos); // Spawn an enemy
+            //     spawnedEnemy.transform.parent = spawnedPlatformsContainer.transform;
+            // }
+            float ran = Random.Range(0.0f,1.0f);
+            if (ran <= curEnemySpawnProbability) {
                 GameObject spawnedEnemy = spawnEnemy(spawnPos); // Spawn an enemy
                 spawnedEnemy.transform.parent = spawnedPlatformsContainer.transform;
             }
+
         }
         lowestPlatformPos = spawnPos;
         
@@ -275,6 +298,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get fall distance 
         numCheckpointsHit = player.GetComponent<PlayerMovement>().numCheckpointsHit;
         curPlatformTypeProbabilities = platformTypeProbabilityScaling[0];
+        curEnemySpawnProbability = curEnemySpawnProbabilityScaling[0];
 
         // // Get the spike platform prefabs
         // spikePlatformLeftPrefab = Resources.Load("prefabs/spike_platform_prefab_left") as GameObject; 
@@ -311,6 +335,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get current fall distance of player
         numCheckpointsHit = player.GetComponent<PlayerMovement>().numCheckpointsHit;
         curPlatformTypeProbabilities = platformTypeProbabilityScaling[Mathf.Min(numCheckpointsHit,platformTypeProbabilityScaling.Length -1)];
+        curEnemySpawnProbability = curEnemySpawnProbabilityScaling[Mathf.Min(numCheckpointsHit,curEnemySpawnProbabilityScaling.Length -1)];
         // Debug.Log(curPlatformTypeProbabilities);
 
         // If player is below the lowest platform spawned in the previous group
