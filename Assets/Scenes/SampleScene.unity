@@ -4485,8 +4485,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformMinYDistance: 2
-  platformMaxYDistance: 7
-  maxNumberPlatforms: 15
+  platformMaxYDistance: 6
+  maxNumberPlatforms: 45
   maxPlatformSize: 20
 --- !u!4 &2031841510
 Transform:

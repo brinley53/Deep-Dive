@@ -35,9 +35,9 @@ public class MagmaPlatformLogic : MonoBehaviour
     }
 
     void Update() {
-        if (playerOnPlatform) {
-            player.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
-        }
+        // if (playerOnPlatform) {
+        //     player.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
+        // }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -47,7 +47,7 @@ public class MagmaPlatformLogic : MonoBehaviour
             // player = collision;
             playerOnPlatform = true;
             Debug.Log($"Player landed on magma platform will take {magmaPlatform_TotalDamage} over {magmaPlatform_NumberOfDamageBursts} bursts ({singleDamageBurstDamage} each)");
-            // StartCoroutine(MagmaDamageBurst(collision)); // start damaging
+            StartCoroutine(MagmaDamageBurst(collision)); // start damaging
             collision.gameObject.GetComponent<PlayerMovement>().previousDamageSource = this.transform.parent; // set the previous damage source to this platform segmen's container
         }
     }
@@ -64,7 +64,7 @@ public class MagmaPlatformLogic : MonoBehaviour
         for (int i=0; i < magmaPlatform_NumberOfDamageBursts; i++) {
             Debug.Log($"Damage burst {i+1}/{magmaPlatform_NumberOfDamageBursts}");
 
-            playerObjCollider.gameObject.GetComponent<PlayerMovement>().TakeDamage(singleDamageBurstDamage); // apply damge to the player
+            playerObjCollider.gameObject.GetComponent<PlayerMovement>().TakeDamage(singleDamageBurstDamage, true); // apply damge to the player
             yield return new WaitForSeconds(magmaPlatform_TimeBetweenBursts); // wait
 
         }
