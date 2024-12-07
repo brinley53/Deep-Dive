@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
     private Collider2D cllider; // Reference to the enemy's collider
 
-    private Collision2D player;
+    private GameObject player;
     private bool attacking;
 
     void Start()
@@ -36,6 +36,8 @@ public class EnemyMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
         cllider = GetComponent<Collider2D>(); // Reference Collider2D
         attacking = false;
+
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
@@ -77,7 +79,7 @@ public class EnemyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             attacking = true;
-            player = collision;
+            // player = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
             Destroy(collision.gameObject); // Destroy the bullet

@@ -22,7 +22,7 @@ public class MagmaPlatformLogic : MonoBehaviour
 
     private bool playerOnPlatform; 
 
-    private Collision2D player;
+    private GameObject player;
 
     private int singleDamageBurstDamage; // int to store how much each burst should do
     private float timeOfPreviousDamageBurst; // float to track when the last burst was 
@@ -31,6 +31,7 @@ public class MagmaPlatformLogic : MonoBehaviour
         singleDamageBurstDamage = Mathf.RoundToInt(magmaPlatform_TotalDamage/magmaPlatform_NumberOfDamageBursts); // get how much damage each burst should do
         timeOfPreviousDamageBurst = Time.fixedTime; // get the starting time
         playerOnPlatform = false;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update() {
@@ -43,8 +44,8 @@ public class MagmaPlatformLogic : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player")) // if platform collided with the player
         {
+            // player = collision;
             playerOnPlatform = true;
-            player = collision;
             Debug.Log($"Player landed on magma platform will take {magmaPlatform_TotalDamage} over {magmaPlatform_NumberOfDamageBursts} bursts ({singleDamageBurstDamage} each)");
             // StartCoroutine(MagmaDamageBurst(collision)); // start damaging
             collision.gameObject.GetComponent<PlayerMovement>().previousDamageSource = this.transform.parent; // set the previous damage source to this platform segmen's container
