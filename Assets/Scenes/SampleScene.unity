@@ -4484,9 +4484,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea352016bde92046adb1f47bc0292b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformMinYDistance: 1
-  platformMaxYDistance: 10
-  maxNumberPlatforms: 40
+  platformMinYDistance: 2
+  platformMaxYDistance: 7
+  maxNumberPlatforms: 15
   maxPlatformSize: 20
 --- !u!4 &2031841510
 Transform:

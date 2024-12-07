@@ -224,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
             UpdateUI();
         }
         else {
-            Debug.Log("Player hit but is still invincible from I-frames");
+            // Debug.Log("Player hit but is still invincible from I-frames");
         }
     }
 

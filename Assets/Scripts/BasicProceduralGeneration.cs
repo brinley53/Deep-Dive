@@ -149,8 +149,8 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Get the length of the platform
         int platformLengthToSpawn = Random.Range(1, maxPlatformSize);
 
-        // Create container object for the individual platform
-        GameObject platformContainer = new GameObject("platformContainer"); 
+        // // Create container object for the individual platform
+        // GameObject platformContainer = new GameObject("platformContainer"); 
         
         // If spawning a single unit platform
         if (platformTypeToSpawn == "normal") {
@@ -164,23 +164,9 @@ public class BasicProceduralGeneration : MonoBehaviour
         else {
             spikePlatform = Resources.Load(spikePlatformSizes[Random.Range(0, spikePlatformSizes.Length)]) as GameObject;
             platformSection = Instantiate(spikePlatform, platformSpawnPos, Quaternion.identity);
-            // if (platformLengthToSpawn == 1) {
-            //     platformSection = Instantiate(spikePlatformMiddlePrefab, platformSpawnPos, Quaternion.identity);
-            //     platformSection.transform.parent = platformContainer.transform; // add the platform to the container
-            // }
-            // else {
-            //     Vector3 nextPlatformSegmentLoc = platformSpawnPos; // the location to spawn the next platform segment
-            //     // For each segment needed to make up the whole platform 
-            //     for (int i=0; i < platformLengthToSpawn; i++) {
-            //         // Spawn a spike middle platform
-            //         platformSection = Instantiate(spikePlatformMiddlePrefab, nextPlatformSegmentLoc, Quaternion.identity);
-            //         nextPlatformSegmentLoc = new Vector3(nextPlatformSegmentLoc.x + (float)0.99, nextPlatformSegmentLoc.y); // set the next platform segment to be to the right of the previous one
-            //         platformSection.transform.parent = platformContainer.transform; // add the platform to the container
-            //     }
-            // }
-        
         }
-        return platformContainer;
+        // return platformContainer;
+        return platformSection;
     }
 
     GameObject spawnPlatformGroup(int numberPlatformsPerGroup, Vector3 startingPos) {
@@ -192,20 +178,24 @@ public class BasicProceduralGeneration : MonoBehaviour
         // Create the specifed number of platforms
         for (int i = 0; i < numberPlatformsPerGroup; i++) {
             spawnPos = getNextPlatformPos(spawnPos);
-            GameObject platformsContainer = createPlatform(spawnPos);
+            GameObject platformSection = createPlatform(spawnPos);
 
-            platformsContainer.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
-            platformsArray[i] = platformsContainer; // add the platform to the list keeping track of the platforms
+            platformSection.transform.parent = spawnedPlatformsContainer.transform; // set the spawned platofrm's parent to be the empty gameobejct created previously for cleanliness
+            platformsArray[i] = platformSection; // add the platform to the list keeping track of the platforms
 
 
             // Chance-based item spawning
-            spawnItemOnPlatform(spawnPos);
-            spawnBubble(spawnPos);
+            GameObject spawnedItem = spawnItemOnPlatform(spawnPos);
+            spawnedItem.transform.parent = spawnedPlatformsContainer.transform;
+
+            GameObject spawnedBubble = spawnBubble(spawnPos);
+            spawnedBubble.transform.parent = spawnedPlatformsContainer.transform;
 
             int enemySpawnChance = Random.Range(0, numberPlatformsPerGroup); // Randomize enemy spawning so that it doesn't spawn on just the first platforms
             if (numEnemies > 0 && enemySpawnChance%3 == 0) { // If there are still needing to be enemies spawned
                 numEnemies--; // Decrease the amount of enemies needing to be spawning
-                spawnEnemy(spawnPos); // Spawn an enemy
+                GameObject spawnedEnemy = spawnEnemy(spawnPos); // Spawn an enemy
+                spawnedEnemy.transform.parent = spawnedPlatformsContainer.transform;
             }
         }
         lowestPlatformPos = spawnPos;
@@ -213,21 +203,24 @@ public class BasicProceduralGeneration : MonoBehaviour
 
         checkpointSectionSpawnLocation = new Vector3(0, lowestPlatformPos.y-distanceBetweenFinalPlatformAndCheckpointSection);
         // Instantiate a checkpoint section after the platform group
-        Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
+        GameObject cpSection = Instantiate(checkpointSectionPrefab, checkpointSectionSpawnLocation, Quaternion.identity);
+        // cpSection.transform.parent = spawnedPlatformsContainer.transform;
 
         return spawnedPlatformsContainer;
     }
 
-    void spawnBubble(Vector3 platformPos) {
+    GameObject spawnBubble(Vector3 platformPos) {
         float spawnChance = Random.value;
 
         if (spawnChance > 0.8f) {
             Vector3 pos = new Vector3(Random.Range(-15, 16), platformPos.y + Random.Range(0, 5), platformPos.z);
-            Instantiate(bubble, pos, Quaternion.identity);
+            return Instantiate(bubble, pos, Quaternion.identity);
+        } else {
+            return new GameObject("emptyBubble");
         }
     }
 
-    void spawnItemOnPlatform(Vector3 platformPos) {
+    GameObject spawnItemOnPlatform(Vector3 platformPos) {
         // Random chance for item generation (adjust probabilities as needed)
         float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
         GameObject itemToSpawn = null;
@@ -240,12 +233,15 @@ public class BasicProceduralGeneration : MonoBehaviour
         // If an item is chosen, spawn it slightly above the platform
         if (itemToSpawn != null) {
             Vector3 itemSpawnPos = new Vector3(platformPos.x, platformPos.y + 1f, platformPos.z);
-            Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
+            GameObject item = Instantiate(itemToSpawn, itemSpawnPos, Quaternion.identity);
             // Debug.Log("Spawned item: " + itemToSpawn.name + " at position: " + itemSpawnPos); //logs position of item spaw in case prefab is not loaded correctly
+            return item;
+        } else {
+            return new GameObject("emptyItem");
         }
     }
 
-    void spawnEnemy(Vector3 platformPos) { // Function to spawn an enemy object
+    GameObject spawnEnemy(Vector3 platformPos) { // Function to spawn an enemy object
         // Random chance for enemy generation
         float spawnChance = Random.value; // Generates a value between 0.0 and 1.0
         GameObject enemyToSpawn = null; // Initialize the type of enemy to be spawned variable
@@ -263,7 +259,10 @@ public class BasicProceduralGeneration : MonoBehaviour
 
         // Spawn the enemy slightly above the platform if the object is not null
         if (enemyToSpawn != null) {
-            Instantiate(enemyToSpawn, enemySpawnPos, Quaternion.identity); // Add the enemy to the game
+            GameObject spawnedEnemy = Instantiate(enemyToSpawn, enemySpawnPos, Quaternion.identity); // Add the enemy to the game
+            return spawnedEnemy;
+        } else {
+            return new GameObject("emptyEnemy");
         }
 
     }
@@ -318,7 +317,7 @@ public class BasicProceduralGeneration : MonoBehaviour
         if (player.transform.position.y <= checkpointSectionSpawnLocation.y) {
             Destroy(spawnedPlatformGroupContainer); // destory platforms to free memory for next platform group
             // Spawn a new group of platforms
-           spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
+            spawnedPlatformGroupContainer = spawnPlatformGroup(maxNumberPlatforms, new Vector3(0,checkpointSectionSpawnLocation.y-distanceBetweenCheckpointSectionAndPlatformStart));
         }
     }
 }
