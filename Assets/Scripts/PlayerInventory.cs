@@ -88,7 +88,7 @@ public class PlayerInventory : MonoBehaviour
         if (heartCountText != null)
             heartCountText.text = "Hearts: " + heartCount;
 
-        oxygenBar.SetOxygen(oxygen);
+        //oxygenBar.SetOxygen(oxygen);
     }
 }
 
