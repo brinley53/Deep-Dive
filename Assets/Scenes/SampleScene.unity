@@ -1069,6 +1069,8 @@ MonoBehaviour:
   groundCheckHeight: 0.2
   health: 100
   damage: 20
+  audioSource: {fileID: 0}
+  enemyHit: {fileID: 0}
 --- !u!50 &371141549
 Rigidbody2D:
   serializedVersion: 5
@@ -3212,6 +3214,11 @@ MonoBehaviour:
   hearts: []
   healthBar: {fileID: 448775991}
   attributeText: {fileID: 0}
+  audioSource: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: 3b69f57267ee4da48afb9bbce7112dc2, type: 3}
+  playerHit: {fileID: 8300000, guid: f4324ec6ed7c51c4abcc458141667bbb, type: 3}
+  playerDeath: {fileID: 8300000, guid: 6dc0f423e4e500c46930b6e0c98032dd, type: 3}
+  playerShoot: {fileID: 8300000, guid: 5ed8ac6928f134c4888cd4e9dc1e3888, type: 3}
   previousDamageSource: {fileID: 0}
   bullet: {fileID: 7385803441674162403, guid: 4f4cf7f8e6173b64cb2da8c1cb027a21, type: 3}
   firingPoint: {fileID: 729710733}
@@ -3363,13 +3370,13 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: a1c644d7ad0504e3580bc5d02b6cef0f, type: 3}
   m_Resource: {fileID: 8300000, guid: a1c644d7ad0504e3580bc5d02b6cef0f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.02
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 140
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
