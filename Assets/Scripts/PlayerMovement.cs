@@ -13,6 +13,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public FallDistanceTracker distanceScript;
+    public float finalScore;
     public float moveSpeed = 4f; // Movement speed of the player in units per second
     public float jumpForce = 7f; // Force applied upward when jumping
     public int strength = 10; // Player's strength attribute
@@ -58,6 +60,10 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public int numCheckpointsHit;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Start() // Called once when the script is first enabled
     {
         numCheckpointsHit = 0;
@@ -155,6 +161,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.F)) { // If the F key is released
             animator.SetBool("Shoot", false); // Set the animator attribute shoot to false to transition to the specified animation
         }
+
+        if(finalScore < distanceScript.maxFallDistance)
+        {
+            finalScore = distanceScript.maxFallDistance;
+        }
     }
 
     void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
@@ -183,6 +194,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void HighScoreUpdate()
+    {
+        Debug.Log("In High Score Function");
+        //Is there already a highscore?
+        PlayerPrefs.Get ("HighScore")
+        if (PlayerPrefs.SetFloat("SavedHighScore"))
+        {
+            Debug.Log("First if");
+            if(finalScore > PlayerPrefs.GetFloat("SavedHighScore"))
+            {
+                Debug.Log("in second if");
+                //set new high score
+                PlayerPrefs.SetFloat("SavedHighScore", finalScore);
+            }
+        }
+    }
     public void Die() {
         lives--;
         Debug.Log($"Player died. Lives remaining: {lives}");
@@ -193,6 +220,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            HighScoreUpdate();
+            Debug.Log("Saving Score");
+            PlayerPrefs.Save();
+            Debug.Log(finalScore); //this is the final score
+            Debug.Log(PlayerPrefs.GetFloat("SavedHighScore"));
+
             Debug.Log("Game Over: No lives remaining.");
             Time.timeScale = 0f; // Pause the game
             if (uim != null)

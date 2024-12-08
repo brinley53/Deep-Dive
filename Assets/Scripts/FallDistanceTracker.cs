@@ -14,9 +14,9 @@ public class FallDistanceTracker : MonoBehaviour
     [SerializeField] private TextMeshProUGUI distanceText; // object for the displayed text
     private float startY; // starting location of the player
     float currentHeight;
-    float currentFallDistance;
+    public float currentFallDistance;
     
-    [HideInInspector] public float maxFallDistance; // float to track the lowest the player has gone
+    public float maxFallDistance; // float to track the lowest the player has gone
     [HideInInspector] public Vector3 respawnLocation; // location to respawn player at
 
     public void SetRespawnLocation() {

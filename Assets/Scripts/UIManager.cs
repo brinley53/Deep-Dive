@@ -49,7 +49,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Lose menu is not assigned.");
             return;
         }
-
         isLose = !isLose;
         loseMenu.SetActive(isLose);
         Time.timeScale = isLose ? 0 : 1;
