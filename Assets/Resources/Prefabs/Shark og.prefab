@@ -115,6 +115,7 @@ MonoBehaviour:
   damage: 20
   player: {fileID: 0}
   animator: {fileID: 0}
+  enemyHit: {fileID: 8300000, guid: 612106c9317096144a8ca580e3c270b5, type: 3}
 --- !u!50 &7306841656528946884
 Rigidbody2D:
   serializedVersion: 5

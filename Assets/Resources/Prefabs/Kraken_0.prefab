@@ -252,3 +252,4 @@ MonoBehaviour:
   health: 500
   damage: 99
   player: {fileID: 0}
+  enemyHit: {fileID: 8300000, guid: 612106c9317096144a8ca580e3c270b5, type: 3}

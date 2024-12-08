@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     public UIBar healthBar; // Reference to the health bar slider
     public Text attributeText; // Reference to the text displaying attributes
 
+    public AudioSource audioSource; //audio manager?
     public AudioClip jumpSound; //sound for the jump
     public AudioClip playerHit;  //sound for the player getting hurt
     public AudioClip playerDeath;  //sound for the player dying
@@ -71,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start() // Called once when the script is first enabled
     {
+        audioSource = GetComponent<AudioSource>();
         numCheckpointsHit = 0;
         health = maxHealth;
         rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component

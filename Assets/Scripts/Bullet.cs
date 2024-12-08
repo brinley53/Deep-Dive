@@ -11,12 +11,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
     private float speed = 12f; // Speed of the harpoons
     private float timeAlive = 3f; // Time the bullet stays defined if it hasn't hit anything
-
     private Rigidbody2D rb; // The rigidbody that controls the actual harpoon object
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

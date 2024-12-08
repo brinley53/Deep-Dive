@@ -28,10 +28,12 @@ public class EnemyMovement : MonoBehaviour
 
     private GameObject player;
     private bool attacking;
+    public AudioSource audioSource; //audio manager?
     public AudioClip enemyHit;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
         spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
@@ -83,7 +85,7 @@ public class EnemyMovement : MonoBehaviour
             // player = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
-            audioSource.PlayOneShot(enemyHit);
+            //audioSource.PlayOneShot(enemyHit);
             Destroy(collision.gameObject); // Destroy the bullet
         }
     }

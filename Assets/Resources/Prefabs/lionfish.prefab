@@ -143,6 +143,7 @@ MonoBehaviour:
   groundCheckHeight: 0.2
   health: 100
   damage: 20
+  enemyHit: {fileID: 8300000, guid: 612106c9317096144a8ca580e3c270b5, type: 3}
 --- !u!50 &6759480724551312412
 Rigidbody2D:
   serializedVersion: 5
