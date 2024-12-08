@@ -37,6 +37,8 @@ public class AdvancedEnemyMovement : MonoBehaviour
     private bool attacking;
     private Collision2D playerc;
 
+    public AudioClip enemyHit;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
@@ -127,6 +129,7 @@ public class AdvancedEnemyMovement : MonoBehaviour
             playerc = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(50); //Make the enemy lose health
+            audioSource.PlayOneShot(enemyHit); //yeah
             Destroy(collision.gameObject); // Destroy the bullet
         } else {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());

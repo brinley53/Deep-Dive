@@ -45,6 +45,11 @@ public class PlayerMovement : MonoBehaviour
     public UIBar healthBar; // Reference to the health bar slider
     public Text attributeText; // Reference to the text displaying attributes
 
+    public AudioClip jumpSound; //sound for the jump
+    public AudioClip playerHit;  //sound for the player getting hurt
+    public AudioClip playerDeath;  //sound for the player dying
+    public AudioClip playerShoot;  //sound for player shooting 
+
     private SpriteRenderer spriteRenderer; // Reference to the player's SpriteRenderer component
 
     [HideInInspector] public Transform previousDamageSource;
@@ -104,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded) // Only allow jumping if the player is grounded
             {
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply the upward force for jumping
+                audioSource.PlayOneShot(jumpSound);
             }
         } else {
             animator.SetBool("Jump", false); // Initialize the jump condition for the jump animation to false
@@ -180,6 +186,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Shoot() { // Function to shoot the bullet
         Instantiate(bullet, firingPoint.position, firingPoint.rotation); // instantiates the harpoon projectile at the firepoint
+        audioSource.PlayOneShot(playerShoot);
     }
 
     void OnDrawGizmos() // Called in the editor to draw debug visuals
@@ -249,6 +256,7 @@ public class PlayerMovement : MonoBehaviour
 
             timeOfLastHit = Time.fixedTime;
             Debug.Log("Player hit");
+            audioSource.PlayOneShot(playerHit);
 
             health -= damage;
             Debug.Log($"Player health: {health}");
@@ -256,6 +264,7 @@ public class PlayerMovement : MonoBehaviour
             if (health <= 0)
             {
                 Debug.Log("Player health is zero or less. Calling Die().");
+                audioSource.PlayOneShot(playerDeath);
                 Die();
             }
             UpdateUI();

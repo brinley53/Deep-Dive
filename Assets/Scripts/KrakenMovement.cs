@@ -35,6 +35,8 @@ public class KrakenMovement : MonoBehaviour
     private bool attacking;
     private Collider2D playerc;
 
+    public AudioClip enemyHit;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
@@ -91,6 +93,7 @@ public class KrakenMovement : MonoBehaviour
             bulletTriggerCount += 1;
             if (bulletTriggerCount == 2) {
                 TakeDamage(50); //Make the enemy lose health
+                audioSource.PlayOneShot(enemyHit);
                 Destroy(collision.gameObject); // Destroy the bullet
                 bulletTriggerCount = 0;
             }

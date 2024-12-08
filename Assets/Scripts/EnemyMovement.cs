@@ -28,6 +28,7 @@ public class EnemyMovement : MonoBehaviour
 
     private GameObject player;
     private bool attacking;
+    public AudioClip enemyHit;
 
     void Start()
     {
@@ -82,6 +83,7 @@ public class EnemyMovement : MonoBehaviour
             // player = collision;
         } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
             TakeDamage(damage); //Make the enemy lose health
+            audioSource.PlayOneShot(enemyHit);
             Destroy(collision.gameObject); // Destroy the bullet
         }
     }
