@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update() // Called every frame
     {
+        Wrapping();
         movement.x = Input.GetAxisRaw("Horizontal"); // Get horizontal input (-1 for left, 1 for right, 0 for no input)
         
         bool wasGrounded = isGrounded; // Store the previous grounded state for comparison
@@ -288,6 +289,26 @@ public class PlayerMovement : MonoBehaviour
         UpdateUI();
         Debug.Log($"Respawned. Lives remaining: {lives}");
     }
+
+    private void Wrapping()
+    {
+        //get screen position of player in pixels
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        float rightSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x; //get right side using the top right
+        float leftSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).x; //get left side of screen using bottom left
+
+        if(screenPos.x <= 0 && rb.linearVelocity.x < 0)
+        {
+            transform.position = new Vector2(rightSideOfScreenInWorld, transform.position.y);
+        }
+        else if(screenPos.x >= Screen.width && rb.linearVelocity.x > 0)
+        {
+            transform.position = new Vector2(leftSideOfScreenInWorld, transform.position.y);
+        }
+    
+    }
+
 
     private void UpdateUI()
     {
