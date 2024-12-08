@@ -28,8 +28,8 @@ public class PlayerInventory : MonoBehaviour
     public PlayerMovement player; // Reference playermovement
 
     //Reference to UI Text elements 
-     public TMP_Text harpoonCountText;  
-     public TMP_Text heartCountText;
+    public TMP_Text harpoonCountText;  
+    public TMP_Text heartCountText;
 
     void Start()
     {
