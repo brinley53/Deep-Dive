@@ -198,8 +198,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("In High Score Function");
         //Is there already a highscore?
-        PlayerPrefs.Get ("HighScore")
-        if (PlayerPrefs.SetFloat("SavedHighScore"))
+        if (PlayerPrefs.HasKey("SavedHighScore"))
         {
             Debug.Log("First if");
             if(finalScore > PlayerPrefs.GetFloat("SavedHighScore"))
@@ -208,6 +207,10 @@ public class PlayerMovement : MonoBehaviour
                 //set new high score
                 PlayerPrefs.SetFloat("SavedHighScore", finalScore);
             }
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("SavedHighScore", finalScore);
         }
     }
     public void Die() {

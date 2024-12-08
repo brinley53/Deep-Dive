@@ -3459,6 +3459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73912710b7afcee45af200b969e8808f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highScoreText: {fileID: 1866291598}
   Scoreboard: {fileID: 467879610}
   mainMenuUI: {fileID: 9767398}
 --- !u!1 &1011975465

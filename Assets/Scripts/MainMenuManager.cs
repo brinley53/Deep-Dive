@@ -28,7 +28,7 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log(PlayerPrefs.GetFloat("SavedHighScore"));
         Scoreboard.SetActive(true);
         float temp = PlayerPrefs.GetFloat("SavedHighScore");
-        highScoreText.text = temp.ToString();
+        highScoreText.text = "High Score: " + temp.ToString();
     }
     public void ExitGame()
     {
