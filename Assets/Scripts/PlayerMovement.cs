@@ -319,9 +319,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Update health bar
-        //healthBar.SetHealth(health);
+        healthBar.SetHealth(health);
 
         // Update attribute text
-        //attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
     }
 }
