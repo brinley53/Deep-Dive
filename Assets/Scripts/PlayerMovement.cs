@@ -1,26 +1,64 @@
-/**
+/*
 PlayerMovement.cs
-Description: File that works with the player's movement and jumping and player speed and jump force.
-Creation date: 11/6/2024
-Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
-Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Muddy Wolf (Youtube)
-**/
+Description: This script manages the player's movement, jumping, and interactions in a 2D game.
+Programmer: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
+Date Created: 11/6/2024
+Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
+
+Revisions:
+- [Date] [Author] [Description of revision]
+
+Preconditions:
+- The GameObject this script is attached to must have Rigidbody2D, SpriteRenderer, and Animator components.
+- The 'groundCheck' Transform must be assigned in the Unity Editor.
+- The 'groundLayer' must be set to the appropriate layer(s) considered as ground.
+
+Postconditions:
+- The player can move, jump, shoot, and interact with the environment.
+- The player's health and lives are managed and updated in the UI.
+
+Acceptable Input:
+- 'groundCheck' should be a valid Transform.
+- 'groundLayer' should be a valid LayerMask.
+- Input values for movement and actions should be within expected ranges.
+
+Unacceptable Input:
+- Null or unassigned 'groundCheck' or 'groundLayer' will result in incorrect behavior.
+
+Error and Exception Conditions:
+- None explicitly handled in this script.
+
+Side Effects:
+- Changes the player's position, health, and UI elements.
+- Plays audio clips for various actions.
+
+Invariants:
+- The player's health is always between 0 and maxHealth.
+- The player's movement is constrained to the x-axis.
+
+Known Faults:
+- None documented.
+
+*/
+
 using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+// Class: PlayerMovement
+// Description: Manages the player's movement, jumping, and interactions.
 public class PlayerMovement : MonoBehaviour
 {
-    public FallDistanceTracker distanceScript;
-    public float finalScore;
+    public FallDistanceTracker distanceScript; // Reference to the fall distance tracker
+    public float finalScore; // Final score based on fall distance
     public float moveSpeed = 4f; // Movement speed of the player in units per second
     public float jumpForce = 7f; // Force applied upward when jumping
     public int strength = 10; // Player's strength attribute
 
-    public int maxHealth = 100; //Player's max health
-    public int health; // Player's health attribute
+    public int maxHealth = 100; // Player's max health
+    public int health; // Player's current health
     public int lives = 3; // Player's lives (hearts) attribute
     public Transform groundCheck; // Reference to an empty GameObject that marks where to check for ground
     public float groundCheckRadius = 1f; // Radius used for the ground check circle (not currently used since we switched to box)
@@ -29,63 +67,69 @@ public class PlayerMovement : MonoBehaviour
     public float groundCheckHeight = 0.2f; // Height of the ground check box
 
     public float iFrameDuration = 2.0f; // The duration of the I-frames after the player gets hit
-    float timeOfLastHit = 0.0f;
+    float timeOfLastHit = 0.0f; // Time when the player was last hit
 
     private Rigidbody2D rb; // Reference to the player's Rigidbody2D component
     private Vector2 movement; // Stores the current movement input (-1 to 1)
     private bool isGrounded; // Tracks whether the player is currently touching the ground
 
-    public Animator animator; // Add an animator for animating the player character
+    public Animator animator; // Animator for animating the player character
 
-    private bool isFallingThrough = false;
+    private bool isFallingThrough = false; // Whether the player is currently falling through platforms
     private float fallThroughDuration = 0.6f; // Duration to remain in NoCollision layer after releasing Ctrl
-    private float fallThroughTimer = 0f;
+    private float fallThroughTimer = 0f; // Timer for falling through platforms
 
     public Image[] hearts; // Array to hold heart images
     public UIBar healthBar; // Reference to the health bar slider
     public Text attributeText; // Reference to the text displaying attributes
 
-    public AudioSource audioSource; //audio manager?
-    public AudioClip jumpSound; //sound for the jump
-    public AudioClip playerHit;  //sound for the player getting hurt
-    public AudioClip playerDeath;  //sound for the player dying
-    public AudioClip playerShoot;  //sound for player shooting 
+    public AudioSource audioSource; // Audio manager
+    public AudioClip jumpSound; // Sound for the jump
+    public AudioClip playerHit; // Sound for the player getting hurt
+    public AudioClip playerDeath; // Sound for the player dying
+    public AudioClip playerShoot; // Sound for player shooting 
 
     private SpriteRenderer spriteRenderer; // Reference to the player's SpriteRenderer component
 
-    [HideInInspector] public Transform previousDamageSource;
+    [HideInInspector] public Transform previousDamageSource; // Previous source of damage
 
-    // Gun variables -- Muddy Wolf
+    // Gun variables
     [SerializeField] private GameObject bullet; // Harpoon objects
-    [SerializeField] private Transform firingPoint; //The point where the harpoon shoots from
-    private float fireRate = 0.4f; //Fire rate of harpoon gun (larger number is slower)
+    [SerializeField] private Transform firingPoint; // The point where the harpoon shoots from
+    private float fireRate = 0.4f; // Fire rate of harpoon gun (larger number is slower)
 
-    private float fireTimer; //Timer to make the gun wait before being able to shoot again
+    private float fireTimer; // Timer to make the gun wait before being able to shoot again
 
-    public UIManager uim;
+    public UIManager uim; // Reference to the UI manager
 
-    [HideInInspector] public int numCheckpointsHit;
+    [HideInInspector] public int numCheckpointsHit; // Number of checkpoints hit
 
+    // Method: Awake
+    // Description: Ensures the player object is not destroyed on scene load.
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject); // Prevent the player object from being destroyed on scene load
     }
-    void Start() // Called once when the script is first enabled
+
+    // Method: Start
+    // Description: Initializes components and sets up initial state.
+    void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        numCheckpointsHit = 0;
-        health = maxHealth;
-        rb = GetComponent<Rigidbody2D>(); // Get and store reference to the Rigidbody2D component
+        audioSource = GetComponent<AudioSource>(); // Get the AudioSource component
+        numCheckpointsHit = 0; // Initialize checkpoints hit
+        health = maxHealth; // Set health to max health
+        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
         animator = GetComponent<Animator>(); // Get the Animator component
         rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the player from rotating
-        // Debug.Log("Ground Layer Mask: " + groundLayer.value); // Output the ground layer mask value for debugging purposes
-        UpdateUI();
+        UpdateUI(); // Update the UI elements
     }
 
-    void Update() // Called every frame
+    // Method: Update
+    // Description: Handles input and updates player state every frame.
+    void Update()
     {
-        Wrapping();
+        Wrapping(); // Handle screen wrapping
         movement.x = Input.GetAxisRaw("Horizontal"); // Get horizontal input (-1 for left, 1 for right, 0 for no input)
         
         bool wasGrounded = isGrounded; // Store the previous grounded state for comparison
@@ -93,62 +137,51 @@ public class PlayerMovement : MonoBehaviour
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer) ||
                      Physics2D.OverlapBox(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector2(0.2f, groundCheckHeight), 0f, groundLayer);
 
-        // If not grounded, set the previous damage source to null so that the player can be damaged by the same platform again (because each platform is actually made of smaller platform segments, each with their own collider logic)
+        // If not grounded, reset the previous damage source
         if (!isGrounded) {
             previousDamageSource = null;
         }
 
-        if (isGrounded != wasGrounded) // Log when the grounded state changes
-        {
+        // Log when the grounded state changes
+        if (isGrounded != wasGrounded) {
             // Debug.Log($"Grounded state changed to: {isGrounded}");
         }
-        if (Input.GetButtonDown("Jump") && isGrounded) // Check for jump being held down 
-        {
-            animator.SetBool("Jump", true); // Set the jump condition for the animator to true to set off the jump animation
-        }
-        else if (Input.GetButtonUp("Jump")) // Check for jump input
-        {
-            if (isGrounded) // Only allow jumping if the player is grounded
-            {
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply the upward force for jumping
-                audioSource.PlayOneShot(jumpSound);
+
+        // Handle jump input
+        if (Input.GetButtonDown("Jump") && isGrounded) {
+            animator.SetBool("Jump", true); // Trigger jump animation
+        } else if (Input.GetButtonUp("Jump")) {
+            if (isGrounded) {
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Apply jump force
+                audioSource.PlayOneShot(jumpSound); // Play jump sound
             }
         } else {
-            animator.SetBool("Jump", false); // Initialize the jump condition for the jump animation to false
+            animator.SetBool("Jump", false); // Reset jump animation
         }
 
         movement.y = rb.linearVelocity.y; // Get the movement speed in the vertical axis
-        animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set the animator's x to reference in animator 
-        animator.SetFloat("Vertical", movement.y); // Set the animator's y to reference in animator
+        animator.SetFloat("Horizontal", Math.Abs(movement.x * moveSpeed)); // Set animator's horizontal speed
+        animator.SetFloat("Vertical", movement.y); // Set animator's vertical speed
     
-        // Check if the "down" key is pressed
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            animator.SetBool("Jump", true); // Set the jump condition for the animator to true to set off the crouch animation
+        // Handle fall through platforms
+        if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            animator.SetBool("Jump", true); // Trigger crouch animation
             int noCollisionLayer = LayerMask.NameToLayer("NoCollision");
-            if (noCollisionLayer != -1) // Ensure the layer exists
-            {
-                if (gameObject.layer != noCollisionLayer) // Only change if not already set
-                {
-                    gameObject.layer = noCollisionLayer; // Change to the "NoCollision" layer
+            if (noCollisionLayer != -1) {
+                if (gameObject.layer != noCollisionLayer) {
+                    gameObject.layer = noCollisionLayer; // Change to "NoCollision" layer
                     isFallingThrough = true;
                     fallThroughTimer = fallThroughDuration; // Reset the timer
                     Debug.Log("Player layer set to NoCollision");
                 }
-            }
-            else
-            {
+            } else {
                 Debug.LogError("NoCollision layer not found. Please ensure it is created in Unity.");
             }
-        }
-        else if (isFallingThrough)
-        {
+        } else if (isFallingThrough) {
             fallThroughTimer -= Time.deltaTime;
-            if (fallThroughTimer <= 0f)
-            {
+            if (fallThroughTimer <= 0f) {
                 int defaultLayer = LayerMask.NameToLayer("Default");
-                if (gameObject.layer != defaultLayer)
-                {
+                if (gameObject.layer != defaultLayer) {
                     gameObject.layer = defaultLayer;
                     isFallingThrough = false;
                     Debug.Log("Player layer set to Default");
@@ -156,219 +189,209 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        UpdateColorBasedOnHealth();
+        UpdateColorBasedOnHealth(); // Update player color based on health
 
-        if (Input.GetKey(KeyCode.F) && fireTimer <= 0f) { // If the user is pressing the F key and the timer to prevent constant shooting is 0
-            animator.SetBool("Shoot", true); // Set the animator attribute "Shoot" to true to set off the specified animation
+        // Handle shooting input
+        if (Input.GetKey(KeyCode.F) && fireTimer <= 0f) {
+            animator.SetBool("Shoot", true); // Trigger shoot animation
             Shoot(); // Shoot the bullet
             fireTimer = fireRate; // Reset the timer
         } else {
-            fireTimer -= Time.deltaTime; // Otherwise decrease the timer
+            fireTimer -= Time.deltaTime; // Decrease the timer
         }
 
-        if (Input.GetKeyUp(KeyCode.F)) { // If the F key is released
-            animator.SetBool("Shoot", false); // Set the animator attribute shoot to false to transition to the specified animation
+        if (Input.GetKeyUp(KeyCode.F)) {
+            animator.SetBool("Shoot", false); // Reset shoot animation
         }
 
-        if(finalScore < distanceScript.maxFallDistance)
-        {
+        // Update final score based on fall distance
+        if(finalScore < distanceScript.maxFallDistance) {
             finalScore = distanceScript.maxFallDistance;
         }
     }
 
-    void FixedUpdate() // Called at a fixed time interval (better for physics calculations)
+    // Method: FixedUpdate
+    // Description: Applies physics-based movement at a fixed time interval.
+    void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement while preserving vertical velocity
+        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement
         float maxFallSpeed = -20f; // Maximum speed the player can fall
-        if (rb.linearVelocity.y < maxFallSpeed) // Check if player is falling faster than the maximum fall speed
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed); // Clamp the fall speed to the maximum
+        if (rb.linearVelocity.y < maxFallSpeed) {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed); // Clamp fall speed
         }
     }
 
-    private void Shoot() { // Function to shoot the bullet
-        Instantiate(bullet, firingPoint.position, firingPoint.rotation); // instantiates the harpoon projectile at the firepoint
-        audioSource.PlayOneShot(playerShoot);
-    }
-
-    void OnDrawGizmos() // Called in the editor to draw debug visuals
+    // Method: Shoot
+    // Description: Instantiates a bullet and plays the shooting sound.
+    private void Shoot()
     {
-        if (groundCheck != null) // Only draw if we have a ground check point set
-        {
-            Gizmos.color = Color.red; // Draw the main ground check box in red
-            Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
-            Gizmos.color = Color.yellow; // Draw the right edge check box in yellow
-            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f));// Draw the left edge check box in yellow
-            Gizmos.DrawWireCube(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f)); // Draw the left edge check box in yellow
+        Instantiate(bullet, firingPoint.position, firingPoint.rotation); // Instantiate the bullet
+        audioSource.PlayOneShot(playerShoot); // Play shooting sound
+    }
+
+    // Method: OnDrawGizmos
+    // Description: Draws debug visuals in the editor for ground checks.
+    void OnDrawGizmos()
+    {
+        if (groundCheck != null) {
+            Gizmos.color = Color.red; // Set Gizmo color to red
+            Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f)); // Draw main ground check box
+            Gizmos.color = Color.yellow; // Set Gizmo color to yellow
+            Gizmos.DrawWireCube(groundCheck.position + new Vector3(groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f)); // Draw right edge check box
+            Gizmos.DrawWireCube(groundCheck.position + new Vector3(-groundCheckWidth/2, 0, 0), new Vector3(0.2f, groundCheckHeight, 0f)); // Draw left edge check box
         }
     }
 
+    // Method: HighScoreUpdate
+    // Description: Updates the high score if the current score is higher.
     public void HighScoreUpdate()
     {
         Debug.Log("In High Score Function");
-        //Is there already a highscore?
-        if (PlayerPrefs.HasKey("SavedHighScore"))
-        {
+        if (PlayerPrefs.HasKey("SavedHighScore")) {
             Debug.Log("First if");
-            if(finalScore > PlayerPrefs.GetFloat("SavedHighScore"))
-            {
+            if(finalScore > PlayerPrefs.GetFloat("SavedHighScore")) {
                 Debug.Log("in second if");
-                //set new high score
-                PlayerPrefs.SetFloat("SavedHighScore", finalScore);
+                PlayerPrefs.SetFloat("SavedHighScore", finalScore); // Set new high score
             }
-        }
-        else
-        {
-            PlayerPrefs.SetFloat("SavedHighScore", finalScore);
+        } else {
+            PlayerPrefs.SetFloat("SavedHighScore", finalScore); // Set high score if none exists
         }
     }
-    public void Die() {
-        lives--;
+
+    // Method: Die
+    // Description: Handles player death, life decrement, and game over logic.
+    public void Die()
+    {
+        lives--; // Decrement lives
         Debug.Log($"Player died. Lives remaining: {lives}");
         
-        if (lives > 0)
-        {
-            StartCoroutine(RespawnPlayer());
-        }
-        else
-        {
-            HighScoreUpdate();
+        if (lives > 0) {
+            StartCoroutine(RespawnPlayer()); // Respawn player if lives remain
+        } else {
+            HighScoreUpdate(); // Update high score
             Debug.Log("Saving Score");
-            PlayerPrefs.Save();
-            Debug.Log(finalScore); //this is the final score
+            PlayerPrefs.Save(); // Save player preferences
+            Debug.Log(finalScore); // Log final score
             Debug.Log(PlayerPrefs.GetFloat("SavedHighScore"));
 
             Debug.Log("Game Over: No lives remaining.");
             Time.timeScale = 0f; // Pause the game
-            if (uim != null)
-            {
+            if (uim != null) {
                 Debug.Log("Showing lose menu via UIManager...");
-                uim.ToggleLoseMenu();
-            }
-            else
-            {
+                uim.ToggleLoseMenu(); // Show lose menu
+            } else {
                 Debug.LogError("UIManager reference not set in PlayerMovement! Please assign it in the Unity Inspector.");
             }
         }
     }
 
+    // Method: TakeDamage
+    // Description: Reduces player health and handles invincibility frames.
     public void TakeDamage(int damage, bool ignoreIFrames=false)
     {
-        if (((timeOfLastHit + iFrameDuration) <= Time.fixedTime) || (ignoreIFrames)){
-
-            timeOfLastHit = Time.fixedTime;
+        if (((timeOfLastHit + iFrameDuration) <= Time.fixedTime) || (ignoreIFrames)) {
+            timeOfLastHit = Time.fixedTime; // Update last hit time
             Debug.Log("Player hit");
-            audioSource.PlayOneShot(playerHit);
+            audioSource.PlayOneShot(playerHit); // Play hit sound
 
-            health -= damage;
+            health -= damage; // Reduce health
             Debug.Log($"Player health: {health}");
 
-            if (health <= 0)
-            {
+            if (health <= 0) {
                 Debug.Log("Player health is zero or less. Calling Die().");
-                audioSource.PlayOneShot(playerDeath);
-                Die();
+                audioSource.PlayOneShot(playerDeath); // Play death sound
+                Die(); // Call Die method
             }
-            UpdateUI();
-        }
-        else {
+            UpdateUI(); // Update UI elements
+        } else {
             // Debug.Log("Player hit but is still invincible from I-frames");
         }
     }
 
+    // Method: UpdateColorBasedOnHealth
+    // Description: Updates the player's color based on current health.
     private void UpdateColorBasedOnHealth()
     {
-        if (health <= 20)
-        {
-            StartCoroutine(FlashRed());
-        }
-        else
-        {
-            float redIntensity = 1f - (health / 100f);
-            spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity);
+        if (health <= 20) {
+            StartCoroutine(FlashRed()); // Flash red if health is low
+        } else {
+            float redIntensity = 1f - (health / 100f); // Calculate red intensity
+            spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity); // Set sprite color
         }
     }
 
+    // Method: FlashRed
+    // Description: Coroutine to flash the player red when health is low.
     private IEnumerator FlashRed()
     {
-        while (health <= 20)
-        {
-            spriteRenderer.color = new Color(1f, 0.5f, 0.5f);
-            yield return new WaitForSeconds(0.1f);
-            spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(0.1f);
+        while (health <= 20) {
+            spriteRenderer.color = new Color(1f, 0.5f, 0.5f); // Set color to red
+            yield return new WaitForSeconds(0.1f); // Wait for 0.1 seconds
+            spriteRenderer.color = Color.white; // Reset color to white
+            yield return new WaitForSeconds(0.1f); // Wait for 0.1 seconds
         }
     }
 
+    // Method: RespawnPlayer
+    // Description: Coroutine to handle player respawn after death.
     private IEnumerator RespawnPlayer()
     {
-        spriteRenderer.color = Color.red;
+        spriteRenderer.color = Color.red; // Change color to red
         animator.enabled = false; // Stop animations
-        float floatDuration = 2f; // Extended duration to float upward
+        float floatDuration = 2f; // Duration to float upward
         float floatSpeed = 2f; // Speed of floating upward
 
-        float elapsedTime = 0f;
-        Vector2 originalPosition = transform.position;
+        float elapsedTime = 0f; // Initialize elapsed time
+        Vector2 originalPosition = transform.position; // Store original position
 
-        // Rotate the player 90 degrees counterclockwise
-        transform.Rotate(0, 0, 90);
+        transform.Rotate(0, 0, 90); // Rotate the player 90 degrees counterclockwise
 
-        while (elapsedTime < floatDuration)
-        {
-            transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime));
-            elapsedTime += Time.unscaledDeltaTime;
-            yield return null;
+        while (elapsedTime < floatDuration) {
+            transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime)); // Move upwards
+            elapsedTime += Time.unscaledDeltaTime; // Increment elapsed time
+            yield return null; // Wait for the next frame
         }
 
-        Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(1f);
-        Time.timeScale = 1f;
+        Time.timeScale = 0f; // Pause the game
+        yield return new WaitForSecondsRealtime(1f); // Wait for 1 second in real time
+        Time.timeScale = 1f; // Resume the game
 
-        // Reset rotation
-        transform.Rotate(0, 0, -90);
-        health = maxHealth; // Reset health to full upon losing a life
+        transform.Rotate(0, 0, -90); // Reset rotation
+        health = maxHealth; // Reset health to full
 
-
-
-        spriteRenderer.color = Color.white;
+        spriteRenderer.color = Color.white; // Reset color to white
         animator.enabled = true; // Re-enable animations
-        transform.position = GetComponent<FallDistanceTracker>().respawnLocation;
-        UpdateUI();
+        transform.position = GetComponent<FallDistanceTracker>().respawnLocation; // Set position to respawn location
+        UpdateUI(); // Update UI elements
         Debug.Log($"Respawned. Lives remaining: {lives}");
     }
 
+    // Method: Wrapping
+    // Description: Handles screen wrapping for the player character.
     private void Wrapping()
     {
-        //get screen position of player in pixels
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position); // Get screen position of player
 
-        float rightSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x; //get right side using the top right
-        float leftSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).x; //get left side of screen using bottom left
+        float rightSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x; // Get right side of screen
+        float leftSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).x; // Get left side of screen
 
-        if(screenPos.x <= 0 && rb.linearVelocity.x < 0)
-        {
-            transform.position = new Vector2(rightSideOfScreenInWorld, transform.position.y);
+        if(screenPos.x <= 0 && rb.linearVelocity.x < 0) {
+            transform.position = new Vector2(rightSideOfScreenInWorld, transform.position.y); // Wrap to right side
+        } else if(screenPos.x >= Screen.width && rb.linearVelocity.x > 0) {
+            transform.position = new Vector2(leftSideOfScreenInWorld, transform.position.y); // Wrap to left side
         }
-        else if(screenPos.x >= Screen.width && rb.linearVelocity.x > 0)
-        {
-            transform.position = new Vector2(leftSideOfScreenInWorld, transform.position.y);
-        }
-    
     }
 
-
+    // Method: UpdateUI
+    // Description: Updates the UI elements for health, lives, and attributes.
     private void UpdateUI()
     {
-        // Update hearts
-        for (int i = 0; i < hearts.Length; i++)
-        {
-            hearts[i].enabled = i < lives;
+        for (int i = 0; i < hearts.Length; i++) {
+            hearts[i].enabled = i < lives; // Update hearts based on lives
         }
 
-        // Update health bar
-        healthBar.SetHealth(health);
+        healthBar.SetHealth(health); // Update health bar
 
-        // Update attribute text
-        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}"; // Update attribute text
     }
 }

@@ -1,150 +1,217 @@
 /*
 EnemyMovement.cs
-Description: File that works with the basic enemy's movement
+Description: This script controls the basic movement and behavior of an enemy character in a 2D game.
 Creation date: 11/17/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
+Revisions:
+- 
+
+Preconditions:
+- The GameObject this script is attached to must have a Rigidbody2D and a SpriteRenderer component.
+- The 'groundCheck' Transform must be assigned in the Unity Editor.
+- The 'groundLayer' must be set to the appropriate layer(s) considered as ground.
+
+Postconditions:
+- The enemy will move back and forth on a platform, flip direction at edges, and take damage from bullets.
+- The enemy will attack the player when in contact.
+
+Acceptable Input:
+- 'groundCheck' should be a valid Transform.
+- 'groundLayer' should be a valid LayerMask.
+
+Unacceptable Input:
+- Null or unassigned 'groundCheck' or 'groundLayer' will result in incorrect behavior.
+
+Error and Exception Conditions:
+- None explicitly handled in this script.
+
+Side Effects:
+- Changes the color of the enemy sprite based on health.
+- Plays audio when the enemy is hit (commented out).
+
+Invariants:
+- The enemy's health is always between 0 and its initial value.
+- The enemy's movement is constrained to the x-axis.
+
+Known Faults:
+- None documented.
+
 */
 
 using System.Collections;
 using UnityEngine;
 
+// Class: EnemyMovement
+// Description: Manages the movement and interactions of an enemy character.
 public class EnemyMovement : MonoBehaviour
 {
-    public float moveSpeed = 2f; // Movement speed of the enemy
-    public Transform groundCheck; // Reference to ground check
-    public LayerMask groundLayer; // Layers considered as ground
-    public float groundCheckWidth = 1f; // Ground check box width
-    public float groundCheckHeight = 0.2f; // Ground check box height
-    public int health = 50; // Enemy's health
-    public int damage = 50; // Damage the enemy can inflict
+    // Public variables for movement, health, and damage
+    public float moveSpeed = 2f; // Speed at which the enemy moves
+    public Transform groundCheck; // Transform used to check if the enemy is on the ground
+    public LayerMask groundLayer; // LayerMask to identify ground
+    public float groundCheckWidth = 1f; // Width of the ground check area
+    public float groundCheckHeight = 0.2f; // Height of the ground check area
+    public int health = 50; // Initial health of the enemy
+    public int damage = 50; // Damage dealt to the player
 
-    private Rigidbody2D rb; // Enemy's Rigidbody2D
-    private Vector2 movement; // Movement direction
-    private bool isGrounded; // Is the enemy on the ground
-    private bool facingRight = false; // Direction facing
-    private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
-    private Collider2D cllider; // Reference to the enemy's collider
+    // Private variables for internal state
+    private Rigidbody2D rb; // Rigidbody2D component for physics
+    private Vector2 movement; // Current movement direction
+    private bool isGrounded; // Whether the enemy is on the ground
+    private bool facingRight = false; // Direction the enemy is facing
+    private SpriteRenderer spriteRenderer; // SpriteRenderer component for visual representation
+    private Collider2D cllider; // Collider2D component for collision detection
 
-    private GameObject player;
-    private bool attacking;
-    public AudioSource audioSource; //audio manager?
-    public AudioClip enemyHit;
+    private GameObject player; // Reference to the player GameObject
+    private bool attacking; // Whether the enemy is currently attacking
+    public AudioSource audioSource; // AudioSource component for playing sounds
+    public AudioClip enemyHit; // AudioClip for when the enemy is hit
 
+    // Method: Start
+    // Description: Initializes components and sets up initial state.
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody2D>(); // Reference Rigidbody2D
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent rotation
-        spriteRenderer = GetComponent<SpriteRenderer>(); // Reference SpriteRenderer
-        cllider = GetComponent<Collider2D>(); // Reference Collider2D
-        attacking = false;
+        audioSource = GetComponent<AudioSource>(); // Get the AudioSource component
+        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Prevent the enemy from rotating
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
+        cllider = GetComponent<Collider2D>(); // Get the Collider2D component
+        attacking = false; // Initialize attacking state
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player"); // Find the player GameObject by tag
     }
 
+    // Method: Update
+    // Description: Handles movement logic and attack behavior.
     void Update()
     {
-        if (!isGrounded && rb.linearVelocity.y == 0) // When the enemy reaches the edge of a platform (it senses there is no more ground in front of it)
+        // Check if the enemy is grounded and not moving vertically
+        if (!isGrounded && rb.linearVelocity.y == 0)
         {
-            Flip(); // It flips the sprite
+            Flip(); // Flip the enemy's direction
         }
 
-        if (rb.linearVelocity.y != 0) { // If the enemy is falling
-            movement.x = 0; // Make its left/right movement null to stop jitter
-        } else { // If the enemy is on solid ground
-            movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
+        // If the enemy is falling, stop horizontal movement
+        if (rb.linearVelocity.y != 0)
+        {
+            movement.x = 0; // Stop horizontal movement
         }
-        
-        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer); // Determine if the object is grounded
+        else
+        {
+            movement.x = facingRight ? 1 : -1; // Move in the direction the enemy is facing
+        }
 
-        if (attacking) {
+        // Check if the enemy is on the ground
+        isGrounded = Physics2D.OverlapBox(groundCheck.position, new Vector2(groundCheckWidth, groundCheckHeight), 0f, groundLayer);
+
+        // If attacking, deal damage to the player
+        if (attacking)
+        {
             player.gameObject.GetComponent<PlayerMovement>().TakeDamage(5);
         }
     }
 
+    // Method: FixedUpdate
+    // Description: Applies movement to the enemy.
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply movement
+        rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement
     }
 
+    // Method: OnDrawGizmos
+    // Description: Draws a visual representation of the ground check area in the editor.
     void OnDrawGizmos()
     {
         if (groundCheck != null)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
+            Gizmos.color = Color.red; // Set Gizmo color to red
+            Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f)); // Draw the ground check area
         }
     }
 
+    // Method: OnCollisionEnter2D
+    // Description: Handles collision events with other objects.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            attacking = true;
-            // player = collision;
-        } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
-            TakeDamage(damage); //Make the enemy lose health
-            //audioSource.PlayOneShot(enemyHit);
+            attacking = true; // Start attacking the player
+        }
+        else if (collision.gameObject.CompareTag("Bullet"))
+        {
+            TakeDamage(damage); // Take damage from the bullet
+            //audioSource.PlayOneShot(enemyHit); // Play hit sound (commented out)
             Destroy(collision.gameObject); // Destroy the bullet
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
-            attacking = false;
+    // Method: OnCollisionExit2D
+    // Description: Handles when the enemy stops colliding with the player.
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            attacking = false; // Stop attacking the player
         }
     }
 
+    // Method: TakeDamage
+    // Description: Reduces the enemy's health and handles death.
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        health -= damage; // Subtract damage from health
         if (health <= 0)
         {
-            StartCoroutine(HandleDeath());
+            StartCoroutine(HandleDeath()); // Start death handling coroutine
         }
         else
         {
-            UpdateColorBasedOnHealth();
+            UpdateColorBasedOnHealth(); // Update the enemy's color based on health
         }
     }
 
+    // Method: UpdateColorBasedOnHealth
+    // Description: Updates the enemy's color based on its current health.
     private void UpdateColorBasedOnHealth()
     {
-        float redIntensity = 1f - (health / 100f); // Calculate red intensity
-        spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity); // Set color
+        float redIntensity = 1f - (health / 100f); // Calculate red intensity based on health
+        spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity); // Set the sprite color
     }
 
+    // Method: HandleDeath
+    // Description: Handles the enemy's death animation and destruction.
     private IEnumerator HandleDeath()
     {
-        spriteRenderer.color = Color.red; // Turn red
-        float floatDuration = 2f; // Float for 2 seconds
-        float floatSpeed = 2f; // Speed of floating up
+        spriteRenderer.color = Color.red; // Change color to red
+        float floatDuration = 2f; // Duration of floating effect
+        float floatSpeed = 2f; // Speed of floating upwards
 
-        cllider.enabled = false; // Disable the collider to prevent interactions
+        cllider.enabled = false; // Disable collider
         rb.linearVelocity = Vector2.zero; // Stop movement
         rb.isKinematic = true; // Disable physics interactions
 
-        Vector2 originalPosition = transform.position;
-        float elapsedTime = 0f;
+        Vector2 originalPosition = transform.position; // Store original position
+        float elapsedTime = 0f; // Initialize elapsed time
 
         // Rotate and float upwards
-        transform.Rotate(0, 0, 180);
+        transform.Rotate(0, 0, 180); // Rotate 180 degrees
         while (elapsedTime < floatDuration)
         {
-            transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime));
-            elapsedTime += Time.unscaledDeltaTime;
-            yield return null;
+            transform.position = new Vector2(originalPosition.x, originalPosition.y + (floatSpeed * elapsedTime)); // Move upwards
+            elapsedTime += Time.unscaledDeltaTime; // Increment elapsed time
+            yield return null; // Wait for the next frame
         }
 
         // Destroy the enemy after floating
-        Destroy(gameObject);
+        Destroy(gameObject); // Destroy the enemy GameObject
     }
 
-    private void Flip() // Function to flip the enemy sprite
+    // Method: Flip
+    // Description: Flips the enemy's sprite and direction.
+    private void Flip()
     {
-        transform.Rotate(new Vector3(0, 180, 0)); // Flip 180 degrees
-        facingRight = !facingRight; // Toggle direction
+        transform.Rotate(new Vector3(0, 180, 0)); // Rotate the sprite 180 degrees
+        facingRight = !facingRight; // Toggle the facing direction
     }
-
 }
