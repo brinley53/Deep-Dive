@@ -44,6 +44,6 @@ public class FallDistanceTracker : MonoBehaviour
 
         // Update UI text
         // distanceText.text = $"Fall Distance: {maxFallDistance:F1}m";
-        distanceText.text = $"Fall Distance: {currentFallDistance:F1}m";
+        distanceText.text = $"Depth: {currentFallDistance:F1}m";
     }
 } 
