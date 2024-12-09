@@ -6,6 +6,26 @@
     Sources of code: ChatGPT, discussions.unity.com
     Authors: Kyle Moore, Gianni Louisa, Connor Bennudriti, Ben Renner, Brinley Hull
     Creation Date: 11/24/24
+    Revisions
+        Commits on Dec 7, 2024
+        Kyle: heath and oxygen bars, fixed item collection 
+        Connor: Added damaging platform frequency scaling dependent on depth, Added background music and fixed some errors with player object not being referenced
+        Commits on Dec 5, 2024
+        Brinley: health and oxygen bars
+        Commits on Dec 4, 2024
+        Brinley: bubbles and oxygen death
+    Preconditions:
+    * Script must be attached to the Player object 
+    Postconditions:
+    * None
+    Error and Exception conditions:
+    * None
+    Side effects:
+    * None
+    Invariants:
+    * None
+    Known Faults:
+    * None
 */
 
 using UnityEngine;
@@ -19,11 +39,11 @@ public class PlayerInventory : MonoBehaviour
 
     public int oxygen; // Keep track of oxygen
 
-    public int maxOxygen = 30;
+    public int maxOxygen = 30; // The max amount of oxygen a player can have
 
     private int nextUpdate = 1; // time tracker to deplete oxygen
 
-    public OxyBar oxygenBar;
+    public OxyBar oxygenBar; // the oxygen bar object initialization
 
     public PlayerMovement player; // Reference playermovement
 
@@ -34,8 +54,8 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         //Initialize the UI with the current item counts
-        oxygen = maxOxygen;
-        UpdateUI();
+        oxygen = maxOxygen; // set the oxygen level to the max oxygen level
+        UpdateUI(); // update the UI
     }
 
     //Method to add items to the inventory
@@ -61,11 +81,11 @@ public class PlayerInventory : MonoBehaviour
     		// Change the next update (current second+1)
     		nextUpdate=Mathf.FloorToInt(Time.time)+1;
     		depleteOxygen(); // deplete the oxygen
-            if (oxygen <= 0) {
-                player.Die();
-                RefillOxygen();
+            if (oxygen <= 0) { // if the oxygen is gone
+                player.Die(); // kill the player
+                RefillOxygen(); //refill the oxygen tank
             }
-            UpdateUI();
+            UpdateUI(); //update the UI
     	}
     }
 
@@ -74,8 +94,8 @@ public class PlayerInventory : MonoBehaviour
     }
 
     public void RefillOxygen() { // Refill player's oxygen to full
-        oxygen = maxOxygen;
-        UpdateUI();
+        oxygen = maxOxygen; // reset oxygen to full
+        UpdateUI(); //update the UI
     }
 
     //Method to update the UI with the current counts
@@ -88,7 +108,7 @@ public class PlayerInventory : MonoBehaviour
         if (heartCountText != null)
             heartCountText.text = "Hearts: " + heartCount;
 
-        oxygenBar.SetOxygen(oxygen);
+        oxygenBar.SetOxygen(oxygen); //set the oxygen bar visually to reflect the current oxygen level
     }
 }
 

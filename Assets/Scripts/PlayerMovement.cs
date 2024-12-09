@@ -240,8 +240,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Method: FixedUpdate
-    // Description: Applies physics-based movement at a fixed time interval.
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(movement.x * moveSpeed, rb.linearVelocity.y); // Apply horizontal movement
@@ -251,16 +249,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Method: Shoot
-    // Description: Instantiates a bullet and plays the shooting sound.
     private void Shoot()
     {
         Instantiate(bullet, firingPoint.position, firingPoint.rotation); // Instantiate the bullet
         audioSource.PlayOneShot(playerShoot); // Play shooting sound
     }
 
-    // Method: OnDrawGizmos
-    // Description: Draws debug visuals in the editor for ground checks.
     void OnDrawGizmos()
     {
         if (groundCheck != null) {

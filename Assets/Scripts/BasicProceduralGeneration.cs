@@ -245,8 +245,8 @@ public class BasicProceduralGeneration : MonoBehaviour
 
         // If the random number is greater than .8, choose a random spawn position and spawn the bubble there
         if (spawnChance > 0.8f) {
-            Vector3 pos = new Vector3(Random.Range(-15, 16), platformPos.y + Random.Range(0, 5), platformPos.z);
-            return Instantiate(bubble, pos, Quaternion.identity);
+            Vector3 pos = new Vector3(Random.Range(-15, 16), platformPos.y + Random.Range(0, 5), platformPos.z); //set position of the bubble
+            return Instantiate(bubble, pos, Quaternion.identity); //instantiate the bubble in the game
         } 
         // Return an empty bubble if not
         else {

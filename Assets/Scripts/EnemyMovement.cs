@@ -15,7 +15,7 @@ Revisions:
 - Regular platforms fixed & small layer issues (12/4/2024, brinley53)
 - A bunch of kraken stuff (12/3/2024, brinley53)
 - Enemy procedural generation & shark image (11/28/2024, brinley53)
-- Fixed the pp (sorry) (11/24/2024, brinley53)
+- Changed animation (11/24/2024, brinley53)
 - Player attack (11/24/2024, brinley53)
 - Fixed buggy respawning (11/23/2024, cbennudr)
 - Added enemy damage, enemy death, and enemy attributes (damage and health) (11/21/2024, Gianni-Louisa)
@@ -145,15 +145,13 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // Method: OnCollisionEnter2D
-    // Description: Handles collision events with other objects.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player")) // if the enemy collides with the player
         {
             attacking = true; // Start attacking the player
         }
-        else if (collision.gameObject.CompareTag("Bullet"))
+        else if (collision.gameObject.CompareTag("Bullet")) // if the enemy collides with a bullet
         {
             TakeDamage(damage); // Take damage from the bullet
             //audioSource.PlayOneShot(enemyHit); // Play hit sound (commented out)
@@ -161,18 +159,14 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // Method: OnCollisionExit2D
-    // Description: Handles when the enemy stops colliding with the player.
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player")) // if the enemy stops colliding with the player
         {
             attacking = false; // Stop attacking the player
         }
     }
 
-    // Method: TakeDamage
-    // Description: Reduces the enemy's health and handles death.
     public void TakeDamage(int damage)
     {
         health -= damage; // Subtract damage from health
@@ -186,16 +180,12 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    // Method: UpdateColorBasedOnHealth
-    // Description: Updates the enemy's color based on its current health.
     private void UpdateColorBasedOnHealth()
     {
         float redIntensity = 1f - (health / 100f); // Calculate red intensity based on health
         spriteRenderer.color = new Color(1f, 1f - redIntensity, 1f - redIntensity); // Set the sprite color
     }
 
-    // Method: HandleDeath
-    // Description: Handles the enemy's death animation and destruction.
     private IEnumerator HandleDeath()
     {
         spriteRenderer.color = Color.red; // Change color to red
@@ -222,8 +212,6 @@ public class EnemyMovement : MonoBehaviour
         Destroy(gameObject); // Destroy the enemy GameObject
     }
 
-    // Method: Flip
-    // Description: Flips the enemy's sprite and direction.
     private void Flip()
     {
         transform.Rotate(new Vector3(0, 180, 0)); // Rotate the sprite 180 degrees

@@ -47,16 +47,12 @@ public class PlayerFlip : MonoBehaviour
     public float horizontalInput; // Stores the horizontal input value
     public bool facingRight = true; // Indicates if the player is facing right
 
-    // Method: Update
-    // Description: Called once per frame to update the player's direction based on input.
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal"); // Get the horizontal input value
         SetDirection(); // Determine and set the player's facing direction
     }
 
-    // Method: SetDirection
-    // Description: Flips the player's orientation if the input direction changes.
     private void SetDirection()
     {
         // Check if the player needs to flip direction

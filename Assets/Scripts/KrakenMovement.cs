@@ -42,8 +42,8 @@ public class KrakenMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Enemy's SpriteRenderer
     private Collider2D cllider; // Reference to the enemy's collider
 
-    private int playerTriggerCount = 0;
-    private int bulletTriggerCount = 0;
+    private int playerTriggerCount = 0; // initialize a variable to keep track of how close the player is to the object
+    private int bulletTriggerCount = 0; // initailzie a variable to keep track of how close the bullet is to the ojbect
 
     private float startY; // Initialize the starting position y of the enemy
 
@@ -65,14 +65,14 @@ public class KrakenMovement : MonoBehaviour
         cllider = GetComponent<Collider2D>(); // Reference Collider2D
         startY = rb.position.y; // get starting y position
         player = GameObject.FindGameObjectWithTag("Player").transform; // get the player transform
-        damage = 99;
-        health = 500;
-        attacking = false;
+        damage = 99; // set the damage the enemy can inflict
+        health = 500; // set the health of the enemy
+        attacking = false; // set the attacking boolean to false as he does not start attacking the player
     }
 
     void Update()
     {
-        // Check position of the kraken and set the directional bool if chasing
+        // if the kraken is past his patrol points and is not chasing the player
         if ((rb.position.y > startY + 10 && !goingDown || rb.position.y < startY - 10 && goingDown) && !chasePlayer) {
             goingDown = !goingDown; // Toggle direction
         }
@@ -89,7 +89,7 @@ public class KrakenMovement : MonoBehaviour
             }
             movement.x = facingRight ? 1 : -1; // Movement in the direction determined by whether the sprite is facing right or left
         } else {
-            movement.x = 0;
+            movement.x = 0; // otherwise only go up and down
         }
         // If attacking the player
         if (attacking) {
@@ -97,7 +97,7 @@ public class KrakenMovement : MonoBehaviour
             playerc.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
 
-        movement.y = goingDown ? -1 : 1;
+        movement.y = goingDown ? -1 : 1; // set movement in y direction to whichever way the kraken is facing
         
     }
 
@@ -113,15 +113,15 @@ public class KrakenMovement : MonoBehaviour
             chasePlayer = true; // start chasing the player
             playerTriggerCount += 1; // increment counter
             // If second time player triggerd the trigger, start attacking
-            if (playerTriggerCount == 2) {
-                attacking = true;
-                playerc = collision;
+            if (playerTriggerCount == 2) { // if the player is closest to the kraken
+                attacking = true; //the kraken is attacking
+                playerc = collision; // set the collider to the player
             }
         } 
         // If collided with a harpoon
         else if (collision.gameObject.CompareTag("Bullet")) {
             bulletTriggerCount += 1; // increment counter
-            // If second trigger, kraken takes damage
+            // If second trigger, bullet is close to the kraken and it takes damage
             if (bulletTriggerCount == 2) {
                 TakeDamage(50); //Make the enemy lose health
                 //audioSource.PlayOneShot(enemyHit);
@@ -135,14 +135,14 @@ public class KrakenMovement : MonoBehaviour
         // If object was the player
         if (collision.gameObject.CompareTag("Player")) {
             playerTriggerCount -= 1; // decrement counter 
-            // If no more triggers, stop chasing
+            // If the player leaves the vicinity
             if (playerTriggerCount == 0) {
-                chasePlayer = false;
+                chasePlayer = false; //stop chasing the player
             }
         } 
         // If bullet left trigger
         else if (collision.gameObject.CompareTag("Bullet")) {
-            bulletTriggerCount = 0; // reset bullet count
+            bulletTriggerCount = 0; // reset bullet trigger count
         }
     }
 
@@ -150,17 +150,6 @@ public class KrakenMovement : MonoBehaviour
     {
         Gizmos.color = Color.red;
         // Gizmos.DrawWireCube(groundCheck.position, new Vector3(groundCheckWidth, groundCheckHeight, 0f));
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // if (collision.gameObject.CompareTag("Player"))
-        // {
-        //     collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
-        // } else if (collision.gameObject.CompareTag("Bullet")) { // If enemy is hit by a bullet
-        //     TakeDamage(50); //Make the enemy lose health
-        //     Destroy(collision.gameObject); // Destroy the bullet
-        // }
     }
 
     // Function for taking damage

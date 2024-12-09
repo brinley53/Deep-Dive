@@ -7,7 +7,28 @@
     Sources of code: None
     Authors: Kyle Moore, Gianni Louisa, Ben Renner, Connor Bennudriti, Brinley Hull
     Creation Date: 11/9/24
+    Revisions
+        Commits on Dec 4, 2024
+        Brinley: bubbles and oxygen death
+        Commits on Nov 24, 2024
+        Connor: Moved start of platform spawning downwards so platforms dont spawn on the ship
+        Kyle: added very basic inventory that updates when player collects each item and TMP dependencies
+        Kyle: colision works again but does not add item to inventory ui yet
+
+    Preconditions:
+    * Script must be attached to the GameManager object 
+    Postconditions:
+    * None
+    Error and Exception conditions:
+    * None
+    Side effects:
+    * None
+    Invariants:
+    * None
+    Known Faults:
+    * None
 */
+
 using UnityEngine;
 public class ItemCollector : MonoBehaviour
 {
@@ -36,7 +57,6 @@ public class ItemCollector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Debug.Log("Collided with: " + other.gameObject.name);
         //Check if the collided object is a harpoon item
         if (other.gameObject.CompareTag("HarpoonItem"))
         {
