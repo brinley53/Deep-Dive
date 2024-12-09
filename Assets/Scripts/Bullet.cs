@@ -6,7 +6,7 @@ Creation date: 11/23/24
 Other sources of code: Muddy Wolf (youtube)
 */
 
-using UnityEditor.ShaderGraph.Internal;
+
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
