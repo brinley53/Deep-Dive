@@ -3,6 +3,7 @@ Deep Dive is an ocean platformer game where players try to get to the deepest pa
 Deep Dive is made using Unity and C#. The majority of the work done by contributors can be found in the "Assets" folder. Most of the code resides in the "Scripts" sub-folder. 
 
 End of Sprint 1 progress: https://kylemoore12.github.io/Deep-Dive-Sprit1/
+
 End of Sprint 2 progress: https://kylemoore12.github.io/DeepDive/
 
 Final Sprint: https://kylemoore12.github.io/DeepDive/
