@@ -5,7 +5,14 @@ Creation date: 11/10/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 Revisions:
-- [Date] [Author] [Description of revision]
+- Added required comments (12/8/2024, Gianni-Louisa)
+- 1 high score (12/8/2024, KyleMoore12)
+- Updated scene (12/7/2024, KyleMoore12)
+- Added damaging platform frequency scaling dependent on depth (12/7/2024, cbennudr)
+- Fixed buggy respawning (11/23/2024, cbennudr)
+- Added respawn functionality (11/13/2024, cbennudr)
+- Added prologue comment to falldistancetracker.cs and added template for random platform selection (11/10/2024, cbennudr)
+- Added fall distance tracker and made jump checking more efficient (11/5/2024, Gianni-Louisa)
 
 Preconditions:
 - The GameObject this script is attached to must have a Transform component.

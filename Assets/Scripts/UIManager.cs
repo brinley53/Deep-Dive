@@ -6,7 +6,13 @@ Date Created: 11/30/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:
-- [Date] [Author] [Description of revision]
+- Added required comments (12/8/2024, Gianni-Louisa)
+- 1 high score (12/8/2024, KyleMoore12)
+- Pushed change to fix my stupidness (12/7/2024, Gianni-Louisa)
+- Added background music and fixed some errors with player object not being referenced (12/7/2024, cbennudr)
+- Added main menu and updated exit buttons (12/6/2024, Gianni-Louisa)
+- Added lose and pause screen (12/6/2024, Gianni-Louisa)
+
 
 Preconditions:
 - The GameObject this script is attached to must have references to the UI elements (pauseMenu, loseMenu, gameOverScreen, mainMenuUI).

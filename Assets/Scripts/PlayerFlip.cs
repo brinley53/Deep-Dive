@@ -6,7 +6,10 @@ Date Created: 11/8/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:
-- [Date] [Author] [Description of revision]
+- Added required comments (12/8/2024, Gianni-Louisa)
+- Commenting (11/10/2024, brinley53)
+- Little dude walks and flips now :) (11/8/2024, brinley53)
+
 
 Preconditions:
 - The GameObject this script is attached to must have a Transform component.

@@ -5,7 +5,22 @@ Creation date: 11/17/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 Revisions:
-- 
+- Added required comments (12/8/2024, Gianni-Louisa)
+- Working Player Audio with enemy audio commented out (12/8/2024, KyleMoore12)
+- Added sound (12/8/2024, TrixTheWolf)
+- Added background music and fixed some errors with player object not being referenced (12/7/2024, cbennudr)
+- Fix lose health on collide (but still kinda buggy) (12/5/2024, brinley53)
+- Health and oxygen bars (12/5/2024, brinley53)
+- Get rid of small enemy flip issue with platforms (12/4/2024, brinley53)
+- Regular platforms fixed & small layer issues (12/4/2024, brinley53)
+- A bunch of kraken stuff (12/3/2024, brinley53)
+- Enemy procedural generation & shark image (11/28/2024, brinley53)
+- Fixed the pp (sorry) (11/24/2024, brinley53)
+- Player attack (11/24/2024, brinley53)
+- Fixed buggy respawning (11/23/2024, cbennudr)
+- Added enemy damage, enemy death, and enemy attributes (damage and health) (11/21/2024, Gianni-Louisa)
+- Added Player death, player damage, player attributes, enemy attack (11/19/2024, Gianni-Louisa)
+- Janky enemy movement (11/17/2024, brinley53)
 
 Preconditions:
 - The GameObject this script is attached to must have a Rigidbody2D and a SpriteRenderer component.

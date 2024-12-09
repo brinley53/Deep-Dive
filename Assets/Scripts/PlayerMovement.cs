@@ -6,7 +6,37 @@ Date Created: 11/6/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:
-- [Date] [Author] [Description of revision]
+- Added required comments (12/8/2024, Gianni-Louisa)
+- Working Player Audio with enemy audio commented out (12/8/2024, KyleMoore12)
+- Added sound (12/8/2024, TrixTheWolf)
+- Fix Scoreboard (12/8/2024, KyleMoore12)
+- 1 high score (12/8/2024, KyleMoore12)
+- Health and oxygen bars (12/7/2024, KyleMoore12)
+- Screen wrapping (12/7/2024, KyleMoore12)
+- Fixed item collection fr (12/7/2024, KyleMoore12)
+- Fixed elements not getting deleted after passing checkpoint (12/7/2024, cbennudr)
+- Added damaging platform frequency scaling dependent on depth (12/7/2024, cbennudr)
+- Added background music and fixed some errors with player object not being referenced (12/7/2024, cbennudr)
+- Added lose and pause screen (12/6/2024, Gianni-Louisa)
+- Health and oxygen bars (12/5/2024, brinley53)
+- Bubbles and oxygen death (12/4/2024, brinley53)
+- Comments (11/24/2024, brinley53)
+- Added spike and magma platforms (11/24/2024, cbennudr)
+- Player attack (11/24/2024, brinley53)
+- Added I-frames (11/23/2024, cbennudr)
+- Added Player death, player damage, player attributes, enemy attack (11/19/2024, Gianni-Louisa)
+- Janky enemy movement (11/17/2024, brinley53)
+- Added so player can fall through platforms if they press down arrow (11/15/2024, Gianni-Louisa)
+- Added respawn functionality (11/13/2024, cbennudr)
+- Comments for the script (11/10/2024, Gianni-Louisa)
+- Rest of animation :D (11/9/2024, brinley53)
+- Little dude walks and flips now :) (11/8/2024, brinley53)
+- Added commenting (11/5/2024, Gianni-Louisa)
+- Added fall distance tracker and made jump checking more efficient (11/5/2024, Gianni-Louisa)
+- Added limiter for fall speed (10/31/2024, Gianni-Louisa)
+- Basic procedural generation is now infinite (10/26/2024, cbennudr)
+- Implementing basic procedural generation - platform spawning done (10/26/2024, cbennudr)
+
 
 Preconditions:
 - The GameObject this script is attached to must have Rigidbody2D, SpriteRenderer, and Animator components.

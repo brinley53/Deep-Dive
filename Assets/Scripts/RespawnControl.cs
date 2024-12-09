@@ -4,6 +4,11 @@ Description: This script handles the respawn logic for the player character in a
 Programmer: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Date Created: 11/13/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
+Revisions:
+- Added required comments (12/8/2024, Gianni-Louisa)
+- Fixed buggy respawning (11/23/2024, cbennudr)
+- Added Player death, player damage, player attributes, enemy attack (11/19/2024, Gianni-Louisa)
+- Added respawn functionality (11/13/2024, cbennudr)
 
 
 Preconditions:

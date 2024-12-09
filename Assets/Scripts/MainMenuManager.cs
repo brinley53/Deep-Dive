@@ -6,7 +6,11 @@ Date Created: 12/6/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:
-- [Date] [Author] [Description of revision]
+- Added required comments (12/8/2024, Gianni-Louisa)
+- Fix Scoreboard (12/8/2024, KyleMoore12)
+- 1 high score (12/8/2024, KyleMoore12)
+- Added main menu and updated exit buttons (12/6/2024, Gianni-Louisa)
+
 
 Preconditions:
 - The GameObject this script is attached to must have references to the main menu UI and scoreboard UI.
