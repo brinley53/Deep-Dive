@@ -3,7 +3,22 @@ SpikePlatformLogic.cs
 Description: File that handles damaging the player after landing on a spike platform
 Creation date: 11/24/24
 Authors: Connor Bennudriti
-Other sources of code: 
+Other sources of code: None
+
+Revisions
+* None
+Preconditions:
+* Script must be attached to the Spike platform prefabs (all sizes)
+Postconditions:
+* None
+Error and Exception conditions:
+* None
+Side effects:
+* None
+Invariants:
+* None
+Known Faults:
+* None
 **/
 
 using UnityEngine;
@@ -12,6 +27,7 @@ public class SpikePlatformLogic : MonoBehaviour
 {
     public int spikePlatformDamage = 10; // the amount of damage for the spike platforms to do to the player
 
+    // When something enters the collider for the object this script is attached to
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // When the player lands on the spike platform
