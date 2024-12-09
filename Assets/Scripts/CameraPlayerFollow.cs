@@ -1,3 +1,28 @@
+/**
+CameraPlayerFollow.cs
+Description: Script for procedurally generating the level layout
+Creation date: 10/26/2024
+Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
+Other sources of code: None
+
+Revisions
+* None
+Preconditions:
+* Script must be attached to the GameManager object 
+Postconditions:
+* None
+Error and Exception conditions:
+* None
+Side effects:
+* None
+Invariants:
+* None
+Known Faults:
+* None
+
+**/
+
+
 using UnityEngine;
 
 public class playerFollow : MonoBehaviour

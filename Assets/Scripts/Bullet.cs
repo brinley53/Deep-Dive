@@ -2,7 +2,7 @@
 Bullet.cs
 Description: File that controls the harpoon bullets when they get shot
 Authors: Ben Renner, Brinley Hull, Connor Bennudriti, Gianni Louisa, Kyle Moore
-Creation date: 11/23/24
+Creation date: 11/24/24
 Other sources of code: Muddy Wolf (youtube)
 
 Revisions
