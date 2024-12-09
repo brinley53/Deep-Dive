@@ -4,6 +4,21 @@ Description: File that controls the harpoon bullets when they get shot
 Authors: Ben Renner, Brinley Hull, Connor Bennudriti, Gianni Louisa, Kyle Moore
 Creation date: 11/23/24
 Other sources of code: Muddy Wolf (youtube)
+
+Revisions
+* None
+Preconditions:
+* Script must be attached to the harpoon prefab
+Postconditions:
+* None
+Error and Exception conditions:
+* None
+Side effects:
+* None
+Invariants:
+* None
+Known Faults:
+* None
 */
 
 using UnityEditor.ShaderGraph.Internal;
