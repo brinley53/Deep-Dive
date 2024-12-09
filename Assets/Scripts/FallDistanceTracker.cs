@@ -1,7 +1,7 @@
 /*
 FallDistanceTracker.cs
 Description: Script for tracking how far the player has fallen in a Unity game.
-Creation date: 11/10/2024
+Creation date: 11/5/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 Revisions:

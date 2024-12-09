@@ -2,7 +2,7 @@
 PlayerMovement.cs
 Description: This script manages the player's movement, jumping, and interactions in a 2D game.
 Programmer: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
-Date Created: 11/6/2024
+Date Created: 10/26/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:

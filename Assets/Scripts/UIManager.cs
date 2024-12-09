@@ -2,7 +2,7 @@
 UIManager.cs
 Description: This script manages the user interface elements such as pause menu, lose menu, and main menu in a Unity game.
 Programmer: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
-Date Created: 11/30/2024
+Date Created: 12/6/2024
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
 
 Revisions:
