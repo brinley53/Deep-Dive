@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: 7b28d92eccd77294ba3fd94fb824360b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2460816498796222138
+    second: Diver All Attack_0
+  - first:
+      213: 1689788473298154428
+    second: Diver All Attack_1
+  - first:
+      213: -9182361722975035217
+    second: Diver All Attack_2
+  - first:
+      213: -6708354828428273410
+    second: Diver All Attack_3
+  - first:
+      213: 8945587610266438636
+    second: Diver All Attack_4
+  - first:
+      213: -5766076571991527282
+    second: Diver All Attack_5
+  - first:
+      213: 512310476895608158
+    second: Diver All Attack_6
+  - first:
+      213: 7354379909752704580
+    second: Diver All Attack_7
+  - first:
+      213: 2646608824242409768
+    second: Diver All Attack_8
+  - first:
+      213: 3938525842481673198
+    second: Diver All Attack_9
+  - first:
+      213: -4517503937450909546
+    second: Diver All Attack_10
+  - first:
+      213: -2312365203829589915
+    second: Diver All Attack_11
+  - first:
+      213: -864156862127373480
+    second: Diver All Attack_12
+  - first:
+      213: -6345159952760956120
+    second: Diver All Attack_13
+  - first:
+      213: -7786750878399656839
+    second: Diver All Attack_14
+  - first:
+      213: 6934269962257018145
+    second: Diver All Attack_15
+  - first:
+      213: -7441945108029417053
+    second: Diver All Attack_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Win64
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Diver All Attack_0
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 1473
+        width: 123
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 649a4dbae6c69ddd0800000000000000
+      internalID: -2460816498796222138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_1
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 1473
+        width: 123
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb37c70e9a5537710800000000000000
+      internalID: 1689788473298154428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_2
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 1473
+        width: 123
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa0ede6c9a2b19080800000000000000
+      internalID: -9182361722975035217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_3
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 1473
+        width: 123
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef8914073d227e2a0800000000000000
+      internalID: -6708354828428273410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_4
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 1121
+        width: 123
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ceb0119298c152c70800000000000000
+      internalID: 8945587610266438636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_5
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 1121
+        width: 123
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e803eb268e7caffa0800000000000000
+      internalID: -5766076571991527282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_6
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 1121
+        width: 123
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5dd2161aa71c1700800000000000000
+      internalID: 512310476895608158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_7
+      rect:
+        serializedVersion: 2
+        x: 1154
+        y: 1121
+        width: 123
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44e44101091001660800000000000000
+      internalID: 7354379909752704580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_8
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 769
+        width: 123
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 821126c04b4aab420800000000000000
+      internalID: 2646608824242409768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_9
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 769
+        width: 189
+        height: 167
+      alignment: 9
+      pivot: {x: 0.325, y: 0.50453234}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee3f0d3f26478a630800000000000000
+      internalID: 3938525842481673198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_10
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 769
+        width: 189
+        height: 167
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5090654}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6906fc88a1a9e41c0800000000000000
+      internalID: -4517503937450909546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_11
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 769
+        width: 189
+        height: 167
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56873ca3914d8efd0800000000000000
+      internalID: -2312365203829589915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_12
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 428
+        width: 189
+        height: 156
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8538ea299e5e104f0800000000000000
+      internalID: -864156862127373480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_13
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 406
+        width: 189
+        height: 178
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82b16ac14a671f7a0800000000000000
+      internalID: -6345159952760956120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_14
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 406
+        width: 189
+        height: 178
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97c07820557efe390800000000000000
+      internalID: -7786750878399656839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_15
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 406
+        width: 189
+        height: 178
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12dadf49ac97b3060800000000000000
+      internalID: 6934269962257018145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Diver All Attack_16
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 54
+        width: 189
+        height: 178
+      alignment: 9
+      pivot: {x: 0.325, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a953f57a56e8b890800000000000000
+      internalID: -7441945108029417053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: bccbd88f0b420bf4cba42eb29fa07592
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Diver All Attack_0: -2460816498796222138
+      Diver All Attack_1: 1689788473298154428
+      Diver All Attack_10: -4517503937450909546
+      Diver All Attack_11: -2312365203829589915
+      Diver All Attack_12: -864156862127373480
+      Diver All Attack_13: -6345159952760956120
+      Diver All Attack_14: -7786750878399656839
+      Diver All Attack_15: 6934269962257018145
+      Diver All Attack_16: -7441945108029417053
+      Diver All Attack_2: -9182361722975035217
+      Diver All Attack_3: -6708354828428273410
+      Diver All Attack_4: 8945587610266438636
+      Diver All Attack_5: -5766076571991527282
+      Diver All Attack_6: 512310476895608158
+      Diver All Attack_7: 7354379909752704580
+      Diver All Attack_8: 2646608824242409768
+      Diver All Attack_9: 3938525842481673198
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
