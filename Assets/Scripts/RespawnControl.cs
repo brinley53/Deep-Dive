@@ -23,7 +23,7 @@ public class RespawnControl : MonoBehaviour
 
     }
 
-    void Update()
+    public void LiveRespawnControls()
     {
         GameObject checkpointTrigger = GameObject.Find("CheckpointTrigger"); // repeatedly call since new checkpoints spawn in
         if (checkpointTrigger != null) {

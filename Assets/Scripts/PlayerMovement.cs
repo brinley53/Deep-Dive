@@ -66,10 +66,10 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public int numCheckpointsHit;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
+    //private void Awake()
+    //{
+        //DontDestroyOnLoad(this.gameObject);
+    //}
     void Start() // Called once when the script is first enabled
     {
         audioSource = GetComponent<AudioSource>();
@@ -225,7 +225,6 @@ public class PlayerMovement : MonoBehaviour
     public void Die() {
         lives--;
         Debug.Log($"Player died. Lives remaining: {lives}");
-        
         if (lives > 0)
         {
             StartCoroutine(RespawnPlayer());
@@ -262,7 +261,6 @@ public class PlayerMovement : MonoBehaviour
 
             health -= damage;
             Debug.Log($"Player health: {health}");
-
             if (health <= 0)
             {
                 Debug.Log("Player health is zero or less. Calling Die().");
@@ -369,6 +367,6 @@ public class PlayerMovement : MonoBehaviour
         healthBar.SetHealth(health);
 
         // Update attribute text
-        attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
+        //attributeText.text = $"Strength: {strength}\nHealth: {health}\nLives: {lives}";
     }
 }
