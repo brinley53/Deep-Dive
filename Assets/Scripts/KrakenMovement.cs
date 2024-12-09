@@ -1,9 +1,27 @@
 /*
 KrakenMovement.cs
-Description: File that works with the more advanced enemy's movement
+Description: Script for handling the movment of the kraken
 Creation date: 12/3/2024
 Authors: Gianni Louisa, Brinley Hull, Ben Renner, Connor Bennudriti, Kyle Moore
 Other sources of code: ChatGPT, Unity Documentation, Unity Forums, Youtube tutorials
+
+Revisions
+* 11/24/24 - Brinley: added receiving damage from the player
+* 12/3/24 - Brinley: improved kraken tracking 
+* 12/3/24 - Brinley: added damaging player on collision
+* 12/8/24 - Ben : added sound effects
+Preconditions:
+* Script must be attached to the kraken prefab
+Postconditions:
+* None
+Error and Exception conditions:
+* None
+Side effects:
+* None
+Invariants:
+* None
+Known Faults:
+* None
 */
 
 using System;
