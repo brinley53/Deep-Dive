@@ -21,7 +21,7 @@ Known Faults:
 * None
 */
 
-using UnityEditor.ShaderGraph.Internal;
+
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
